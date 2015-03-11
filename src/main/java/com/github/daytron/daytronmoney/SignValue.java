@@ -27,7 +27,7 @@ package com.github.daytron.daytronmoney;
  *
  * @author Ryan Gilera
  */
-public enum Sign {
+public enum SignValue {
 
     // Including zero
     Positive("+"),
@@ -36,7 +36,7 @@ public enum Sign {
 
     private final String text;
 
-    private Sign(String sign) {
+    private SignValue(String sign) {
         this.text = sign;
     }
 
@@ -44,11 +44,11 @@ public enum Sign {
         return text;
     }
 
-    public Sign oppositeOf() {
-        if (this == Sign.Positive) {
-            return Sign.Negative;
+    public SignValue oppositeOf() {
+        if (this == SignValue.Positive) {
+            return SignValue.Negative;
         } else {
-            return Sign.Positive;
+            return SignValue.Positive;
         }
     }
 }

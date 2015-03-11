@@ -34,9 +34,9 @@ public abstract class Money {
     private final String currencySymbol;
     private final long wholeUnit;
     private final long decimalUnit;
-    private final Sign signUnit;
+    private final SignValue signUnit;
     
-    public Money(String symbol) {
+    public Money(String symbol, SignValue sign, long wholeUnit, long decimalUnit) {
         symbol = symbol.trim();
         Pattern p = Pattern.compile("\\d");
         Matcher m = p.matcher(symbol);
@@ -49,12 +49,37 @@ public abstract class Money {
             throw new IllegalArgumentException("Error! Symbol argument contains number.");
         }
         
+        // Does not allow values greater than Long type can handle
+        if (Long.toString(wholeUnit).length()
+                == Long.toString(Long.MAX_VALUE).length() || 
+                Long.toString(decimalUnit).length() 
+                == Long.toString(Long.MAX_VALUE).length()) {
+            throw new IllegalArgumentException("Error! Value reached maximum limit");
+        }
+        
+        // Prevent negative zero money
+        // For simplicity zero is considered positive
+        // but when represented in String format,
+        // it is unsign.
+        if (wholeUnit == 0 && decimalUnit == 0) {
+            this.signUnit = SignValue.Positive;
+        } else {
+            this.signUnit = sign;
+        }
+        
         
         this.currencySymbol = symbol;
-        this.wholeUnit = 0;
-        this.decimalUnit = 0;
-        this.signUnit = Sign.Positive;
+        this.wholeUnit = wholeUnit;
+        this.decimalUnit = decimalUnit;
     }
+
+    public Money() {
+        throw new IllegalArgumentException("Error! No argument detected.");
+    }
+    
+    
+    
+    
     
     
 }

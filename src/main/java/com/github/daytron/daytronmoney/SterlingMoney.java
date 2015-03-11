@@ -25,9 +25,22 @@ package com.github.daytron.daytronmoney;
 
 
 public class SterlingMoney extends Money {
+    private static final String currencySymbol = "£";
 
     public SterlingMoney() {
-        super("£");
+        this(SignValue.Positive, 0, 0);
+    }
+    
+    public SterlingMoney(long wholeUnit) {
+        this(SignValue.Positive, wholeUnit, 0);
+    }
+    
+    public SterlingMoney(long wholeUnit, long decimalUnit) {
+        this(SignValue.Positive, wholeUnit, decimalUnit);
+    }
+    
+    public SterlingMoney(SignValue sign, long wholeUnit, long decimalUnit) {
+        super(currencySymbol, sign, wholeUnit, decimalUnit);
     }
     
 }
