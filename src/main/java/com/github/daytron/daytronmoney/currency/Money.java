@@ -21,39 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.daytron.daytronmoney;
+package com.github.daytron.daytronmoney.currency;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
 
 /**
  *
  * @author Ryan Gilera
  */
-public abstract class Money {
+public final class Money {
+    private static final String DEFAULT_CURRENCY_SYMBOL
+            = Currency.getInstance(Locale.getDefault()).getSymbol(Locale.getDefault());
+    private static final String ZERO_STRING = "0";
+    private static final String DECIMAL_POINT = ".";
+    
     private final String currencySymbol;
     private final long wholeUnit;
     private final long decimalUnit;
-    private final SignValue signUnit;
+    private final long leadingDecimalZeros;
+    private final SignValue sign;
     
-    public Money(String symbol, SignValue sign, long wholeUnit, long decimalUnit) {
-        symbol = symbol.trim();
-        Pattern p = Pattern.compile("\\d");
-        Matcher m = p.matcher(symbol);
+    public Money(String symbol, SignValue sign, long wholeUnit, 
+            long decimalUnit, long leadingDecimalZeros) {
         
-        if (symbol == null) {
-            throw new IllegalArgumentException("Error! Symbol argument is null.");
-        } else if (symbol.isEmpty()) {
-            throw new IllegalArgumentException("Error! Symbol argument is empty.");
-        } else if (m.find()) {
-            throw new IllegalArgumentException("Error! Symbol argument contains number.");
-        }
         
         // Does not allow values greater than Long type can handle
         if (Long.toString(wholeUnit).length()
                 == Long.toString(Long.MAX_VALUE).length() || 
-                Long.toString(decimalUnit).length() 
-                == Long.toString(Long.MAX_VALUE).length()) {
+            (Long.toString(decimalUnit).length() + leadingDecimalZeros)
+                >= Long.toString(Long.MAX_VALUE).length()) {
             throw new IllegalArgumentException("Error! Value reached maximum limit");
         }
         
@@ -62,24 +60,76 @@ public abstract class Money {
         // but when represented in String format,
         // it is unsign.
         if (wholeUnit == 0 && decimalUnit == 0) {
-            this.signUnit = SignValue.Positive;
+            this.sign = SignValue.Positive;
         } else {
-            this.signUnit = sign;
+            this.sign = sign;
         }
         
         
         this.currencySymbol = symbol;
         this.wholeUnit = wholeUnit;
         this.decimalUnit = decimalUnit;
+        this.leadingDecimalZeros = leadingDecimalZeros;
     }
 
     public Money() {
-        throw new IllegalArgumentException("Error! No argument detected.");
+        this(DEFAULT_CURRENCY_SYMBOL, SignValue.Positive, 0, 0, 0);
+    }
+
+    public SignValue getSign() {
+        return sign;
+    }
+
+    public long getWholeUnit() {
+        return wholeUnit;
+    }
+
+    public long getDecimalUnit() {
+        return decimalUnit;
+    }
+
+    public long getLeadingDecimalZeros() {
+        return leadingDecimalZeros;
+    }
+    
+
+    public String getCurrencySymbol() {
+        return currencySymbol;
     }
     
     
     
     
-    
+    @Override
+    public String toString() {
+        // Apply sign
+        String signText;
+        if (getWholeUnit() == 0 && getDecimalUnit() == 0) {
+            signText = "";
+        } else if (getSign() == SignValue.Positive) {
+            signText = "";
+        } else {
+            signText = getSign().getText();
+        }
+
+        // Reformat value to proper value format
+        // Ex. 1267 becomes 1,267
+        String poundsStr = NumberFormat.getInstance().format(getWholeUnit());
+
+        // Regroup back any leading zeros
+        String penceStr = "";
+        for (int i = 0; i < getLeadingDecimalZeros(); i++) {
+            penceStr += ZERO_STRING;
+        }
+        
+        penceStr += Long.toString(getDecimalUnit());
+        
+        if (getLeadingDecimalZeros() == 0 && getDecimalUnit() < 10) {
+            penceStr += ZERO_STRING;
+        }
+        
+        return getCurrencySymbol() + " " + signText + poundsStr 
+                + DECIMAL_POINT + penceStr;
+    }
     
 }
