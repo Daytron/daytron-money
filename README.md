@@ -20,7 +20,7 @@ Users are reminded that this software, like all other open source software, is p
 ### <a name='features'></a>Features 
 <sup><a href='#home'>[back to top]</a></sup>
 
-- Precise monetary calculations up to 2e63-1 for each whole units and decimals values.
+- Precise monetary calculations up to 2e63-1 for each whole units and decimals values. (9,223,372,036,854,775,807.9223372036854775807)
 - Can parse String value into Money object with automatic currency code detection
 - Allows signed values
 
