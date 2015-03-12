@@ -152,10 +152,7 @@ public class MoneyFactory {
                 parsedData[0] = 1;
             }
 
-            
-            System.out.println("value: " + valueString);
             String[] splitString = valueString.split("\\.");
-            System.out.println("splitString: " + Arrays.toString(splitString));
             
             if (splitString.length > 1) {
                 parsedData[1] = Long.valueOf(splitString[0]);

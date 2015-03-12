@@ -23,6 +23,10 @@
  */
 package com.github.daytron.daytronmoney.currency;
 
+import com.github.daytron.daytronmoney.operation.MoneyOperation;
+import com.github.daytron.daytronmoney.operation.Addition;
+import com.github.daytron.daytronmoney.operation.Subtraction;
+import com.github.daytron.daytronmoney.utility.ConversionTypeUtil;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
@@ -97,7 +101,66 @@ public final class Money {
         return currencySymbol;
     }
     
+    public Money getReverseSignMoney() {
+        return new Money(currencySymbol, sign.oppositeOf(), 
+                wholeUnit, decimalUnit, leadingDecimalZeros);
+    }
     
+    /**
+     * TODO
+     * @param money
+     * @return 
+     */
+    public Money plus(Money money) {
+        MoneyOperation additionOperation = new Addition(this, money);
+        return additionOperation.execute();
+    }
+    
+    public Money minus(Money money) {
+        MoneyOperation subtractionOperation = new Subtraction(this, money);
+        return subtractionOperation.execute();
+    }
+    
+    
+    public boolean isLessThan(Money money) {
+        if (money == null) {
+            return false;
+            
+        }
+        
+        long[] resultArray = ConversionTypeUtil
+                    .concatWholeAndDecThenConvertToLong(this, money);
+        
+        if (getSign() == SignValue.Negative && 
+                money.getSign() == SignValue.Positive) {
+            return true;
+        } else if (getSign() == SignValue.Positive && 
+                money.getSign() == SignValue.Negative) {
+            return false;
+        } else if (getSign() == SignValue.Negative && 
+                money.getSign() == SignValue.Negative) {
+            
+            // index 1 is ThisMoney and 2 is opposite
+            // index 0 is for cutoff decimal index
+            if (resultArray[1] > resultArray[2]) {
+                return true;
+            } else if (resultArray[1] < resultArray[2]) {
+                return false;
+            } else {
+                return false;
+            }
+        } else {
+            // All positive values
+            if (resultArray[1] < resultArray[2]) {
+                return true;
+            } else if (resultArray[1] > resultArray[2]) {
+                return false;
+            } else {
+                return false;
+            }
+        }
+
+    }
     
     
     @Override

@@ -28,17 +28,19 @@ package com.github.daytron.daytronmoney.utility;
  * @author Ryan Gilera
  */
 public class StringUtil {
-    private StringUtil(){
+
+    private StringUtil() {
     }
-    
+
     /**
      * Reformats the text by removing any characters prior to value (including
      * the sign).
+     *
      * @param valueString
-     * @return 
+     * @return
      */
     public static String removeSymbol(String valueString) {
-        
+
         // Removes any symbol/characters with a space afterwards
         String[] removedSymbol = valueString.split("\\s");
         if (removedSymbol.length > 1) {
@@ -56,53 +58,54 @@ public class StringUtil {
 
             if (!beginAppend) {
                 if (character == '+' || character == '-'
-                    || (Character.toString(character)).matches("[0-9]")) {
-                        beginAppend = true;
-                        // Include this character
-                        filteredString.append(character); 
+                        || (Character.toString(character)).matches("[0-9]")) {
+                    beginAppend = true;
+                    // Include this character
+                    filteredString.append(character);
                 }
             } else {
-                filteredString.append(character);   
+                filteredString.append(character);
             }
         }
-        
+
         return filteredString.toString();
     }
-    
+
     /**
      * Reformats the text by removing all commas.
+     *
      * @param valueString A <code>String</code> input.
      * @return The newly formatted <code>String</code> value.
      */
-    public static String removeCommas(String valueString){
+    public static String removeCommas(String valueString) {
         if (valueString.contains(",")) {
             valueString = valueString.replace(",", "");
         }
-        
+
         return valueString;
     }
-    
-    public static long [] analyzeDecimalValue(String valueString) {
+
+    public static long[] analyzeDecimalValue(String valueString) {
         final long[] result = new long[2];
-        
+
         result[0] = countLeadingZeros(valueString);
-        
+
         if (result[0] > 0) {
-            valueString = valueString.substring((int)result[0]);
+            valueString = valueString.substring((int) result[0]);
             valueString = normalizeTrailingZeros(valueString);
             result[1] = Long.valueOf(valueString);
         } else {
             valueString = normalizeTrailingZeros(valueString);
-            if (valueString.length() == 1 && 
-                    valueString.charAt(0) != '0') {
+            if (valueString.length() == 1
+                    && valueString.charAt(0) != '0') {
                 valueString += "0";
             }
             result[1] = Long.valueOf(valueString);
         }
-        
+
         return result;
     }
-    
+
     private static String normalizeTrailingZeros(String valueString) {
         // default trim limit index 
         int indexOfCharacterTrimLimit = 0;
@@ -111,33 +114,70 @@ public class StringUtil {
             if (character != '0') {
                 indexOfCharacterTrimLimit = i + 1;
                 break;
-            } 
+            }
         }
-        
+
         valueString = valueString.substring(0, indexOfCharacterTrimLimit);
-        
+
         if (valueString.isEmpty()) {
             valueString = "0";
-        } 
-        
+        }
+
         return valueString;
-        
+
     }
-    
-    private static long countLeadingZeros(String valueString) {
+
+    public static long countLeadingZeros(String valueString) {
         long count = 0;
-        
+
         for (int i = 0; i < valueString.length(); i++) {
             char character = valueString.charAt(i);
             if (character == '0') {
                 count += 1;
+                
+                // if it is all zeros until the last digit
+                // then there's no leading zeroes
+                if (i == (valueString.length() - 1)) {
+                    count = 0;
+                }
             } else {
                 break;
             }
         }
-        
+
         return count;
     }
+
+    public static String removeAnyLeadingZeroes(String valueString) {
+        String strHelper = "";
+        boolean thereIsStillLeadingZeroes = true;
+
+        if (countLeadingZeros(valueString) > 0) {
+            for (int i = 0; i < valueString.length(); i++) {
+                char character = valueString.charAt(i);
+                if (character == '0' && thereIsStillLeadingZeroes) {
+                    continue;
+                } else {
+                    thereIsStillLeadingZeroes = false;
+                }
+                
+                strHelper += Character.toString(character);
+            }
+            
+            valueString = strHelper;
+        }
+
+        return valueString;
+    }
     
-    
+    public static String combineValueIntoString(long whole, long decimal, long leadingZeroes) {
+        String thisValueStr = Long.toString(whole);
+        for (int j = 0; j < leadingZeroes; j++) {
+            thisValueStr += "0";
+        }
+        thisValueStr += Long.toString(decimal);
+        
+        return thisValueStr;
+    }
+
 }
