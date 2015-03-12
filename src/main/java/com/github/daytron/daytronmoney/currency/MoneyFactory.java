@@ -24,11 +24,8 @@
 package com.github.daytron.daytronmoney.currency;
 
 import com.github.daytron.daytronmoney.utility.StringUtil;
-import java.util.Arrays;
 import java.util.Currency;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -36,45 +33,31 @@ import java.util.regex.Pattern;
  */
 public class MoneyFactory {
 
-    private static final String DEFAULT_CURRENCY_SYMBOL
-            = Currency.getInstance(Locale.getDefault()).getSymbol(Locale.getDefault());
-    private final String currencySymbol;
+    private static final String DEFAULT_CURRENCY_CODE
+            = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
+    private final String currencyCode;
 
     public MoneyFactory() {
-        this.currencySymbol = DEFAULT_CURRENCY_SYMBOL;
+        this.currencyCode = DEFAULT_CURRENCY_CODE;
     }
 
     public MoneyFactory(String currencySymbol) {
         currencySymbol = currencySymbol.trim();
-        Pattern p = Pattern.compile("\\d");
-        Matcher m = p.matcher(currencySymbol);
-
-        if (currencySymbol == null) {
-            throw new IllegalArgumentException("Error! Symbol argument is null.");
-        } else if (currencySymbol.isEmpty()) {
-            throw new IllegalArgumentException("Error! Symbol argument is empty.");
-        } else if (m.find()) {
-            throw new IllegalArgumentException("Error! Symbol argument contains number.");
-        }
-
-        this.currencySymbol = currencySymbol;
+        this.currencyCode = (Currency.getInstance(
+                currencySymbol.toUpperCase())).getCurrencyCode();
     }
 
     public MoneyFactory(Locale locale) {
-        this.currencySymbol = Currency.getInstance(locale).getSymbol(locale);
-    }
-
-    public MoneyFactory(Currency currency) {
-        this.currencySymbol = currency.getSymbol();
+        this.currencyCode = Currency.getInstance(locale).getCurrencyCode();
     }
 
     public Money valueOf() {
-        return new Money(currencySymbol, SignValue.Positive, 0, 0, 0);
+        return new Money(currencyCode, SignValue.Positive, 0, 0, 0);
     }
 
     public Money valueOf(long wholeUnit, long decimalUnit, 
             long leadingDecimalZeros) {
-        return new Money(this.currencySymbol, SignValue.Positive, 
+        return new Money(this.currencyCode, SignValue.Positive, 
                 wholeUnit, decimalUnit, leadingDecimalZeros);
     }
 
@@ -84,6 +67,17 @@ public class MoneyFactory {
             return null;
         }
 
+        String[] resultParsedValue = StringUtil.parseAndRemoveCurrencyCode(valueString);
+        valueString = resultParsedValue[1];
+        
+        String newCurrencyCode;
+        if (resultParsedValue[0].isEmpty()) {
+            newCurrencyCode = this.currencyCode;
+        } else {
+            newCurrencyCode = (Currency.getInstance(
+                    resultParsedValue[0])).getCurrencyCode();
+        }
+        
         long[] parsedData = parseValue(valueString);
         SignValue sign;
         long wholeUnit, decimalUnit, leadingDecimalZeros;
@@ -99,7 +93,7 @@ public class MoneyFactory {
         decimalUnit = parsedData[2];
         leadingDecimalZeros = parsedData[3];
 
-        return new Money(this.currencySymbol, sign, wholeUnit, decimalUnit, 
+        return new Money(newCurrencyCode, sign, wholeUnit, decimalUnit, 
         leadingDecimalZeros);
     }
 
@@ -113,7 +107,8 @@ public class MoneyFactory {
         // Allows to accept number string with commas
         valueString = StringUtil.removeCommas(valueString);
         
-        valueString = StringUtil.removeSymbol(valueString);
+        
+                
 
         /*
          Regex conditions:

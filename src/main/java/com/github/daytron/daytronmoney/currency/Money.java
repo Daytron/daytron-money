@@ -36,20 +36,22 @@ import java.util.Locale;
  * @author Ryan Gilera
  */
 public final class Money {
-    private static final String DEFAULT_CURRENCY_SYMBOL
-            = Currency.getInstance(Locale.getDefault()).getSymbol(Locale.getDefault());
+    private static final String DEFAULT_CURRENCY_CODE
+            = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
     private static final String ZERO_STRING = "0";
     private static final String DECIMAL_POINT = ".";
     
-    private final String currencySymbol;
+    private final String currencyCode;
     private final long wholeUnit;
     private final long decimalUnit;
     private final long leadingDecimalZeros;
     private final SignValue sign;
     
-    public Money(String symbol, SignValue sign, long wholeUnit, 
+    public Money(String currencyCode, SignValue sign, long wholeUnit, 
             long decimalUnit, long leadingDecimalZeros) {
         
+        this.currencyCode = Currency.getInstance(
+                currencyCode.toUpperCase()).getCurrencyCode();
         
         // Does not allow values greater than Long type can handle
         if (Long.toString(wholeUnit).length()
@@ -69,16 +71,15 @@ public final class Money {
             this.sign = sign;
         }
         
-        
-        this.currencySymbol = symbol;
         this.wholeUnit = wholeUnit;
         this.decimalUnit = decimalUnit;
         this.leadingDecimalZeros = leadingDecimalZeros;
     }
 
     public Money() {
-        this(DEFAULT_CURRENCY_SYMBOL, SignValue.Positive, 0, 0, 0);
+        this(DEFAULT_CURRENCY_CODE, SignValue.Positive, 0, 0, 0);
     }
+    
 
     public SignValue getSign() {
         return sign;
@@ -96,37 +97,38 @@ public final class Money {
         return leadingDecimalZeros;
     }
     
-
-    public String getCurrencySymbol() {
-        return currencySymbol;
+    
+    public String getCurrencyCode() {
+        return currencyCode;
     }
     
     public Money getReverseSignMoney() {
-        return new Money(currencySymbol, sign.oppositeOf(), 
+        return new Money(currencyCode, sign.oppositeOf(), 
                 wholeUnit, decimalUnit, leadingDecimalZeros);
     }
     
     /**
-     * TODO
+     * 
      * @param money
      * @return 
      */
     public Money plus(Money money) {
+        if (hasInvalidInput(money)) return null;
+        
         MoneyOperation additionOperation = new Addition(this, money);
         return additionOperation.execute();
     }
     
     public Money minus(Money money) {
+        if (hasInvalidInput(money)) return null;
+        
         MoneyOperation subtractionOperation = new Subtraction(this, money);
         return subtractionOperation.execute();
     }
     
     
     public boolean isLessThan(Money money) {
-        if (money == null) {
-            return false;
-            
-        }
+        if (hasInvalidInput(money)) return false;
         
         long[] resultArray = ConversionTypeUtil
                     .concatWholeAndDecThenConvertToLong(this, money);
@@ -161,6 +163,20 @@ public final class Money {
         }
 
     }
+    /**
+     * Checks where the input is null and has the same currency with this object.
+     * @param money
+     * @return 
+     */
+    private boolean hasInvalidInput(Money money) {
+        if (money == null) return true;
+        return !isTheSameCurrencyWith(money);
+    }
+    
+    public boolean isTheSameCurrencyWith(Money money) {
+        if (money == null) return false;
+        return getCurrencyCode().equalsIgnoreCase(money.getCurrencyCode());
+    }
     
     
     @Override
@@ -191,7 +207,7 @@ public final class Money {
             penceStr += ZERO_STRING;
         }
         
-        return getCurrencySymbol() + " " + signText + poundsStr 
+        return getCurrencyCode()+ " " + signText + poundsStr 
                 + DECIMAL_POINT + penceStr;
     }
     

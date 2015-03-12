@@ -39,36 +39,45 @@ public class StringUtil {
      * @param valueString
      * @return
      */
-    public static String removeSymbol(String valueString) {
-
+    public static String[] parseAndRemoveCurrencyCode(String valueString) {
+        String[] result = new String[2];
+        valueString = valueString.trim();
+        
         // Removes any symbol/characters with a space afterwards
         String[] removedSymbol = valueString.split("\\s");
         if (removedSymbol.length > 1) {
-            valueString = removedSymbol[1];
+            result[0] = removedSymbol[0].toUpperCase();
+            result[1] = removedSymbol[1];
         } else {
-            valueString = removedSymbol[0];
-        }
+            // Removes any characters(ex. symbol or currency name) 
+            // prior to sign or number
+            StringBuilder filteredValue = new StringBuilder();
+            StringBuilder filteredCode = new StringBuilder();
+            boolean beginAppendValue = false;
+            for (int i = 0; i < valueString.length(); i++) {
+                char character = valueString.charAt(i);
 
-        // Removes any characters(ex. symbol or currency name) 
-        // prior to sign or number
-        StringBuilder filteredString = new StringBuilder();
-        boolean beginAppend = false;
-        for (int i = 0; i < valueString.length(); i++) {
-            char character = valueString.charAt(i);
-
-            if (!beginAppend) {
-                if (character == '+' || character == '-'
-                        || (Character.toString(character)).matches("[0-9]")) {
-                    beginAppend = true;
-                    // Include this character
-                    filteredString.append(character);
+                if (!beginAppendValue) {
+                    if (character == '+' || character == '-'
+                            || (Character.toString(character)).matches("[0-9]")) {
+                        beginAppendValue = true;
+                        // Include this character
+                        filteredValue.append(character);
+                    } else {
+                        filteredCode.append(character);
+                    }
+                } else {
+                    filteredValue.append(character);
                 }
-            } else {
-                filteredString.append(character);
             }
+            // Optional code parsed data
+            // Possible empty string if no code detected in the input
+            result[0] = filteredCode.toString().toUpperCase();
+            
+            result[1] = filteredValue.toString();
         }
-
-        return filteredString.toString();
+        
+        return result;
     }
 
     /**

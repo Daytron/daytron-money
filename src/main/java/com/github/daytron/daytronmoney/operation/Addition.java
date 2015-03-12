@@ -147,7 +147,7 @@ public class Addition extends MoneyOperation {
 
 
         sumMoney = new Money(
-                getThisMoney().getCurrencySymbol(),newSign, 
+                getThisMoney().getCurrencyCode(),newSign, 
                 newWholeUnit, newDecimalUnit, newLeadingZeroes);
         
         return sumMoney;
