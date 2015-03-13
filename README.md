@@ -28,7 +28,7 @@ Users are reminded that this software, like all other open source software, is p
 
 ### Roadmap for Version 1.00
 - Add more collection methods
-- Conversion using using open exchange rate api
+- Conversion using open exchange rate api
 - Automatic conversion on runtime when performing monetary operations
 - Implement multiplication and division
 - Create unit and integration tests
