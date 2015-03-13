@@ -23,10 +23,19 @@ Users are reminded that this software, like all other open source software, is p
 - Precise monetary calculations up to 2e63-1 for each whole units and decimals values. (9,223,372,036,854,775,807.9223372036854775807)
 - Can parse String value into Money object with automatic currency code detection
 - Allows signed values
+- Works with currency codes (ISO 4217)
+- Custom data structure for storing money
 
-TODO
+Roadmap for Version 1.00
+- Add more collection methods
 - Conversion using using open exchange rate api
 - Automatic conversion on runtime when performing monetary operations
+- Implement multiplication and division
+- Create unit and integration tests
+- Javadoc
+- Upload version 1 artifact to Maven central
+- Continuous integration with TravisCI
+- Test Coverage with Coveralls either Jacoco or Cobertura
 
 
 ### <a name='installation'></a>Installation 
