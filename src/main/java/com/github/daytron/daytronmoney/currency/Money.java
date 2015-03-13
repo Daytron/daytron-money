@@ -23,6 +23,7 @@
  */
 package com.github.daytron.daytronmoney.currency;
 
+import com.github.daytron.daytronmoney.exception.CurrencyDidNotMatchException;
 import com.github.daytron.daytronmoney.operation.MoneyOperation;
 import com.github.daytron.daytronmoney.operation.Addition;
 import com.github.daytron.daytronmoney.operation.Subtraction;
@@ -54,12 +55,12 @@ public final class Money {
                 currencyCode.toUpperCase()).getCurrencyCode();
         
         // Does not allow values greater than Long type can handle
-        if (Long.toString(wholeUnit).length()
-                == Long.toString(Long.MAX_VALUE).length() || 
-            (Long.toString(decimalUnit).length() + leadingDecimalZeros)
-                >= Long.toString(Long.MAX_VALUE).length()) {
-            throw new IllegalArgumentException("Error! Value reached maximum limit");
-        }
+//        if (Long.toString(wholeUnit).length()
+//                == Long.toString(Long.MAX_VALUE).length() || 
+//            (Long.toString(decimalUnit).length() + leadingDecimalZeros)
+//                >= Long.toString(Long.MAX_VALUE).length()) {
+//            throw new IllegalArgumentException("Error! Value reached maximum limit");
+//        }
         
         // Prevent negative zero money
         // For simplicity zero is considered positive
@@ -113,22 +114,37 @@ public final class Money {
      * @return 
      */
     public Money plus(Money money) {
-        if (hasInvalidInput(money)) return null;
+        verifyInput(money);
         
         MoneyOperation additionOperation = new Addition(this, money);
         return additionOperation.execute();
     }
     
     public Money minus(Money money) {
-        if (hasInvalidInput(money)) return null;
+        verifyInput(money);
         
         MoneyOperation subtractionOperation = new Subtraction(this, money);
         return subtractionOperation.execute();
     }
     
+    public boolean isPositive() {
+        return getSign() == SignValue.Positive && isNotZero();
+    }
+    
+    public boolean isNegative() {
+        return getSign() == SignValue.Negative;
+    }
+    
+    public boolean isZero() {
+        return getWholeUnit() == 0 && getDecimalUnit() == 0;
+    }
+    
+    public boolean isNotZero() {
+        return !isZero();
+    }
     
     public boolean isLessThan(Money money) {
-        if (hasInvalidInput(money)) return false;
+        verifyInput(money);
         
         long[] resultArray = ConversionTypeUtil
                     .concatWholeAndDecThenConvertToLong(this, money);
@@ -168,14 +184,20 @@ public final class Money {
      * @param money
      * @return 
      */
-    private boolean hasInvalidInput(Money money) {
-        if (money == null) return true;
-        return !isTheSameCurrencyWith(money);
+    private void verifyInput(Money money) {
+        if (money == null)  {
+            throw new NullPointerException("Cannot accept null input.");
+        }
+        
+        if (!isSameCurrencyCodes(money)) {
+            throw new CurrencyDidNotMatchException("Currency codes are not a matched!");
+        }
     }
     
-    public boolean isTheSameCurrencyWith(Money money) {
+    public boolean isSameCurrencyCodes(Money money) {
         if (money == null) return false;
         return getCurrencyCode().equalsIgnoreCase(money.getCurrencyCode());
+        
     }
     
     
