@@ -35,21 +35,33 @@ public class MoneyFactory {
 
     private static final String DEFAULT_CURRENCY_CODE
             = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
-    private final String currencyCode;
+    private String currencyCode;
 
     public MoneyFactory() {
         this.currencyCode = DEFAULT_CURRENCY_CODE;
     }
 
-    public MoneyFactory(String currencySymbol) {
-        currencySymbol = currencySymbol.trim();
+    public MoneyFactory(String currencyCode) {
+        currencyCode = currencyCode.trim();
         this.currencyCode = (Currency.getInstance(
-                currencySymbol.toUpperCase())).getCurrencyCode();
+                currencyCode.toUpperCase())).getCurrencyCode();
     }
 
     public MoneyFactory(Locale locale) {
         this.currencyCode = Currency.getInstance(locale).getCurrencyCode();
     }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        currencyCode = currencyCode.trim();
+        this.currencyCode = (Currency.getInstance(
+                currencyCode.toUpperCase())).getCurrencyCode();
+    }
+    
+    
 
     public Money valueOf() {
         return new Money(currencyCode, SignValue.Positive, 0, 0, 0);
@@ -63,8 +75,12 @@ public class MoneyFactory {
 
     public Money valueOf(String valueString) {
         valueString = valueString.trim();
-        if (valueString == null || valueString.isEmpty()) {
-            return null;
+        if (valueString == null) {
+            throw new NullPointerException("Null argument passed.");
+        }
+        
+        if (valueString.isEmpty()) {
+            return new Money(currencyCode, SignValue.Positive, 0, 0, 0);
         }
 
         String[] resultParsedValue = StringUtil.parseAndRemoveCurrencyCode(valueString);
