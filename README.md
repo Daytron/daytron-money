@@ -26,7 +26,7 @@ Users are reminded that this software, like all other open source software, is p
 - Works with currency codes (ISO 4217)
 - Custom data structure for storing money
 
-Roadmap for Version 1.00
+### Roadmap for Version 1.00
 - Add more collection methods
 - Conversion using using open exchange rate api
 - Automatic conversion on runtime when performing monetary operations
