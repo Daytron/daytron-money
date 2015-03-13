@@ -110,7 +110,11 @@ public class MoneyMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
 
     @Override
     public void addEachWith(Money money) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (K k : keySet()){
+            Money oldMoney = get(k);
+            Money newMoney = oldMoney.plus(money);
+            put(k, newMoney);
+        }
     }
 
 
