@@ -195,17 +195,6 @@ public class MoneyFactory {
 
             return parsedData;
 
-        } else if (valueString.matches("^[-+]?\\d{1,}\\.?\\d*$")) {
-            /*
-             Throws an illegal argument exception if the whole numbers exceeds
-             999 Billion (999,999,999,999.00).
-             Long data type can hold upto 9,223,372,036,854,775,807 (19 digits).
-             Limits input up to 12 whole numbers (999 Billion max), excluding 
-             decimal digits if given.
-             */
-            throw new IllegalArgumentException("Invalid input. "
-                    + "Value is too big! Can only accept up to "
-                    + "999,999,999,999.99");
         } else if ((valueString.indexOf('.', valueString.indexOf('.') + 1) != -1)) {
             /*
              Throws an illegal argument exeption if multiple occurences of dot 
