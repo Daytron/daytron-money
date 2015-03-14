@@ -27,6 +27,7 @@ import com.github.daytron.daytronmoney.currency.Money;
 import com.github.daytron.daytronmoney.currency.SignValue;
 import com.github.daytron.daytronmoney.utility.ConversionTypeUtil;
 import com.github.daytron.daytronmoney.utility.StringUtil;
+import java.math.BigInteger;
 
 /**
  *
@@ -55,19 +56,18 @@ public class Addition extends MoneyOperation {
         SignValue thatSign = getThatMoney().getSign();
         
         
-        final long[] resultArray = ConversionTypeUtil
+        final BigInteger[] resultArray = ConversionTypeUtil
                     .concatWholeAndDecThenConvertToLong(getThisMoney(), getThatMoney());
-        final long cutOffDecimalPlace = resultArray[0];
-        final long concatThisMoney = resultArray[1];
-        final long concatThatMoney = resultArray[2];
+        final BigInteger cutOffDecimalPlace = resultArray[0];
+        final BigInteger concatThisMoney = resultArray[1];
+        final BigInteger concatThatMoney = resultArray[2];
 
-        long sumOfConcats;
+        BigInteger sumBigContainer;
         
         if ((thisSign == SignValue.Positive && thatSign == SignValue.Positive)
                 || (thisSign == SignValue.Negative && thatSign == SignValue.Negative)) {
 
-            
-            sumOfConcats = concatThisMoney + concatThatMoney;
+            sumBigContainer = concatThisMoney.add(concatThatMoney);
             
             // Determine sign
             if (thisSign == SignValue.Positive) {
@@ -78,16 +78,16 @@ public class Addition extends MoneyOperation {
 
         } else {
 
-            long greaterConcatMoney, lesserConcatMoney;
+            BigInteger greaterConcatMoney, lesserConcatMoney;
             // Determine sign
             // Determine the larger amount and assign them respectively.
-            if (concatThisMoney < concatThatMoney) {
+            if (concatThisMoney.compareTo(concatThatMoney) < 0) {
                 // Choose the sign of the greater money
                 newSign = thatSign;
 
                 greaterConcatMoney = concatThatMoney;
                 lesserConcatMoney = concatThisMoney;
-            } else if (concatThisMoney > concatThatMoney) {
+            } else if (concatThisMoney.compareTo(concatThatMoney) > 0) {
                 // Choose the sign of the greater money
                 newSign = thisSign;
                 
@@ -104,22 +104,23 @@ public class Addition extends MoneyOperation {
                 lesserConcatMoney = concatThatMoney;
             }
 
-            System.out.println("");
-            System.out.println("GreaterVal: " + greaterConcatMoney);
-            System.out.println("LesserVal: " + lesserConcatMoney);
+//            System.out.println("");
+//            System.out.println("GreaterVal: " + greaterConcatMoney);
+//            System.out.println("LesserVal: " + lesserConcatMoney);
             
-            sumOfConcats = greaterConcatMoney - lesserConcatMoney;
+            sumBigContainer = greaterConcatMoney.subtract(lesserConcatMoney);
 
         }
         
-        System.out.println("sum concats: " + sumOfConcats);
+//        System.out.println("sum concats: " + sumBigContainer);
         // Return to String and separate whole from decimal values
-        String sumValueStr = Long.toString(sumOfConcats);
-        long lastIndexOfWhole = ((sumValueStr.length()-1) - cutOffDecimalPlace);
-        System.out.println("");
-        System.out.println("sumValueStr.length()-1: " + (sumValueStr.length()-1));
-        System.out.println("cutOffDecimalPlace: " + cutOffDecimalPlace);
-        System.out.println("lastIndexOfWhole: " + lastIndexOfWhole);
+        String sumValueStr = sumBigContainer.toString();
+        long lastIndexOfWhole = ((sumValueStr.length()-1) - 
+                cutOffDecimalPlace.intValue());
+//        System.out.println("");
+//        System.out.println("sumValueStr.length()-1: " + (sumValueStr.length()-1));
+//        System.out.println("cutOffDecimalPlace: " + cutOffDecimalPlace);
+//        System.out.println("lastIndexOfWhole: " + lastIndexOfWhole);
         String newWholeStr ="", newDecimalStr="";
         for (int i = 0; i < sumValueStr.length(); i++) {
             char character = sumValueStr.charAt(i);
@@ -131,15 +132,15 @@ public class Addition extends MoneyOperation {
             }
         }
         
-        System.out.println("");
-        System.out.println("Whole: " + newWholeStr);
+//        System.out.println("");
+//        System.out.println("Whole: " + newWholeStr);
 
         // Then determine the number of leading zeroes for newDecimalStr
         newLeadingZeroes = StringUtil.countLeadingZeros(newDecimalStr);
-        System.out.println("lead zeros; " + newLeadingZeroes);
+        //System.out.println("lead zeros; " + newLeadingZeroes);
         // Remove any leading zeroes
         newDecimalStr = StringUtil.removeAnyLeadingZeroes(newDecimalStr);
-        System.out.println("new decimal str: " + newDecimalStr);
+//        System.out.println("new decimal str: " + newDecimalStr);
 
         // Get the long value
         newWholeUnit = Long.valueOf(newWholeStr);

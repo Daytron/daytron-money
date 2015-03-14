@@ -24,6 +24,7 @@
 package com.github.daytron.daytronmoney.utility;
 
 import com.github.daytron.daytronmoney.currency.Money;
+import java.math.BigInteger;
 
 /**
  *
@@ -33,9 +34,9 @@ public class ConversionTypeUtil {
     private ConversionTypeUtil(){
     }
     
-    public static long [] concatWholeAndDecThenConvertToLong(Money thisMoney, 
-            Money thatMoney) {
-        long[] resultArray = new long[3];
+    public static BigInteger [] concatWholeAndDecThenConvertToLong(
+            Money thisMoney, Money thatMoney) {
+        BigInteger[] resultArray = new BigInteger[3];
         
         long thisWholeUnit = thisMoney.getWholeUnit();
         long thisDecimalUnit = thisMoney.getDecimalUnit();
@@ -44,8 +45,8 @@ public class ConversionTypeUtil {
         long thatDecimalUnit = thatMoney.getDecimalUnit();
         long thatLeadingZeroes = thatMoney.getLeadingDecimalZeros();
         
-        System.out.println("this decimal unit: " + thisDecimalUnit);
-            System.out.println("this leading unit: " + thisLeadingZeroes);
+//        System.out.println("this decimal unit: " + thisDecimalUnit);
+//            System.out.println("this leading unit: " + thisLeadingZeroes);
         
         int lengthThisDecimal = (Long.toString(thisDecimalUnit)).length();
         lengthThisDecimal += thisLeadingZeroes;
@@ -53,13 +54,13 @@ public class ConversionTypeUtil {
         int lengthThatDecimal = (Long.toString(thatDecimalUnit)).length();
         lengthThatDecimal += thatLeadingZeroes;
 
-        System.out.println("lengthThis: " + lengthThisDecimal);
-            System.out.println("");
-            
-            System.out.println("that decimal unit: " + thatDecimalUnit);
-            System.out.println("that leading unit: " + thatLeadingZeroes);
-             System.out.println("lengthThat: " + lengthThatDecimal);
-            System.out.println("");
+//        System.out.println("lengthThis: " + lengthThisDecimal);
+//            System.out.println("");
+//            
+//            System.out.println("that decimal unit: " + thatDecimalUnit);
+//            System.out.println("that leading unit: " + thatLeadingZeroes);
+//             System.out.println("lengthThat: " + lengthThatDecimal);
+//            System.out.println("");
 
         String thisStrValue = StringUtil.combineValueIntoString(thisWholeUnit, 
                 thisDecimalUnit, thisLeadingZeroes);
@@ -87,15 +88,15 @@ public class ConversionTypeUtil {
             cutOffDecimalPlace = lengthThatDecimal;
         }
         
-        resultArray[0] = cutOffDecimalPlace;
+        resultArray[0] = BigInteger.valueOf(cutOffDecimalPlace);
         
-        System.out.println("thisStrValeu: " + thisStrValue);
-            System.out.println("thatStrValeu: " + thatStrValue);
-            System.out.println("");
+//        System.out.println("thisStrValeu: " + thisStrValue);
+//            System.out.println("thatStrValeu: " + thatStrValue);
+//            System.out.println("");
 
         // Get The long value
-        resultArray[1] = Long.valueOf(thisStrValue);
-        resultArray[2] = Long.valueOf(thatStrValue);
+        resultArray[1] = new BigInteger(thisStrValue);
+        resultArray[2] = new BigInteger(thatStrValue);
         
         return resultArray;
     }

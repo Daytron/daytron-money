@@ -28,6 +28,7 @@ import com.github.daytron.daytronmoney.operation.MoneyOperation;
 import com.github.daytron.daytronmoney.operation.Addition;
 import com.github.daytron.daytronmoney.operation.Subtraction;
 import com.github.daytron.daytronmoney.utility.ConversionTypeUtil;
+import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
@@ -146,7 +147,7 @@ public final class Money {
     public boolean isLessThan(Money money) {
         verifyInput(money);
         
-        long[] resultArray = ConversionTypeUtil
+        BigInteger[] resultArray = ConversionTypeUtil
                     .concatWholeAndDecThenConvertToLong(this, money);
         
         if (getSign() == SignValue.Negative && 
@@ -160,18 +161,18 @@ public final class Money {
             
             // index 1 is ThisMoney and 2 is opposite
             // index 0 is for cutoff decimal index
-            if (resultArray[1] > resultArray[2]) {
+            if (resultArray[1].compareTo(resultArray[2]) > 0) {
                 return true;
-            } else if (resultArray[1] < resultArray[2]) {
+            } else if (resultArray[1].compareTo(resultArray[2]) < 0) {
                 return false;
             } else {
                 return false;
             }
         } else {
             // All positive values
-            if (resultArray[1] < resultArray[2]) {
+            if (resultArray[1].compareTo(resultArray[2]) < 0) {
                 return true;
-            } else if (resultArray[1] > resultArray[2]) {
+            } else if (resultArray[1].compareTo(resultArray[2]) > 0) {
                 return false;
             } else {
                 return false;
