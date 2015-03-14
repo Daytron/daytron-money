@@ -11,4 +11,27 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <netbeans.hint.license>mit</netbeans.hint.license>
     </properties>
+    
+    <build>
+  
+        <plugins>
+            <plugin>
+                <!-- Build an executable JAR -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+
+  
+       
+    </build>
 </project>
