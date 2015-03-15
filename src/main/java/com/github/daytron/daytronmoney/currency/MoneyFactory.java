@@ -135,7 +135,7 @@ public class MoneyFactory {
          \d* = 0 or more digits (the decimal part);
          $   = End of the line.
          */
-        if (valueString.matches("^[-+]?\\d{1,12}\\.?\\d*$")) {
+        if (valueString.matches("^[-+]?\\d{1,19}\\.?\\d{1,19}$")) {
 
             /*
              This is more forgiving with ending dot input.
