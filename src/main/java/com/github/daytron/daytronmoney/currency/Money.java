@@ -32,6 +32,7 @@ import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  *
@@ -52,17 +53,17 @@ public final class Money {
     public Money(String currencyCode, SignValue sign, long wholeUnit, 
             long decimalUnit, long leadingDecimalZeros) {
         
+        // Check if leadingZeroInput is negative, then throw exception
+        if (leadingDecimalZeros < 0 ) {
+            throw new IllegalArgumentException("Negative leading zero input.");
+        }
+        
+        
         this.currencyCode = Currency.getInstance(
                 currencyCode.toUpperCase()).getCurrencyCode();
         
-        // Does not allow values greater than Long type can handle
-//        if (Long.toString(wholeUnit).length()
-//                == Long.toString(Long.MAX_VALUE).length() || 
-//            (Long.toString(decimalUnit).length() + leadingDecimalZeros)
-//                >= Long.toString(Long.MAX_VALUE).length()) {
-//            throw new IllegalArgumentException("Error! Value reached maximum limit");
-//        }
         
+
         // Prevent negative zero money
         // For simplicity zero is considered positive
         // but when represented in String format,
@@ -70,12 +71,69 @@ public final class Money {
         if (wholeUnit == 0 && decimalUnit == 0) {
             this.sign = SignValue.Positive;
         } else {
-            this.sign = sign;
+            // Check also if user's long type input is negative
+            // ex new Money("USD",SignValue.Positive, -12,7,1);
+            // this should change the sign to negative, regardless of sign input
+            if (wholeUnit < 0 || decimalUnit < 0) {
+                this.sign = SignValue.Negative;
+            } else {
+                this.sign = sign;
+            }
+            
         }
         
-        this.wholeUnit = wholeUnit;
-        this.decimalUnit = decimalUnit;
-        this.leadingDecimalZeros = leadingDecimalZeros;
+        // If decimal input single digit, non-zero and no leading zero
+        // Add a leading zero
+        // Single digit decimal means it has a 1 leading zero
+        // ex. 1 means 0.01 not 0.10
+        if (Long.toString(decimalUnit).length() == 1 && decimalUnit != 0 && 
+                leadingDecimalZeros == 0) {
+            this.leadingDecimalZeros = 1;
+        } else {
+            // Also check if decimal is zero but leadingzero > 0 
+            // then normalize it. ex. 23.000000 to 23.00
+            if (decimalUnit == 0) {
+                this.leadingDecimalZeros = 0;
+            } else {
+                this.leadingDecimalZeros = leadingDecimalZeros;
+            }
+        }
+        
+        // Check also if user's long type input is negative
+        // ex new Money("USD",SignValue.Positive, -12,7,1);
+        // after the sign is change (see above code), remove negative
+        if (wholeUnit < 0 || decimalUnit < 0) {
+            this.wholeUnit = Math.abs(wholeUnit);
+            this.decimalUnit = Math.abs(decimalUnit);
+        } else {
+            this.wholeUnit = wholeUnit;
+            this.decimalUnit = decimalUnit;
+        }
+        
+        
+        
+        
+    }
+    
+    public Money(SignValue sign, long wholeUnit, 
+            long decimalUnit, long leadingDecimalZeros) {
+        this(DEFAULT_CURRENCY_CODE, sign, wholeUnit, decimalUnit, 
+                leadingDecimalZeros);
+    }
+    
+    public Money(SignValue sign, long wholeUnit, 
+            long decimalUnit) {
+        this(DEFAULT_CURRENCY_CODE, sign, wholeUnit, decimalUnit, 0);
+    }
+    
+    public Money(long wholeUnit, 
+            long decimalUnit) {
+        this(DEFAULT_CURRENCY_CODE, SignValue.Positive, wholeUnit, 
+                decimalUnit, 0);
+    }
+    
+    public Money(long wholeUnit) {
+        this(DEFAULT_CURRENCY_CODE, SignValue.Positive, wholeUnit, 0, 0);
     }
 
     public Money() {
@@ -144,6 +202,32 @@ public final class Money {
         return !isZero();
     }
     
+    @Override
+    public boolean equals(Object money) {
+        if (money == null) return false;
+        if (this == money) return true;
+        if ( !(money instanceof Money) ) return false;
+        
+        Money thatMoney = (Money) money;
+        
+        return getCurrencyCode().equals(thatMoney.getCurrencyCode()) &&
+                getSign() == thatMoney.getSign() &&
+                getWholeUnit() == thatMoney.getWholeUnit() &&
+                getDecimalUnit() == thatMoney.getDecimalUnit() &&
+                getLeadingDecimalZeros() == thatMoney.getLeadingDecimalZeros();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.currencyCode);
+        hash = 41 * hash + (int) (this.wholeUnit ^ (this.wholeUnit >>> 32));
+        hash = 41 * hash + (int) (this.decimalUnit ^ (this.decimalUnit >>> 32));
+        hash = 41 * hash + (int) (this.leadingDecimalZeros ^ (this.leadingDecimalZeros >>> 32));
+        hash = 41 * hash + Objects.hashCode(this.sign);
+        return hash;
+    }
+    
     public boolean isLessThan(Money money) {
         verifyInput(money);
         
@@ -159,8 +243,17 @@ public final class Money {
         } else if (getSign() == SignValue.Negative && 
                 money.getSign() == SignValue.Negative) {
             
+            System.out.println("resultArray1: " + resultArray[1]);
+            System.out.println("resultArray2: " + resultArray[2]);
+            System.out.println("compareTo: " + resultArray[1].compareTo(resultArray[2]));
+            
             // index 1 is ThisMoney and 2 is opposite
             // index 0 is for cutoff decimal index
+            // BigInteger compareTo works ok positive but the sign is negative 
+            // for both monies, which BigInteger is not set for sign
+            // Will just have to do a workaround
+            // So, if this comparison result to 1, reverse the idea that 1 means
+            // this is greater than that, so false
             if (resultArray[1].compareTo(resultArray[2]) > 0) {
                 return true;
             } else if (resultArray[1].compareTo(resultArray[2]) < 0) {
