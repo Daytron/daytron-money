@@ -46,6 +46,15 @@ Under development
 ### <a name='usage'></a>Usage 
 <sup><a href='#home'>[back to top]</a></sup> 
 
+Maven Artifact Snapshot release
+```xml
+<dependency>
+  <groupId>com.github.daytron</groupId>
+  <artifactId>DaytronMoney</artifactId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
+``` 
+
 #####<a name='overview'></a>Overview
 <sup><a href='#home'>[back to top]</a></sup> 
 
