@@ -38,16 +38,7 @@
         <developerConnection>scm:git:git@github.com:daytron/daytron-money.git</developerConnection>
     </scm>
     
-    <distributionManagement>
-         <!--<repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>-->
-       <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+    
     
     <dependencies>
         <dependency>
@@ -59,7 +50,22 @@
     </dependencies>
     
     
-    <build>
+    <profiles>
+      <profile>
+      <id>release</id>
+      
+      <distributionManagement>
+         <!--<repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>-->
+       <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+      </distributionManagement>
+      
+      <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -117,8 +123,25 @@
                 </executions>
             </plugin>
             
-            
-            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.16</version>
+                <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${java.home}/lib/jfxrt.jar</additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+        </plugins>
+      </build>
+      
+      </profile>
+   </profiles>
+    
+    
+    <build>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -139,16 +162,7 @@
                 </executions>
             </plugin>
             
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.16</version>
-                <configuration>
-                    <additionalClasspathElements>
-                        <additionalClasspathElement>${java.home}/lib/jfxrt.jar</additionalClasspathElement>
-                    </additionalClasspathElements>
-                </configuration>
-            </plugin>
+            
         </plugins>
     </build>
 </project>
