@@ -143,8 +143,20 @@ public class Addition extends MoneyOperation {
 //        System.out.println("new decimal str: " + newDecimalStr);
 
         // Get the long value
-        newWholeUnit = Long.valueOf(newWholeStr);
-        newDecimalUnit = Long.valueOf(newDecimalStr);
+        // If string is empty means zero
+        if (newWholeStr.isEmpty()) {
+            newWholeUnit = 0;
+        } else {
+            newWholeUnit = Long.valueOf(newWholeStr);
+        }
+        
+        if (newDecimalStr.isEmpty()) {
+            newDecimalUnit = 0;
+        } else {
+            newDecimalUnit = Long.valueOf(newDecimalStr);
+        }
+        
+        
 
 
         sumMoney = new Money(
