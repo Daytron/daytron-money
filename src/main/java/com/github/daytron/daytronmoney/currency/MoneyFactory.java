@@ -38,7 +38,7 @@ public class MoneyFactory {
     private String currencyCode;
 
     public MoneyFactory() {
-        this.currencyCode = DEFAULT_CURRENCY_CODE;
+        this(DEFAULT_CURRENCY_CODE);
     }
 
     public MoneyFactory(String currencyCode) {
@@ -129,23 +129,15 @@ public class MoneyFactory {
         /*
          Regex conditions:
          ^   = Beginning of the line
-         -?  = Optional negative symbol
-         \d{1,} = 1 or more digits
-         \.? = An optional dot (escaped, because in regex, . is a special character)
-         \d* = 0 or more digits (the decimal part);
+         [+-]?  = Optional Sign 
+         [0-9]{1,19} = 1 or 19 digits including zero
+         \\. = Literal point symbol, 
+             (escaped, because in regex, . is a special character)
+         (\\.[0-9]{1,19})? = An optional decimal value must have at least
+                             one digit after the dot
          $   = End of the line.
          */
-        if (valueString.matches("^[-+]?\\d{1,19}\\.?\\d{1,19}$")) {
-
-            /*
-             This is more forgiving with ending dot input.
-             If the last character given is a dot, it actually accepts it as 
-             "£ [digit/s]"
-             Chops off dot at the end.
-             */
-            if (valueString.charAt(valueString.length() - 1) == '.') {
-                valueString = valueString.substring(0, valueString.length() - 1);
-            }
+        if (valueString.matches("^[-+]?[0-9]{1,19}(\\.[0-9]{1,19})?$")) {
             
             // Determines sign and then removes it
             // 1 for positive and 0 for negative
