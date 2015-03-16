@@ -54,6 +54,24 @@ Maven Artifact Snapshot release
   <version>1.0-SNAPSHOT</version>
 </dependency>
 ``` 
+```xml
+<repositories>
+<repository>
+    <id>maven-central-repo</id>
+    <url>http://repo1.maven.org/maven2</url>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+</repository>
+<repository>
+    <id>sonatype-snapshots-repo</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+</repository>
+</repositories>
+```
 
 #####<a name='overview'></a>Overview
 <sup><a href='#home'>[back to top]</a></sup> 
