@@ -1195,5 +1195,353 @@ public class MoneyTest {
     @Test
     public void testHashCode() {
     }
+
+    /**
+     * Test of compareTo method, of class Money.
+     */
+    @Test
+    public void testCompareTo() {
+        // Case 1: (+)(+) & absolute (money1 < money2)
+        // Given:
+        Money money1 = new Money(SignValue.Positive, 6, 50);
+        Money money2 = new Money(SignValue.Positive, 6, 83);
+
+        int expResult = -1;
+
+        // When:
+        int result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 1:  Where absolute (Money1 < Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 2: (+)(+) & absolute (money1 > money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 2963, 50);
+        money2 = new Money(SignValue.Positive, 183, 299);
+
+        expResult = 1;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 2: Where absolute (Money1 > Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 3: (+)(+) & absolute (money1 = money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 2963, 50);
+        money2 = new Money(SignValue.Positive, 2963, 50);
+
+        expResult = 0;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 3: Where absolute (Money1 = Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 4: (+)(-) & absolute (money1 < money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 6, 50);
+        money2 = new Money(SignValue.Negative, 183, 299);
+
+        expResult = 1;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 4:  Where absolute (Money1 < Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 5: (+)(-) & absolute (money1 > money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 2963, 50);
+        money2 = new Money(SignValue.Negative, 183, 299);
+
+        expResult = 1;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 5: Where absolute (Money1 > Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 6: (+)(-) & absolute (money1 = money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 2963, 50);
+        money2 = new Money(SignValue.Negative, 2963, 50);
+
+        expResult = 1;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 6: Where absolute (Money1 = Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 7: (-)(+) & absolute (money1 < money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 15, 50);
+        money2 = new Money(SignValue.Positive, 15, 299);
+
+        expResult = -1;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 7:  Where absolute (Money1 < Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 8: (-)(+) & absolute (money1 > money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 2963, 50);
+        money2 = new Money(SignValue.Positive, 2963, 5);
+
+        expResult = -1;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 8: Where absolute (Money1 > Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 9: (-)(+) & absolute (money1 = money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 2963, 50);
+        money2 = new Money(SignValue.Positive, 2963, 50);
+
+        expResult = -1;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 9: Where absolute (Money1 = Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 10: (-)(-) & absolute (money1 < money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 15, 50);
+        money2 = new Money(SignValue.Negative, 15, 299);
+
+        expResult = -1;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 10:  Where absolute (Money1 < Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 11: (-)(-) & absolute (money1 > money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 2963, 50);
+        money2 = new Money(SignValue.Negative, 2963, 05);
+
+        expResult = -1;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 11: Where absolute (Money1 > Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 12: (-)(-) & absolute (money1 = money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 2963, 50);
+        money2 = new Money(SignValue.Negative, 2963, 50);
+
+        expResult = 0;
+
+        // When:
+        result = money1.compareTo(money2);
+
+        // Then:
+        assertEquals("Case 12: Where absolute (Money1 = Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+    }
+
+    /**
+     * Test of isGreaterThan method, of class Money.
+     */
+    @Test
+    public void testIsGreaterThan() {
+        // Case 1: (+)(+) & absolute (money1 < money2)
+        // Given:
+        Money money1 = new Money(SignValue.Positive, 6, 50);
+        Money money2 = new Money(SignValue.Positive, 6, 83);
+
+        boolean expResult = false;
+
+        // When:
+        boolean result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 1:  Where absolute (Money1 < Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 2: (+)(+) & absolute (money1 > money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 2963, 50);
+        money2 = new Money(SignValue.Positive, 183, 299);
+
+        expResult = true;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 2: Where absolute (Money1 > Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 3: (+)(+) & absolute (money1 = money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 2963, 50);
+        money2 = new Money(SignValue.Positive, 2963, 50);
+
+        expResult = false;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 3: Where absolute (Money1 = Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 4: (+)(-) & absolute (money1 < money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 6, 50);
+        money2 = new Money(SignValue.Negative, 183, 299);
+
+        expResult = true;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 4:  Where absolute (Money1 < Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 5: (+)(-) & absolute (money1 > money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 2963, 50);
+        money2 = new Money(SignValue.Negative, 183, 299);
+
+        expResult = true;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 5: Where absolute (Money1 > Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 6: (+)(-) & absolute (money1 = money2)
+        // Given:
+        money1 = new Money(SignValue.Positive, 2963, 50);
+        money2 = new Money(SignValue.Negative, 2963, 50);
+
+        expResult = true;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 6: Where absolute (Money1 = Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 7: (-)(+) & absolute (money1 < money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 15, 50);
+        money2 = new Money(SignValue.Positive, 15, 299);
+
+        expResult = false;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 7:  Where absolute (Money1 < Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 8: (-)(+) & absolute (money1 > money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 2963, 50);
+        money2 = new Money(SignValue.Positive, 2963, 5);
+
+        expResult = false;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 8: Where absolute (Money1 > Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 9: (-)(+) & absolute (money1 = money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 2963, 50);
+        money2 = new Money(SignValue.Positive, 2963, 50);
+
+        expResult = false;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 9: Where absolute (Money1 = Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 10: (-)(-) & absolute (money1 < money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 15, 50);
+        money2 = new Money(SignValue.Negative, 15, 299);
+
+        expResult = false;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 10:  Where absolute (Money1 < Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 11: (-)(-) & absolute (money1 > money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 2963, 50);
+        money2 = new Money(SignValue.Negative, 2963, 05);
+
+        expResult = false;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 11: Where absolute (Money1 > Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+
+        // Case 12: (-)(-) & absolute (money1 = money2)
+        // Given:
+        money1 = new Money(SignValue.Negative, 2963, 50);
+        money2 = new Money(SignValue.Negative, 2963, 50);
+
+        expResult = false;
+
+        // When:
+        result = money1.isGreaterThan(money2);
+
+        // Then:
+        assertEquals("Case 12: Where absolute (Money1 = Money2). Should be "
+                + expResult + ", but instead it's " + result, expResult, result);
+    }
     
 }
