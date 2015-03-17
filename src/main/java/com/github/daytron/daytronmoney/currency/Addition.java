@@ -21,10 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.daytron.daytronmoney.operation;
+package com.github.daytron.daytronmoney.currency;
 
-import com.github.daytron.daytronmoney.currency.Money;
-import com.github.daytron.daytronmoney.currency.SignValue;
 import com.github.daytron.daytronmoney.utility.ConversionTypeUtil;
 import com.github.daytron.daytronmoney.utility.StringUtil;
 import java.math.BigInteger;
@@ -33,7 +31,7 @@ import java.math.BigInteger;
  *
  * @author Ryan Gilera
  */
-public class Addition extends MoneyOperation {
+class Addition extends MoneyOperation {
 
     public Addition(Money thisMoney, Money thatMoney) {
         super(thisMoney, thatMoney);

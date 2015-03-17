@@ -21,15 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.daytron.daytronmoney.operation;
-
-import com.github.daytron.daytronmoney.currency.Money;
+package com.github.daytron.daytronmoney.currency;
 
 /**
  *
  * @author Ryan Gilera
  */
-public abstract class MoneyOperation {
+abstract class MoneyOperation {
     private final Money thisMoney;
     private final Money thatMoney;
     
