@@ -60,11 +60,19 @@ public class MoneyFactory {
         this.currencyCode = (Currency.getInstance(
                 currencyCode.toUpperCase())).getCurrencyCode();
     }
-    
-    
 
     public Money valueOf() {
         return new Money(currencyCode, SignValue.Positive, 0, 0, 0);
+    }
+    
+    public Money valueOf(long value) {
+        return new Money(currencyCode, 
+                SignValue.Positive, value, 0, 0);
+    }
+    
+    public Money valueOf(int value) {
+        return new Money(currencyCode, 
+                SignValue.Positive, (long)value, 0, 0);
     }
 
     public Money valueOf(long wholeUnit, long decimalUnit, 
