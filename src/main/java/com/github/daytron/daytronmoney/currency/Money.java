@@ -36,30 +36,28 @@ import java.util.Objects;
  * @author Ryan Gilera
  */
 public final class Money {
+
     private static final String DEFAULT_CURRENCY_CODE
             = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
     private static final String ZERO_STRING = "0";
     private static final String DECIMAL_POINT = ".";
-    
+
     private final String currencyCode;
     private final long wholeUnit;
     private final long decimalUnit;
     private final long leadingDecimalZeros;
     private final SignValue sign;
-    
-    public Money(String currencyCode, SignValue sign, long wholeUnit, 
+
+    public Money(String currencyCode, SignValue sign, long wholeUnit,
             long decimalUnit, long leadingDecimalZeros) {
-        
+
         // Check if leadingZeroInput is negative, then throw exception
-        if (leadingDecimalZeros < 0 ) {
+        if (leadingDecimalZeros < 0) {
             throw new IllegalArgumentException("Negative leading zero input.");
         }
-        
-        
+
         this.currencyCode = Currency.getInstance(
                 currencyCode.toUpperCase()).getCurrencyCode();
-        
-        
 
         // Prevent negative zero money
         // For simplicity zero is considered positive
@@ -76,15 +74,14 @@ public final class Money {
             } else {
                 this.sign = sign;
             }
-            
         }
-        
+
         // If decimal input single digit, non-zero and no leading zero
         // Add a leading zero
         // Single digit decimal means it has a 1 leading zero
         // ex. 1 means 0.01 not 0.10
-        if (Long.toString(decimalUnit).length() == 1 && decimalUnit != 0 && 
-                leadingDecimalZeros == 0) {
+        if (Long.toString(decimalUnit).length() == 1 && decimalUnit != 0
+                && leadingDecimalZeros == 0) {
             this.leadingDecimalZeros = 1;
         } else {
             // Also check if decimal is zero but leadingzero > 0 
@@ -95,7 +92,7 @@ public final class Money {
                 this.leadingDecimalZeros = leadingDecimalZeros;
             }
         }
-        
+
         // Check also if user's long type input is negative
         // ex new Money("USD",SignValue.Positive, -12,7,1);
         // after the sign is change (see above code), remove negative
@@ -106,29 +103,22 @@ public final class Money {
             this.wholeUnit = wholeUnit;
             this.decimalUnit = decimalUnit;
         }
-        
-        
-        
-        
     }
-    
-    public Money(SignValue sign, long wholeUnit, 
+
+    public Money(SignValue sign, long wholeUnit,
             long decimalUnit, long leadingDecimalZeros) {
-        this(DEFAULT_CURRENCY_CODE, sign, wholeUnit, decimalUnit, 
+        this(DEFAULT_CURRENCY_CODE, sign, wholeUnit, decimalUnit,
                 leadingDecimalZeros);
     }
-    
-    public Money(SignValue sign, long wholeUnit, 
-            long decimalUnit) {
+
+    public Money(SignValue sign, long wholeUnit, long decimalUnit) {
         this(DEFAULT_CURRENCY_CODE, sign, wholeUnit, decimalUnit, 0);
     }
-    
-    public Money(long wholeUnit, 
-            long decimalUnit) {
-        this(DEFAULT_CURRENCY_CODE, SignValue.Positive, wholeUnit, 
-                decimalUnit, 0);
+
+    public Money(long wholeUnit, long decimalUnit) {
+        this(DEFAULT_CURRENCY_CODE, SignValue.Positive, wholeUnit, decimalUnit, 0);
     }
-    
+
     public Money(long wholeUnit) {
         this(DEFAULT_CURRENCY_CODE, SignValue.Positive, wholeUnit, 0, 0);
     }
@@ -136,7 +126,6 @@ public final class Money {
     public Money() {
         this(DEFAULT_CURRENCY_CODE, SignValue.Positive, 0, 0, 0);
     }
-    
 
     public SignValue getSign() {
         return sign;
@@ -153,65 +142,70 @@ public final class Money {
     public long getLeadingDecimalZeros() {
         return leadingDecimalZeros;
     }
-    
-    
+
     public String getCurrencyCode() {
         return currencyCode;
     }
-    
+
     public Money getReverseSignMoney() {
-        return new Money(currencyCode, sign.oppositeOf(), 
+        return new Money(currencyCode, sign.oppositeOf(),
                 wholeUnit, decimalUnit, leadingDecimalZeros);
     }
-    
+
     /**
-     * 
+     *
      * @param money
-     * @return 
+     * @return
      */
     public Money plus(Money money) {
         verifyInput(money);
-        
+
         MoneyOperation additionOperation = new Addition(this, money);
         return additionOperation.execute();
     }
-    
+
     public Money minus(Money money) {
         verifyInput(money);
-        
+
         MoneyOperation subtractionOperation = new Subtraction(this, money);
         return subtractionOperation.execute();
     }
-    
+
     public boolean isPositive() {
         return getSign() == SignValue.Positive && isNotZero();
     }
-    
+
     public boolean isNegative() {
         return getSign() == SignValue.Negative;
     }
-    
+
     public boolean isZero() {
         return getWholeUnit() == 0 && getDecimalUnit() == 0;
     }
-    
+
     public boolean isNotZero() {
         return !isZero();
     }
-    
+
     @Override
     public boolean equals(Object money) {
-        if (money == null) return false;
-        if (this == money) return true;
-        if ( !(money instanceof Money) ) return false;
-        
+        if (money == null) {
+            return false;
+        }
+        if (this == money) {
+            return true;
+        }
+        if (!(money instanceof Money)) {
+            return false;
+        }
+
         Money thatMoney = (Money) money;
-        
-        return getCurrencyCode().equals(thatMoney.getCurrencyCode()) &&
-                getSign() == thatMoney.getSign() &&
-                getWholeUnit() == thatMoney.getWholeUnit() &&
-                getDecimalUnit() == thatMoney.getDecimalUnit() &&
-                getLeadingDecimalZeros() == thatMoney.getLeadingDecimalZeros();
+
+        return getCurrencyCode().equals(thatMoney.getCurrencyCode())
+                && getSign() == thatMoney.getSign()
+                && getWholeUnit() == thatMoney.getWholeUnit()
+                && getDecimalUnit() == thatMoney.getDecimalUnit()
+                && getLeadingDecimalZeros() == thatMoney.getLeadingDecimalZeros();
     }
 
     @Override
@@ -224,22 +218,22 @@ public final class Money {
         hash = 41 * hash + Objects.hashCode(this.sign);
         return hash;
     }
-    
+
     public int compareTo(Money money) {
         verifyInput(money);
-        
+
         BigInteger[] resultArray = ConversionTypeUtil
-                    .concatWholeAndDecThenConvertToLong(this, money);
-        
-        if (getSign() == SignValue.Negative && 
-                money.getSign() == SignValue.Positive) {
+                .concatWholeAndDecThenConvertToLong(this, money);
+
+        if (getSign() == SignValue.Negative
+                && money.getSign() == SignValue.Positive) {
             return -1;
-        } else if (getSign() == SignValue.Positive && 
-                money.getSign() == SignValue.Negative) {
+        } else if (getSign() == SignValue.Positive
+                && money.getSign() == SignValue.Negative) {
             return 1;
-        } else if (getSign() == SignValue.Negative && 
-                money.getSign() == SignValue.Negative) {
-            
+        } else if (getSign() == SignValue.Negative
+                && money.getSign() == SignValue.Negative) {
+
             // index 1 is ThisMoney and 2 is opposite
             // index 0 is for cutoff decimal index
             if (resultArray[1].compareTo(resultArray[2]) > 0) {
@@ -249,48 +243,49 @@ public final class Money {
             } else {
                 return 0;
             }
-            
+
         } else {
             return resultArray[1].compareTo(resultArray[2]);
         }
-        
+
     }
-    
+
     /**
-     * 
+     *
      * @param money
-     * @return 
+     * @return
      */
     public boolean isLessThan(Money money) {
         return compareTo(money) == -1;
     }
-    
+
     public boolean isGreaterThan(Money money) {
         return compareTo(money) == 1;
     }
-    
+
     /**
-     * Checks where the input is null and has the same currency with this object.
+     * Checks where the input is null and has the same currency with this
+     * object.
+     *
      * @param money
-     * @return 
+     * @return
      */
     private void verifyInput(Money money) {
-        if (money == null)  {
+        if (money == null) {
             throw new NullPointerException("Cannot accept null input.");
         }
-        
+
         if (!isSameCurrencyCodes(money)) {
             throw new CurrencyDidNotMatchException("Currency codes are not a matched!");
         }
     }
-    
+
     public boolean isSameCurrencyCodes(Money money) {
         if (money == null) return false;
-        return getCurrencyCode().equalsIgnoreCase(money.getCurrencyCode());
         
+        return getCurrencyCode().equalsIgnoreCase(money.getCurrencyCode());
     }
-    
-    
+
     @Override
     public String toString() {
         // Apply sign
@@ -312,15 +307,15 @@ public final class Money {
         for (int i = 0; i < getLeadingDecimalZeros(); i++) {
             penceStr += ZERO_STRING;
         }
-        
+
         penceStr += Long.toString(getDecimalUnit());
-        
+
         if (getLeadingDecimalZeros() == 0 && getDecimalUnit() < 10) {
             penceStr += ZERO_STRING;
         }
-        
-        return getCurrencyCode()+ " " + signText + poundsStr 
+
+        return getCurrencyCode() + " " + signText + poundsStr
                 + DECIMAL_POINT + penceStr;
     }
-    
+
 }
