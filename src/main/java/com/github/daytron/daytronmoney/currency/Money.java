@@ -24,9 +24,6 @@
 package com.github.daytron.daytronmoney.currency;
 
 import com.github.daytron.daytronmoney.exception.CurrencyDidNotMatchException;
-import com.github.daytron.daytronmoney.operation.MoneyOperation;
-import com.github.daytron.daytronmoney.operation.Addition;
-import com.github.daytron.daytronmoney.operation.Subtraction;
 import com.github.daytron.daytronmoney.utility.ConversionTypeUtil;
 import java.math.BigInteger;
 import java.text.NumberFormat;
@@ -228,7 +225,7 @@ public final class Money {
         return hash;
     }
     
-    public boolean isLessThan(Money money) {
+    public int compareTo(Money money) {
         verifyInput(money);
         
         BigInteger[] resultArray = ConversionTypeUtil
@@ -236,43 +233,42 @@ public final class Money {
         
         if (getSign() == SignValue.Negative && 
                 money.getSign() == SignValue.Positive) {
-            return true;
+            return -1;
         } else if (getSign() == SignValue.Positive && 
                 money.getSign() == SignValue.Negative) {
-            return false;
+            return 1;
         } else if (getSign() == SignValue.Negative && 
                 money.getSign() == SignValue.Negative) {
             
-            System.out.println("resultArray1: " + resultArray[1]);
-            System.out.println("resultArray2: " + resultArray[2]);
-            System.out.println("compareTo: " + resultArray[1].compareTo(resultArray[2]));
-            
             // index 1 is ThisMoney and 2 is opposite
             // index 0 is for cutoff decimal index
-            // BigInteger compareTo works ok positive but the sign is negative 
-            // for both monies, which BigInteger is not set for sign
-            // Will just have to do a workaround
-            // So, if this comparison result to 1, reverse the idea that 1 means
-            // this is greater than that, so false
             if (resultArray[1].compareTo(resultArray[2]) > 0) {
-                return true;
+                return -1;
             } else if (resultArray[1].compareTo(resultArray[2]) < 0) {
-                return false;
+                return 1;
             } else {
-                return false;
+                return 0;
             }
+            
         } else {
-            // All positive values
-            if (resultArray[1].compareTo(resultArray[2]) < 0) {
-                return true;
-            } else if (resultArray[1].compareTo(resultArray[2]) > 0) {
-                return false;
-            } else {
-                return false;
-            }
+            return resultArray[1].compareTo(resultArray[2]);
         }
-
+        
     }
+    
+    /**
+     * 
+     * @param money
+     * @return 
+     */
+    public boolean isLessThan(Money money) {
+        return compareTo(money) == -1;
+    }
+    
+    public boolean isGreaterThan(Money money) {
+        return compareTo(money) == 1;
+    }
+    
     /**
      * Checks where the input is null and has the same currency with this object.
      * @param money
