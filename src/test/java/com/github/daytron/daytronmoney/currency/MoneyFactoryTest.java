@@ -23,7 +23,9 @@
  */
 package com.github.daytron.daytronmoney.currency;
 
+import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -281,6 +283,67 @@ public class MoneyFactoryTest {
             // Then
             assertEquals(resultMoney, expectedResults[i]);
             
+        }
+    }
+
+    /**
+     * Test of valueOf method, of class MoneyFactory.
+     */
+    @Test
+    public void testValueOf_long() {
+        System.out.println("Test MoneyFactory valueOf(long valueString):");
+        // Given
+        MoneyFactory moneyFactory = new MoneyFactory(Locale.JAPAN);
+        long[] listOfLongInputs = new long[]
+        {
+            8569,0,-896
+        };
+        
+        Money[] listOfResults = new Money[]
+        {
+            new Money("JPY",SignValue.Positive,8569,0,0),
+            new Money("JPY",SignValue.Positive,0,0,0),
+            new Money("JPY",SignValue.Negative,-896,0,0)
+        };
+        
+        for (int i = 0; i < listOfLongInputs.length; i++) {
+            // When
+            Money result = moneyFactory.valueOf(listOfLongInputs[i]);
+            System.out.println("Input: " + listOfLongInputs[i]);
+            System.out.println("Money result: " + result);
+            System.out.println("Exp result: " + listOfResults[i]);
+            System.out.println();
+            // Then
+            assertEquals(result, listOfResults[i]);
+        }
+        
+        
+    }
+
+    /**
+     * Test of valueOf method, of class MoneyFactory.
+     */
+    @Test
+    public void testValueOf_int() {
+        // Given
+        MoneyFactory moneyFactory = new MoneyFactory(Locale.FRANCE);
+        int[] listOfLongInputs = new int[]
+        {
+            8569,0,-896
+        };
+        
+        Money[] listOfResults = new Money[]
+        {
+            new Money("EUR",SignValue.Positive,8569,0,0),
+            new Money("EUR",SignValue.Positive,0,0,0),
+            new Money("EUR",SignValue.Negative,-896,0,0)
+        };
+        
+        for (int i = 0; i < listOfLongInputs.length; i++) {
+            // When
+            Money result = moneyFactory.valueOf(listOfLongInputs[i]);
+            // Then
+            assertEquals(result, listOfResults[i]);
         }
     }
     
