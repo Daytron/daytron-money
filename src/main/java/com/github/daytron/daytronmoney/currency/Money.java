@@ -26,6 +26,7 @@ package com.github.daytron.daytronmoney.currency;
 import com.github.daytron.daytronmoney.exception.CurrencyDidNotMatchException;
 import com.github.daytron.daytronmoney.utility.ConversionTypeUtil;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
@@ -85,7 +86,8 @@ public final class Money {
             this.leadingDecimalZeros = 1;
         } else {
             // Also check if decimal is zero but leadingzero > 0 
-            // then normalize it. ex. 23.000000 to 23.00
+            // then normalize it. ex. 23.000000 to 23.0
+            // But in toString output is 23.00
             if (decimalUnit == 0) {
                 this.leadingDecimalZeros = 0;
             } else {
@@ -276,7 +278,7 @@ public final class Money {
         }
 
         if (!isSameCurrencyCodes(money)) {
-            throw new CurrencyDidNotMatchException("Currency codes are not a matched!");
+            throw new CurrencyDidNotMatchException("Currency codes doesn't matched!");
         }
     }
 
@@ -285,9 +287,8 @@ public final class Money {
         
         return getCurrencyCode().equalsIgnoreCase(money.getCurrencyCode());
     }
-
-    @Override
-    public String toString() {
+    
+    public String toStringDecimal() {
         // Apply sign
         String signText;
         if (getWholeUnit() == 0 && getDecimalUnit() == 0) {
@@ -297,25 +298,28 @@ public final class Money {
         } else {
             signText = getSign().getText();
         }
-
-        // Reformat value to proper value format
-        // Ex. 1267 becomes 1,267
-        String poundsStr = NumberFormat.getInstance().format(getWholeUnit());
-
-        // Regroup back any leading zeros
+        
+        // Add any leading zeros
         String penceStr = "";
         for (int i = 0; i < getLeadingDecimalZeros(); i++) {
             penceStr += ZERO_STRING;
         }
+        
+        return signText + getWholeUnit() + DECIMAL_POINT + penceStr + getDecimalUnit();
+    }
 
-        penceStr += Long.toString(getDecimalUnit());
+    @Override
+    public String toString() {
+        double doubleFormat = Double.valueOf(toStringDecimal());
 
-        if (getLeadingDecimalZeros() == 0 && getDecimalUnit() < 10) {
-            penceStr += ZERO_STRING;
-        }
-
-        return getCurrencyCode() + " " + signText + poundsStr
-                + DECIMAL_POINT + penceStr;
+        NumberFormat numberFormatter = 
+        NumberFormat.getCurrencyInstance(Locale.getDefault());
+        
+        Currency currency = Currency.getInstance(this.currencyCode);
+        numberFormatter.setCurrency(currency);
+        numberFormatter.setRoundingMode(RoundingMode.DOWN);
+        
+        return numberFormatter.format(doubleFormat);
     }
 
 }
