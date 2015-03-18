@@ -138,7 +138,6 @@ public class StringUtil {
 
     public static long countLeadingZeros(String valueString) {
         long count = 0;
-
         for (int i = 0; i < valueString.length(); i++) {
             char character = valueString.charAt(i);
             if (character == '0') {
@@ -181,7 +180,6 @@ public class StringUtil {
     
     public static String removeAnyTrailingZeroes(String valueString) {
         boolean itsAllZeroes = false;
-
         int lastZeroIndex = 0;
         
         for (int i = (valueString.length() -1); i >= 0; i--) {
@@ -213,6 +211,11 @@ public class StringUtil {
         }
         
         return valueString;
+    }
+    
+    public static String removeAnyLeadingAndTrailingZeroes(String value) {
+        String newString = removeAnyTrailingZeroes(value);
+        return removeAnyLeadingZeroes(newString);
     }
     
     public static String combineValueIntoString(long whole, long decimal, long leadingZeroes) {
