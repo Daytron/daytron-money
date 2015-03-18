@@ -1106,8 +1106,8 @@ public class MoneyTest {
     public void testToString() {
         // Case 1: Value > 0
         // Given:
-        Money instance = new Money("GBP", SignValue.Positive, 12569, 5, 0);
-        String expResult = "GBP 12,569.05";
+        Money instance = new Money("PHP", SignValue.Positive, 12569, 5, 0);
+        String expResult = "PHP12,569.05";
 
         // When:
         String result = instance.toString();
@@ -1120,8 +1120,8 @@ public class MoneyTest {
         // Given:
         instance = new Money();
         String currencyCode = 
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode();
-        expResult = currencyCode + " 0.00";
+                Currency.getInstance(Locale.getDefault()).getSymbol();
+        expResult = currencyCode + "0.00";
 
         // When:
         result = instance.toString();
@@ -1132,8 +1132,8 @@ public class MoneyTest {
         
         // Case 3: Value < 0
         // Given:
-        instance = new Money("GBP", SignValue.Negative, 1246580, 89, 0);
-        expResult = "GBP -1,246,580.89";
+        instance = new Money("PHP", SignValue.Negative, 1246580, 89, 0);
+        expResult = "-PHP1,246,580.89";
 
         // When:
         result = instance.toString();
@@ -1542,6 +1542,48 @@ public class MoneyTest {
         // Then:
         assertEquals("Case 12: Where absolute (Money1 = Money2). Should be "
                 + expResult + ", but instead it's " + result, expResult, result);
+    }
+
+    /**
+     * Test of toStringDecimal method, of class Money.
+     */
+    @Test
+    public void testToStringDecimal() {
+        // Case 1: Value > 0
+        // Given:
+        Money instance = new Money("PHP", SignValue.Positive, 12569, 5, 5);
+        String expResult = "12569.000005";
+
+        // When:
+        String result = instance.toStringDecimal();
+
+        // Then:
+        assertEquals("Case 1: Value > 0. Should be " + expResult + 
+                ", but instead it's " + result, expResult, result);
+        
+        // Case 2: Value = 0
+        // Given:
+        instance = new Money();
+        expResult = "0.0";
+
+        // When:
+        result = instance.toStringDecimal();
+
+        // Then:
+        assertEquals("Case 2: Value = 0. Should be " + expResult + 
+                ", but instead it's " + result, expResult, result);
+        
+        // Case 3: Value < 0
+        // Given:
+        instance = new Money("PHP", SignValue.Negative, 1246580, 9, 0);
+        expResult = "-1246580.09";
+
+        // When:
+        result = instance.toStringDecimal();
+
+        // Then:
+        assertEquals("Case 3: Value < 0. Should be " + expResult + 
+                ", but instead it's " + result, expResult, result);
     }
     
 }
