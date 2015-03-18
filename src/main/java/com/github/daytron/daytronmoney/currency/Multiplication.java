@@ -33,14 +33,19 @@ import java.math.BigInteger;
  */
 class Multiplication extends MoneyOperation {
 
-    public Multiplication(Money thisMoney, Money thatMoney) {
+    protected Multiplication(Money thisMoney, Money thatMoney) {
         super(thisMoney, thatMoney);
     }
     
     @Override
     public Money execute() {
         if (getThatMoney() == null) {
-            return null;
+            throw new NullPointerException("Cannot multiply by Null value.");
+        }
+        
+        if (getThisMoney().isZero() || getThatMoney().isZero()) {
+            return new Money(getThisMoney().getCurrencyCode(), 
+                    SignValue.Positive, 0, 0, 0);
         }
 
         Money productMoney;
@@ -108,8 +113,7 @@ class Multiplication extends MoneyOperation {
         
         newLeadingZeroes = StringUtil.countLeadingZeros(newDecimalStr);
         
-        newDecimalStr = StringUtil.removeAnyLeadingZeroes(newDecimalStr);
-        newDecimalStr = StringUtil.removeAnyTrailingZeroes(newDecimalStr);
+        newDecimalStr = StringUtil.removeAnyLeadingAndTrailingZeroes(newDecimalStr);
         
         // Get the long value
         // If string is empty means zero
