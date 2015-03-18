@@ -31,7 +31,7 @@ abstract class MoneyOperation {
     private final Money thisMoney;
     private final Money thatMoney;
     
-    public MoneyOperation(Money thisMoney, Money thatMoney) {
+    protected MoneyOperation(Money thisMoney, Money thatMoney) {
         this.thisMoney = thisMoney;
         this.thatMoney = thatMoney;
     }

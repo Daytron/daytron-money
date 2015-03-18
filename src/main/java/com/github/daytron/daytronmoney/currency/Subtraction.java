@@ -29,14 +29,14 @@ package com.github.daytron.daytronmoney.currency;
  */
 class Subtraction extends MoneyOperation{
 
-    public Subtraction(Money thisMoney, Money thatMoney) {
+    protected Subtraction(Money thisMoney, Money thatMoney) {
         super(thisMoney, thatMoney);
     }
 
     @Override
     public Money execute() {
         if (getThatMoney() == null) {
-            return null;
+            throw new NullPointerException("Cannot subtract Null value.");
         }
         MoneyOperation subtracttionOperation = new Addition(getThisMoney(), 
                 getThatMoney().getReverseSignMoney());

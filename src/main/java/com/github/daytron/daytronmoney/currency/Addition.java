@@ -33,14 +33,14 @@ import java.math.BigInteger;
  */
 class Addition extends MoneyOperation {
 
-    public Addition(Money thisMoney, Money thatMoney) {
+    protected Addition(Money thisMoney, Money thatMoney) {
         super(thisMoney, thatMoney);
     }
 
     @Override
     public Money execute() {
         if (getThatMoney() == null) {
-            return null;
+            throw new NullPointerException("Cannot add Null value.");
         }
 
         Money sumMoney;
