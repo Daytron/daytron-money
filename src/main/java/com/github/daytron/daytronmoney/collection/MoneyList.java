@@ -117,7 +117,7 @@ public class MoneyList extends AbstractMoneyList {
         
         Money sumMoney = new Money();
         for (Money money : this) {
-            sumMoney = sumMoney.plus(money);
+            sumMoney = sumMoney.add(money);
         }
         
         return sumMoney;
@@ -126,7 +126,7 @@ public class MoneyList extends AbstractMoneyList {
     @Override
     public void addEachWith(Money money) {
         for (int i = 0; i < this.size(); i++) {
-            set(i, get(i).plus(money));
+            set(i, get(i).add(money));
         }
     }
 }

@@ -102,7 +102,7 @@ public class MoneyMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
     public Money sum() {
         Money sumMoney = new Money();
         for (Money money : this.values()) {
-            sumMoney = sumMoney.plus(money);
+            sumMoney = sumMoney.add(money);
         }
         
         return sumMoney;
@@ -112,7 +112,7 @@ public class MoneyMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
     public void addEachWith(Money money) {
         for (K k : keySet()){
             Money oldMoney = get(k);
-            Money newMoney = oldMoney.plus(money);
+            Money newMoney = oldMoney.add(money);
             put(k, newMoney);
         }
     }
