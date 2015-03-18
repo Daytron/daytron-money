@@ -23,9 +23,7 @@
  */
 package com.github.daytron.daytronmoney.currency;
 
-import java.util.ArrayList;
 import java.util.Currency;
-import java.util.List;
 import java.util.Locale;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -275,11 +273,6 @@ public class MoneyFactoryTest {
                 resultMoney = moneyFactoryLocal.valueOf(listOfInputs[i]);
             }
             
-            
-            System.out.println("i: " + i);
-            System.out.println("resultMoney: " + resultMoney);
-            System.out.println("exptMoney: " + expectedResults[i] + "\n");
-            
             // Then
             assertEquals(resultMoney, expectedResults[i]);
             
@@ -309,10 +302,7 @@ public class MoneyFactoryTest {
         for (int i = 0; i < listOfLongInputs.length; i++) {
             // When
             Money result = moneyFactory.valueOf(listOfLongInputs[i]);
-            System.out.println("Input: " + listOfLongInputs[i]);
-            System.out.println("Money result: " + result);
-            System.out.println("Exp result: " + listOfResults[i]);
-            System.out.println();
+            
             // Then
             assertEquals(result, listOfResults[i]);
         }
