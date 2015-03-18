@@ -23,6 +23,7 @@
  */
 package com.github.daytron.daytronmoney.currency;
 
+import java.awt.Color;
 import java.util.Currency;
 import java.util.Locale;
 import org.junit.After;
@@ -1586,11 +1587,12 @@ public class MoneyTest {
                 ", but instead it's " + result, expResult, result);
     }
 
+
     /**
      * Test of multiply method, of class Money.
      */
     @Test
-    public void testMultiply() {
+    public void testMultiply_Money() {
         // Given
         Money[] listOfInput1 = new Money[]
         {
@@ -1638,6 +1640,152 @@ public class MoneyTest {
         for (int i = 0; i < listOfExpResults.length; i++) {
             // When
             Money result = listOfInput1[i].multiply(listOfInput2[i]);
+            // Then
+            assertEquals(result, listOfExpResults[i]);
+        }
+    }
+
+    /**
+     * Test of multiply method, of class Money.
+     */
+    @Test
+    public void testMultiply_long() {
+        // Given
+        Money[] listOfInput1 = new Money[]
+        {
+            new Money(SignValue.Positive, 6, 50),
+            new Money(SignValue.Negative, 2963, 5,5),
+            new Money(SignValue.Positive, 2963, 50),
+            new Money(),
+            new Money(SignValue.Positive, 2963, 5),
+            new Money(SignValue.Positive, 1, 0),
+            new Money(SignValue.Negative, 15, 50),
+            new Money(SignValue.Negative, 2963, 50),
+            new Money(),
+            new Money(SignValue.Positive, 0, 55960)
+            
+        };
+        
+        long[] listOfInput2 = new long[]
+        {
+            6,
+            -183,
+            0,
+            123412,
+            1
+        };
+        
+        Money[] listOfExpResults = new Money[]
+        {
+            new Money(SignValue.Positive, 39, 0),
+            new Money(SignValue.Positive, 542229, 915, 3),
+            new Money(),
+            new Money(),
+            new Money(SignValue.Positive, 2963, 5)
+        };
+        
+        for (int i = 0; i < listOfExpResults.length; i++) {
+            // When
+            Money result = listOfInput1[i].multiply(listOfInput2[i]);
+            // Then
+            assertEquals(result, listOfExpResults[i]);
+        }
+    }
+
+    /**
+     * Test of multiply method, of class Money.
+     */
+    @Test
+    public void testMultiply_int() {
+        // Given
+        Money[] listOfInput1 = new Money[]
+        {
+            new Money(SignValue.Positive, 6, 50),
+            new Money(SignValue.Negative, 2963, 5,5),
+            new Money(SignValue.Positive, 2963, 50),
+            new Money(),
+            new Money(SignValue.Positive, 2963, 5),
+            new Money(SignValue.Positive, 1, 0),
+            new Money(SignValue.Negative, 15, 50),
+            new Money(SignValue.Negative, 2963, 50),
+            new Money(),
+            new Money(SignValue.Positive, 0, 55960)
+            
+        };
+        
+        int[] listOfInput2 = new int[]
+        {
+            6,
+            -183,
+            0,
+            123412,
+            1
+        };
+        
+        Money[] listOfExpResults = new Money[]
+        {
+            new Money(SignValue.Positive, 39, 0),
+            new Money(SignValue.Positive, 542229, 915, 3),
+            new Money(),
+            new Money(),
+            new Money(SignValue.Positive, 2963, 5)
+        };
+        
+        for (int i = 0; i < listOfExpResults.length; i++) {
+            // When
+            Money result = listOfInput1[i].multiply(listOfInput2[i]);
+            // Then
+            assertEquals(result, listOfExpResults[i]);
+        }
+    }
+
+    /**
+     * Test of divide method, of class Money.
+     */
+    @Test
+    public void testDivide() {
+        MoneyFactory m = new MoneyFactory();
+        // Given
+        Money[] listOfInput1 = new Money[]
+        {
+            new Money(SignValue.Positive, 6, 50),
+            new Money(SignValue.Negative, 2963, 5,5),
+            new Money(),
+            new Money(SignValue.Positive, 2963, 5),
+            new Money(SignValue.Positive, 1, 0),
+            new Money(SignValue.Negative, 15, 50),
+            new Money(SignValue.Negative, 2963, 50),
+            new Money(SignValue.Positive, 0, 55960)
+            
+        };
+        
+        Money[] listOfInput2 = new Money[]
+        {
+            new Money(SignValue.Positive, 6, 83),
+            new Money(SignValue.Negative, 183, 299),
+            new Money(SignValue.Positive, 2963, 50),
+            new Money(SignValue.Negative, 183, 299),
+            new Money(SignValue.Negative, 2963, 50),
+            new Money(SignValue.Positive, 15, 299),
+            new Money(SignValue.Positive, 6, 5),
+            new Money(SignValue.Positive, 0, 2)
+        };
+        
+        Money[] listOfExpResults = new Money[]
+        {
+            m.valueOf("0.9516837481698389"),
+            m.valueOf("16.16484544378310848"),
+            new Money(),
+            m.valueOf("-16.16511819486194687"),
+            m.valueOf("-0.000337438839210393"),
+            m.valueOf("-1.013138113602196222"),
+            m.valueOf("-489.8347107438016529"),
+            new Money(SignValue.Positive, 27, 98)
+        };
+        
+        for (int i = 0; i < listOfExpResults.length; i++) {
+            // When
+            Money result = listOfInput1[i].divide(listOfInput2[i]);
             // Then
             assertEquals(result, listOfExpResults[i]);
         }
