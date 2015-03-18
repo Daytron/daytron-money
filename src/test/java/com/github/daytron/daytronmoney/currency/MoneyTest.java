@@ -306,10 +306,10 @@ public class MoneyTest {
     }
 
     /**
-     * Test of plus method, of class Money.
+     * Test of add method, of class Money.
      */
     @Test
-    public void testPlus() {
+    public void testAdd() {
         // CASE 1: (+)(+) & money1 > money2
         // Given:
         Money money1 = new Money(SignValue.Positive, 12, 5);
@@ -318,7 +318,7 @@ public class MoneyTest {
         Money expResult = new Money(SignValue.Positive, 15, 20);
 
         // When:
-        Money result = money1.plus(money2);
+        Money result = money1.add(money2);
 
         // Then:
         assertEquals("Case 1: Invalid sign.",
@@ -336,7 +336,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 15, 20);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 2: Invalid sign.",
@@ -354,7 +354,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 6, 30);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 3: Invalid sign.",
@@ -372,7 +372,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 8, 90);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 4: Invalid sign.",
@@ -390,7 +390,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 8, 90);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 5: Invalid sign.",
@@ -408,7 +408,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 0, 0);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 6: Invalid sign.",
@@ -426,7 +426,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 8, 90);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 7: Invalid sign.",
@@ -444,7 +444,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 8, 90);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 8: Invalid sign.",
@@ -462,7 +462,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 0, 0);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 9: Invalid sign.",
@@ -480,7 +480,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 15, 20);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 10: Invalid sign.",
@@ -498,7 +498,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 15, 20);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 11: Invalid sign.",
@@ -516,7 +516,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 6, 30);
 
         // When:
-        result = money1.plus(money2);
+        result = money1.add(money2);
 
         // Then:
         assertEquals("Case 12: Invalid sign.",
@@ -528,10 +528,10 @@ public class MoneyTest {
     }
 
     /**
-     * Test of minus method, of class Money.
+     * Test of subtract method, of class Money.
      */
     @Test
-    public void testMinus() {
+    public void testSubtract() {
         // CASE 1: (+)(+) & money1 > money2
         // Given:
         Money money1 = new Money(SignValue.Positive, 12, 5);
@@ -540,7 +540,7 @@ public class MoneyTest {
         Money expResult = new Money(SignValue.Positive, 8, 90);
 
         // When:
-        Money result = money1.minus(money2);
+        Money result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 1: Invalid sign.",
@@ -558,7 +558,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 8, 90);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 2: Invalid sign.",
@@ -576,7 +576,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 0, 0);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 3: Invalid sign.",
@@ -594,7 +594,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 15, 20);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 4: Invalid sign.",
@@ -612,7 +612,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 15, 20);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 5: Invalid sign.",
@@ -630,7 +630,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 6, 30);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 6: Invalid sign.",
@@ -648,7 +648,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 15, 20);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 7: Invalid sign.",
@@ -666,7 +666,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 15, 20);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 8: Invalid sign.",
@@ -684,7 +684,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 6, 30);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 9: Invalid sign.",
@@ -702,7 +702,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Negative, 8, 90);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 10: Invalid sign.",
@@ -720,7 +720,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 8, 90);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 11: Invalid sign.",
@@ -738,7 +738,7 @@ public class MoneyTest {
         expResult = new Money(SignValue.Positive, 0, 0);
 
         // When:
-        result = money1.minus(money2);
+        result = money1.subtract(money2);
 
         // Then:
         assertEquals("Case 12: Invalid sign.",
@@ -1584,6 +1584,63 @@ public class MoneyTest {
         // Then:
         assertEquals("Case 3: Value < 0. Should be " + expResult + 
                 ", but instead it's " + result, expResult, result);
+    }
+
+    /**
+     * Test of multiply method, of class Money.
+     */
+    @Test
+    public void testMultiply() {
+        // Given
+        Money[] listOfInput1 = new Money[]
+        {
+            new Money(SignValue.Positive, 6, 50),
+            new Money(SignValue.Negative, 2963, 5,5),
+            new Money(SignValue.Positive, 2963, 50),
+            new Money(),
+            new Money(SignValue.Positive, 2963, 5),
+            new Money(SignValue.Positive, 1, 0),
+            new Money(SignValue.Negative, 15, 50),
+            new Money(SignValue.Negative, 2963, 50),
+            new Money(),
+            new Money(SignValue.Positive, 0, 55960)
+            
+        };
+        
+        Money[] listOfInput2 = new Money[]
+        {
+            new Money(SignValue.Positive, 6, 83),
+            new Money(SignValue.Negative, 183, 299),
+            new Money(),
+            new Money(SignValue.Positive, 2963, 50),
+            new Money(SignValue.Negative, 183, 299),
+            new Money(SignValue.Negative, 2963, 50),
+            new Money(SignValue.Positive, 15, 299),
+            new Money(SignValue.Positive, 6, 5),
+            new Money(),
+            new Money(SignValue.Positive, 0, 2)
+        };
+        
+        Money[] listOfExpResults = new Money[]
+        {
+            new Money(SignValue.Positive, 44, 395),
+            new Money(SignValue.Positive, 543114, 937916495),
+            new Money(),
+            new Money(),
+            new Money(SignValue.Negative, 543124, 10195),
+            new Money(SignValue.Negative, 2963, 50),
+            new Money(SignValue.Negative, 237, 1345),
+            new Money(SignValue.Negative, 17929, 175),
+            new Money(),
+            new Money(SignValue.Positive, 0, 11192, 1)
+        };
+        
+        for (int i = 0; i < listOfExpResults.length; i++) {
+            // When
+            Money result = listOfInput1[i].multiply(listOfInput2[i]);
+            // Then
+            assertEquals(result, listOfExpResults[i]);
+        }
     }
     
 }
