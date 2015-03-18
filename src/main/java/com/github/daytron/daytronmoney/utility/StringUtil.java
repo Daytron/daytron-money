@@ -179,6 +179,42 @@ public class StringUtil {
         return valueString;
     }
     
+    public static String removeAnyTrailingZeroes(String valueString) {
+        boolean itsAllZeroes = false;
+
+        int lastZeroIndex = 0;
+        
+        for (int i = (valueString.length() -1); i >= 0; i--) {
+            char character = valueString.charAt(i);
+            if (character != '0') {
+                // if i == 0 for example 0.50000
+                // Then keep extra zero 
+                // ex. 0.50000 == 0.50 not 0.5 which will result to 0.05 later on
+                // in Money constructor
+                if (i == 0) {
+                    lastZeroIndex = i + 2;
+                } else {
+                    lastZeroIndex = i + 1;
+                }
+                
+                break;
+            }
+            
+            if (i == 0) {
+                itsAllZeroes = true;
+            }
+
+        }
+        
+        if (itsAllZeroes) {
+            return  "0";
+        } else {
+            valueString = valueString.substring(0, lastZeroIndex);
+        }
+        
+        return valueString;
+    }
+    
     public static String combineValueIntoString(long whole, long decimal, long leadingZeroes) {
         String thisValueStr = Long.toString(whole);
         for (int j = 0; j < leadingZeroes; j++) {

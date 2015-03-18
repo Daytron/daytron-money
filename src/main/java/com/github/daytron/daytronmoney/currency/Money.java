@@ -159,18 +159,25 @@ public final class Money {
      * @param money
      * @return
      */
-    public Money plus(Money money) {
+    public Money add(Money money) {
         verifyInput(money);
 
         MoneyOperation additionOperation = new Addition(this, money);
         return additionOperation.execute();
     }
 
-    public Money minus(Money money) {
+    public Money subtract(Money money) {
         verifyInput(money);
 
         MoneyOperation subtractionOperation = new Subtraction(this, money);
         return subtractionOperation.execute();
+    }
+    
+    public Money multiply(Money money) {
+        verifyInput(money);
+        
+        MoneyOperation multiplicationOperation = new Multiplication(this, money);
+        return multiplicationOperation.execute();
     }
 
     public boolean isPositive() {
