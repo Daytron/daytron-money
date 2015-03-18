@@ -84,7 +84,7 @@ public class MoneyFactory {
     public Money valueOf(String valueString) {
         valueString = valueString.trim();
         if (valueString == null) {
-            throw new NullPointerException("Null argument passed.");
+            throw new NullPointerException("Null input!");
         }
         
         if (valueString.isEmpty()) {
