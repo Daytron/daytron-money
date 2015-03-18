@@ -39,20 +39,16 @@ class Addition extends MoneyOperation {
 
     @Override
     public Money execute() {
-        Money sumMoney;
-        
         if (getThatMoney() == null) {
             return null;
         }
 
-        long newWholeUnit;
-        long newDecimalUnit;
-        long newLeadingZeroes;
+        Money sumMoney;
+        long newWholeUnit, newDecimalUnit, newLeadingZeroes;
         SignValue newSign;
         
         SignValue thisSign = getThisMoney().getSign();
         SignValue thatSign = getThatMoney().getSign();
-        
         
         final BigInteger[] resultArray = ConversionTypeUtil
                     .concatWholeAndDecThenConvertToLong(getThisMoney(), getThatMoney());
@@ -102,23 +98,15 @@ class Addition extends MoneyOperation {
                 lesserConcatMoney = concatThatMoney;
             }
 
-//            System.out.println("");
-//            System.out.println("GreaterVal: " + greaterConcatMoney);
-//            System.out.println("LesserVal: " + lesserConcatMoney);
-            
             sumBigContainer = greaterConcatMoney.subtract(lesserConcatMoney);
 
         }
         
-//        System.out.println("sum concats: " + sumBigContainer);
         // Return to String and separate whole from decimal values
         String sumValueStr = sumBigContainer.toString();
         long lastIndexOfWhole = ((sumValueStr.length()-1) - 
                 cutOffDecimalPlace.intValue());
-//        System.out.println("");
-//        System.out.println("sumValueStr.length()-1: " + (sumValueStr.length()-1));
-//        System.out.println("cutOffDecimalPlace: " + cutOffDecimalPlace);
-//        System.out.println("lastIndexOfWhole: " + lastIndexOfWhole);
+
         String newWholeStr ="", newDecimalStr="";
         for (int i = 0; i < sumValueStr.length(); i++) {
             char character = sumValueStr.charAt(i);
@@ -129,16 +117,12 @@ class Addition extends MoneyOperation {
                 newDecimalStr += Character.toString(character);
             }
         }
-        
-//        System.out.println("");
-//        System.out.println("Whole: " + newWholeStr);
 
         // Then determine the number of leading zeroes for newDecimalStr
         newLeadingZeroes = StringUtil.countLeadingZeros(newDecimalStr);
-        //System.out.println("lead zeros; " + newLeadingZeroes);
+        
         // Remove any leading zeroes
         newDecimalStr = StringUtil.removeAnyLeadingZeroes(newDecimalStr);
-//        System.out.println("new decimal str: " + newDecimalStr);
 
         // Get the long value
         // If string is empty means zero
@@ -153,9 +137,6 @@ class Addition extends MoneyOperation {
         } else {
             newDecimalUnit = Long.valueOf(newDecimalStr);
         }
-        
-        
-
 
         sumMoney = new Money(
                 getThisMoney().getCurrencyCode(),newSign, 
