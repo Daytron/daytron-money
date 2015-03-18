@@ -179,6 +179,23 @@ public final class Money {
         MoneyOperation multiplicationOperation = new Multiplication(this, money);
         return multiplicationOperation.execute();
     }
+    
+    public Money multiply(long value) {
+        Money convertedTypeMoney = new Money(value);
+        return multiply(convertedTypeMoney);    
+    }
+    
+    public Money multiply(int value) {
+        Money convertedTypeMoney = new Money((long)value);
+        return multiply(convertedTypeMoney);    
+    }
+    
+    public Money divide(Money money) {
+        verifyInput(money);
+        
+        MoneyOperation divisionOperation = new Division(this, money);
+        return divisionOperation.execute();
+    }
 
     public boolean isPositive() {
         return getSign() == SignValue.Positive && isNotZero();
