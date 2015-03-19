@@ -153,7 +153,7 @@ public class CurrencyConverter {
 
             Set<Map.Entry<String,JsonElement>> rateList = tempObject.entrySet();
 
-            // Creates a copy
+            // Creates a copy without the datetime element
             this.listOfRates = new HashMap<>();
             String date = "";
             for (Map.Entry<String, JsonElement> rateItem : rateList) {
