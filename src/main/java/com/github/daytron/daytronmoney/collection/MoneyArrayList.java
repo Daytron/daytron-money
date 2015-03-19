@@ -24,13 +24,13 @@
 package com.github.daytron.daytronmoney.collection;
 
 import com.github.daytron.daytronmoney.currency.Money;
-import com.github.daytron.daytronmoney.currency.SignValue;
+import java.util.Iterator;
 
 /**
  *
  * @author Ryan Gilera
  */
-public class MoneyList extends AbstractMoneyList {
+public class MoneyArrayList extends AbstractMoneyList {
     
     @Override
     public boolean hasNegativeValue() {
@@ -57,8 +57,8 @@ public class MoneyList extends AbstractMoneyList {
     }
     
     @Override
-    public MoneyList retrieveAllPositiveValues() {
-        MoneyList listOfPositives = new MoneyList();
+    public MoneyArrayList retrieveAllPositiveValues() {
+        MoneyArrayList listOfPositives = new MoneyArrayList();
         
         for (Money money : this) {
             if (money.isPositive()) {
@@ -70,8 +70,8 @@ public class MoneyList extends AbstractMoneyList {
     }
     
     @Override
-    public MoneyList retrieveAllNegativeValues() {
-        MoneyList listOfNegatives = new MoneyList();
+    public MoneyArrayList retrieveAllNegativeValues() {
+        MoneyArrayList listOfNegatives = new MoneyArrayList();
         
         this.stream().filter((money) -> 
                 (money.isNegative())).forEach((money) -> {
@@ -82,34 +82,30 @@ public class MoneyList extends AbstractMoneyList {
     }
     
     public void removeAnyZeroValues() {
-        this.stream().filter((money) -> 
-                (money.isZero())).forEach((money) -> {
-            remove(money);
-        });
+        for (Iterator<Money> iterator = this.iterator(); iterator.hasNext();) {
+            Money nextMoney = iterator.next();
+            if (nextMoney.isZero()) {
+                iterator.remove();
+            } 
+        } 
     }
     
     public void removeAnyNegativeValues() {
-        this.stream().filter((money) -> 
-                (money.isNegative())).forEach((money) -> {
-            remove(money);
-        });
+        for (Iterator<Money> iterator = this.iterator(); iterator.hasNext();) {
+            Money nextMoney = iterator.next();
+            if (nextMoney.isNegative()) {
+                iterator.remove();
+            } 
+        } 
     }
     
     public void removeAnyPositiveValues() {
-        this.stream().filter((money) -> 
-                (money.isPositive())).forEach((money) -> {
-            remove(money);
-        });
-    }
-
-    @Override
-    public void sortByValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void sortByCurrency() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Iterator<Money> iterator = this.iterator(); iterator.hasNext();) {
+            Money nextMoney = iterator.next();
+            if (nextMoney.isPositive()) {
+                iterator.remove();
+            } 
+        } 
     }
 
     @Override
