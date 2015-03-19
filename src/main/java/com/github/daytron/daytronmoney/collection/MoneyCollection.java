@@ -34,8 +34,6 @@ public interface MoneyCollection {
     
     public boolean hasNegativeValue();
     public boolean hasPositiveValue();
-    public void sortByValue();
-    public void sortByCurrency();
     
     public void setMoneyFactory(MoneyFactory moneyFactory);
     public MoneyFactory getMoneyFactory();
