@@ -43,5 +43,12 @@ public interface MoneyCollection {
     public boolean isAllNegativeValues();
     
     public Money sum();
+    public Money difference();
+    public Money product();
+    public Money quotient();
+    
     public void addEachWith(Money money);
+    public void subtractEachWith(Money money);
+    public void multiplyEachWith(Money money);
+    public void divideEachWith(Money money);
 }

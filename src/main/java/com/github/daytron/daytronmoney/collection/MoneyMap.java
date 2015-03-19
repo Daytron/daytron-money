@@ -107,6 +107,36 @@ public class MoneyMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         
         return sumMoney;
     }
+    
+    @Override
+    public Money difference() {
+        Money differenceMoney = new Money();
+        for (Money money : this.values()) {
+            differenceMoney = differenceMoney.subtract(money);
+        }
+        
+        return differenceMoney;
+    }
+
+    @Override
+    public Money product() {
+        Money productMoney = new Money();
+        for (Money money : this.values()) {
+            productMoney = productMoney.multiply(money);
+        }
+        
+        return productMoney;
+    }
+
+    @Override
+    public Money quotient() {
+        Money quotientMoney = new Money();
+        for (Money money : this.values()) {
+            quotientMoney = quotientMoney.divide(money);
+        }
+        
+        return quotientMoney;
+    }
 
     @Override
     public void addEachWith(Money money) {
@@ -117,7 +147,32 @@ public class MoneyMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         }
     }
 
+    @Override
+    public void subtractEachWith(Money money) {
+        for (K k : keySet()){
+            Money oldMoney = get(k);
+            Money newMoney = oldMoney.subtract(money);
+            put(k, newMoney);
+        }
+    }
 
+    @Override
+    public void multiplyEachWith(Money money) {
+       for (K k : keySet()){
+            Money oldMoney = get(k);
+            Money newMoney = oldMoney.multiply(money);
+            put(k, newMoney);
+        }
+    }
+
+    @Override
+    public void divideEachWith(Money money) {
+        for (K k : keySet()){
+            Money oldMoney = get(k);
+            Money newMoney = oldMoney.divide(money);
+            put(k, newMoney);
+        }
+    }
     
 
 }

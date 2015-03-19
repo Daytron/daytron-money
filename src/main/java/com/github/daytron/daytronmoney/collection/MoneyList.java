@@ -114,7 +114,6 @@ public class MoneyList extends AbstractMoneyList {
 
     @Override
     public Money sum() {
-        
         Money sumMoney = new Money();
         for (Money money : this) {
             sumMoney = sumMoney.add(money);
@@ -124,9 +123,60 @@ public class MoneyList extends AbstractMoneyList {
     }
 
     @Override
+    public Money difference() {
+        Money differenceMoney = new Money();
+        for (Money money : this) {
+            differenceMoney = differenceMoney.subtract(money);
+        }
+        
+        return differenceMoney;
+    }
+
+    @Override
+    public Money product() {
+        Money productMoney = new Money();
+        for (Money money : this) {
+            productMoney = productMoney.multiply(money);
+        }
+        
+        return productMoney;
+    }
+
+    @Override
+    public Money quotient() {
+        Money quotientMoney = new Money();
+        for (Money money : this) {
+            quotientMoney = quotientMoney.divide(money);
+        }
+        
+        return quotientMoney;
+    }
+    
+    @Override
     public void addEachWith(Money money) {
         for (int i = 0; i < this.size(); i++) {
             set(i, get(i).add(money));
+        }
+    }
+
+    @Override
+    public void subtractEachWith(Money money) {
+        for (int i = 0; i < this.size(); i++) {
+            set(i, get(i).subtract(money));
+        }
+    }
+
+    @Override
+    public void multiplyEachWith(Money money) {
+        for (int i = 0; i < this.size(); i++) {
+            set(i, get(i).multiply(money));
+        }
+    }
+
+    @Override
+    public void divideEachWith(Money money) {
+        for (int i = 0; i < this.size(); i++) {
+            set(i, get(i).divide(money));
         }
     }
 }
