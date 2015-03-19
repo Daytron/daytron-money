@@ -23,10 +23,57 @@
  */
 package com.github.daytron.daytronmoney.conversion;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- *
+ * A client class to extract json object from the GetExchangeRate API
  * @author Ryan Gilera
  */
-public class ConversionClient {
+class ConversionClient {
+    private static final String API_URL = 
+            "http://www.getexchangerates.com/api/latest.json";
+
+    private ConversionClient() {
+    }
     
+    static JsonObject connectAndExtractJsonObject() {
+        try {
+            // Connect to the URL using java's native library
+            URL url = new URL(API_URL);
+            HttpURLConnection request = (HttpURLConnection) url.openConnection();
+            request.connect();
+
+            // Convert to a JSON object to print data
+            JsonParser jsonParser = new JsonParser(); //from gson
+            JsonElement rootElement = jsonParser.parse(new InputStreamReader(
+                    (InputStream) request.getContent()));             
+
+            //convert the input stream to a json element
+            JsonArray rootObject = rootElement.getAsJsonArray();
+            
+            return rootObject.get(0).getAsJsonObject();
+            
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(CurrencyConverter.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            
+            return null;
+        } catch (IOException ex) {
+            Logger.getLogger(CurrencyConverter.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            
+            return null;
+        }
+    }
 }
