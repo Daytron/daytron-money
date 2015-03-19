@@ -39,7 +39,7 @@ import java.util.Set;
  * @author Ryan Gilera
  */
 public class CurrencyConverter {
-    private static final String BaseCurrencyCode = "USD";
+    private static final String BASE_CURRENCY_CODE = "USD";
     private static final long TIME_INTERVAL_SECONDS = 43200;
     private static final long TIME_MILLISECONDS_PER_SECOND = 1000;
     private static final String DATETIME_ELEMENT = "DateTime";
@@ -99,7 +99,7 @@ public class CurrencyConverter {
         
         // If the given money match the base currency (USD)
         // do direct conversion
-        if (fromMoney.getCurrencyCode().equalsIgnoreCase(BaseCurrencyCode)) {
+        if (fromMoney.getCurrencyCode().equalsIgnoreCase(BASE_CURRENCY_CODE)) {
             
             return baseMoney.multiply(mf.valueOf(listOfRates.get(toCurrencyCode)));
         } else {
