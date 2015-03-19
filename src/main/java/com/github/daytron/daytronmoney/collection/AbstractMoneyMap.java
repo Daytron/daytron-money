@@ -69,8 +69,8 @@ public abstract  class  AbstractMoneyMap<K, V extends Money>
         return moneyFactory;
     }
 
-    public abstract MoneyMap<K,V> retrieveAllPositiveValues();
-    public abstract MoneyMap<K,V> retrieveAllNegativeValues();
+    public abstract MoneyHashMap<K,V> retrieveAllPositiveValues();
+    public abstract MoneyHashMap<K,V> retrieveAllNegativeValues();
     
     public void put(K key, String amount) {
         Money money = moneyFactory.valueOf(amount);

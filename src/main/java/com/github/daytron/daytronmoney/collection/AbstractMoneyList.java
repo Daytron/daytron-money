@@ -52,8 +52,8 @@ public abstract class AbstractMoneyList
     }
 
     
-    public abstract MoneyList retrieveAllPositiveValues();
-    public abstract MoneyList retrieveAllNegativeValues();
+    public abstract MoneyArrayList retrieveAllPositiveValues();
+    public abstract MoneyArrayList retrieveAllNegativeValues();
     
     public void add(String amount) {
         Money money = moneyFactory.valueOf(amount);
