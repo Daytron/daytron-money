@@ -104,8 +104,8 @@ public class CurrencyConverter {
             return baseMoney.multiply(mf.valueOf(listOfRates.get(toCurrencyCode)));
         } else {
             // Convert given money
-            // USD/(given currency)  * (to currency)/USD
-            // is equivalent to (to currency)/(given currency)
+            // USD/(given currency)  * (to currency)/USD * value
+            // is equivalent to (to currency * value)/(given currency)
             Money denominator = mf.valueOf(listOfRates.get(fromMoney.getCurrencyCode()));
             Money toNewRate = mf.valueOf(listOfRates.get(toCurrencyCode));
 
