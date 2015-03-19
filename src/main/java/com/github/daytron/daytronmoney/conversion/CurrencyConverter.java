@@ -39,9 +39,14 @@ import java.util.Set;
  * @author Ryan Gilera
  */
 public class CurrencyConverter {
-    private Map<String,String> listOfRates;
     private static final String BaseCurrencyCode = "USD";
+    private static final long TIME_INTERVAL_SECONDS = 43200;
+    private static final long TIME_MILLISECONDS_PER_SECOND = 1000;
+    private static final String DATETIME_ELEMENT = "DateTime";
+    
+    private Map<String,String> listOfRates;
     private String dateStamp;
+    
 
     private CurrencyConverter() {
         JsonObject tempObject = ConversionClient.connectAndExtractJsonObject();
@@ -57,7 +62,7 @@ public class CurrencyConverter {
         this.listOfRates = new HashMap<>();
         String date = "";
         for (Map.Entry<String, JsonElement> rateItem : rateList) {
-            if (rateItem.getKey().equalsIgnoreCase("DateTime")) {
+            if (rateItem.getKey().equalsIgnoreCase(DATETIME_ELEMENT)) {
                 date = rateItem.getValue().getAsString();
             } else {
                 listOfRates.put(rateItem.getKey(), rateItem.getValue().getAsString());
@@ -133,13 +138,13 @@ public class CurrencyConverter {
     
     public boolean connectAndTryToUpdateCurrencyRates() {
         
-        long nowTime = (new Date()).getTime() / 1000;
+        long nowTime = (new Date()).getTime() / TIME_MILLISECONDS_PER_SECOND;
         long lastAccessedTime = Long.parseLong(dateStamp);
         
         long diff = nowTime - lastAccessedTime;
         
         // Can only refresh after 12 hours (43200 seconds)
-        if (diff > 43200) {
+        if (diff > TIME_INTERVAL_SECONDS) {
             JsonObject tempObject = ConversionClient.connectAndExtractJsonObject();
 
             if (tempObject == null) {
@@ -152,7 +157,7 @@ public class CurrencyConverter {
             this.listOfRates = new HashMap<>();
             String date = "";
             for (Map.Entry<String, JsonElement> rateItem : rateList) {
-                if (rateItem.getKey().equalsIgnoreCase("DateTime")) {
+                if (rateItem.getKey().equalsIgnoreCase(DATETIME_ELEMENT)) {
                     date = rateItem.getValue().getAsString();
                 } else {
                     listOfRates.put(rateItem.getKey(), rateItem.getValue().getAsString());
