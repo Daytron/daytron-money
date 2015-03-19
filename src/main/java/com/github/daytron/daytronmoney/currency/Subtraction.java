@@ -39,7 +39,7 @@ class Subtraction extends MoneyOperation{
             throw new NullPointerException("Cannot subtract Null value.");
         }
         MoneyOperation subtracttionOperation = new Addition(getThisMoney(), 
-                getThatMoney().getReverseSignMoney());
+                getThatMoney().negate());
         
         return subtracttionOperation.execute();
         

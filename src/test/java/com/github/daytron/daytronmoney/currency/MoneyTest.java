@@ -291,7 +291,7 @@ public class MoneyTest {
     }
 
     /**
-     * Test of getReverseSignMoney method, of class Money.
+     * Test of negate method, of class Money.
      */
     @Test
     public void testGetReverseSignMoney() {
@@ -300,7 +300,7 @@ public class MoneyTest {
         Money expResult = new Money(SignValue.Positive, 12, 5);
 
         // When:
-        Money result = instance.getReverseSignMoney();
+        Money result = instance.negate();
 
         // Then:
         assertEquals(expResult, result);
