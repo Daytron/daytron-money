@@ -24,7 +24,6 @@
 package com.github.daytron.daytronmoney.collection;
 
 import com.github.daytron.daytronmoney.currency.Money;
-import com.github.daytron.daytronmoney.currency.SignValue;
 
 /**
  *
@@ -32,10 +31,10 @@ import com.github.daytron.daytronmoney.currency.SignValue;
  * @param <K>
  * @param <V>
  */
-public class MoneyMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
+public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
     
     
-    public MoneyMap() {
+    public MoneyHashMap() {
     }
 
     @Override
@@ -63,18 +62,8 @@ public class MoneyMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
     }
 
     @Override
-    public void sortByValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void sortByCurrency() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public MoneyMap<K, Money> retrieveAllPositiveValues() {
-        MoneyMap<K,Money> listOfPositives = new MoneyMap();
+    public MoneyHashMap<K, Money> retrieveAllPositiveValues() {
+        MoneyHashMap<K,Money> listOfPositives = new MoneyHashMap();
         
         for (Entry<K,Money> entry : this.entrySet()) {
             if (entry.getValue().isPositive()) {
@@ -86,8 +75,8 @@ public class MoneyMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
     }
 
     @Override
-    public MoneyMap<K, Money> retrieveAllNegativeValues() {
-        MoneyMap<K,Money> listOfNegatives = new MoneyMap();
+    public MoneyHashMap<K, Money> retrieveAllNegativeValues() {
+        MoneyHashMap<K,Money> listOfNegatives = new MoneyHashMap();
         
         for (Entry<K,Money> entry : this.entrySet()) {
             if (entry.getValue().isNegative()) {
