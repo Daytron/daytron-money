@@ -120,32 +120,60 @@ public class MoneyArrayList extends AbstractMoneyList {
 
     @Override
     public Money difference() {
-        Money differenceMoney = new Money();
-        for (Money money : this) {
-            differenceMoney = differenceMoney.subtract(money);
+        if (isEmpty()) {
+            throw new ArithmeticException("Empty list!");
         }
         
-        return differenceMoney;
+        Money differenceMoney = get(0);
+        
+        if (size() > 1) {
+            for (int i = 1; i <= (size()-1);i++) {
+                differenceMoney = differenceMoney.subtract(get(i));
+            }
+            
+            return differenceMoney;
+        } else {
+            return get(0);
+        }
     }
 
     @Override
     public Money product() {
-        Money productMoney = new Money();
-        for (Money money : this) {
-            productMoney = productMoney.multiply(money);
+        if (isEmpty()) {
+            throw new ArithmeticException("Empty list!");
         }
         
-        return productMoney;
+        Money productMoney = get(0);
+        
+        if (size() > 1) {
+            for (int i = 1; i <= (size()-1);i++) {
+                productMoney = productMoney.multiply(get(i));
+            }
+            
+            return productMoney;
+        } else {
+            return get(0);
+        }
+        
     }
 
     @Override
     public Money quotient() {
-        Money quotientMoney = new Money();
-        for (Money money : this) {
-            quotientMoney = quotientMoney.divide(money);
+        if (isEmpty()) {
+            throw new ArithmeticException("Empty list!");
         }
         
-        return quotientMoney;
+        Money quotientMoney = get(0);
+        
+        if (size() > 1) {
+            for (int i = 1; i <= (size()-1);i++) {
+                quotientMoney = quotientMoney.divide(get(i));
+            }
+            
+            return quotientMoney;
+        } else {
+            return get(0);
+        }
     }
     
     @Override
