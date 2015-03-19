@@ -149,7 +149,7 @@ public final class Money {
         return currencyCode;
     }
 
-    public Money getReverseSignMoney() {
+    public Money negate() {        
         return new Money(currencyCode, sign.oppositeOf(),
                 wholeUnit, decimalUnit, leadingDecimalZeros);
     }
@@ -284,9 +284,25 @@ public final class Money {
     public boolean isLessThan(Money money) {
         return compareTo(money) == -1;
     }
+    
+    public boolean isLessThanOrEqualTo(Money money) {
+        return compareTo(money) == -1 || equals(money);
+    }
+    
+    public boolean isLessThanZero() {
+        return compareTo(new Money(currencyCode, sign, 0, 0, 0)) == -1; 
+    }
 
     public boolean isGreaterThan(Money money) {
         return compareTo(money) == 1;
+    }
+    
+    public boolean isGreaterThanOrEqualTo(Money money) {
+        return compareTo(money) == 1 || equals(money);
+    }
+    
+    public boolean isGreaterThanZero() {
+        return compareTo(new Money(currencyCode, sign, 0, 0, 0)) == 1; 
     }
 
     /**
