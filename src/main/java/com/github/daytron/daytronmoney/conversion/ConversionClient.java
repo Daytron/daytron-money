@@ -55,14 +55,12 @@ class ConversionClient {
             request.connect();
 
             // Convert to a JSON object to print data
-            JsonParser jsonParser = new JsonParser(); //from gson
+            JsonParser jsonParser = new JsonParser();
             JsonElement rootElement = jsonParser.parse(new InputStreamReader(
                     (InputStream) request.getContent()));             
 
             //convert the input stream to a json element
-            JsonArray rootObject = rootElement.getAsJsonArray();
-            
-            return rootObject.get(0).getAsJsonObject();
+            return rootElement.getAsJsonObject();
             
         } catch (MalformedURLException ex) {
             Logger.getLogger(CurrencyConverter.class
