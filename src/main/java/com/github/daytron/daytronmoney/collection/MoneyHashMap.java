@@ -118,7 +118,7 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
      */
     @Override
     public MoneyHashMap<K, Money> retrieveAllPositiveValues() {
-        MoneyHashMap<K,Money> listOfPositives = new MoneyHashMap();
+        MoneyHashMap<K,Money> listOfPositives = new MoneyHashMap<>();
         
         for (Entry<K,Money> entry : this.entrySet()) {
             if (entry.getValue().isPositive()) {
@@ -136,7 +136,7 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
      */
     @Override
     public MoneyHashMap<K, Money> retrieveAllNegativeValues() {
-        MoneyHashMap<K,Money> listOfNegatives = new MoneyHashMap();
+        MoneyHashMap<K,Money> listOfNegatives = new MoneyHashMap<>();
         
         for (Entry<K,Money> entry : this.entrySet()) {
             if (entry.getValue().isNegative()) {
