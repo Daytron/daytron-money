@@ -1132,8 +1132,8 @@ public class MoneyTest {
         
         // Case 3: Value < 0
         // Given:
-        Money instance3 = new Money("PHP", SignValue.Negative, 1246580, 89, 0);
-        String expResult3 = "-PHP1,246,580.89";
+        Money instance3 = new Money("PHP", SignValue.Negative, 1246, 89, 0);
+        String expResult3 = "-PHP1,246.89";
 
         // When:
         String result3 = instance3.toString();
