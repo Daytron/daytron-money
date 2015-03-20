@@ -24,6 +24,7 @@
 package com.github.daytron.daytronmoney.collection;
 
 import com.github.daytron.daytronmoney.currency.Money;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -31,6 +32,18 @@ import java.util.Iterator;
  * @author Ryan Gilera
  */
 public class MoneyArrayList extends AbstractMoneyList {
+
+    public MoneyArrayList() {
+        super();
+    }
+
+    public MoneyArrayList(Collection<? extends Money> c) {
+        super(c);
+    }
+
+    public MoneyArrayList(int initialCapacity) {
+        super(initialCapacity);
+    }
     
     @Override
     public boolean hasNegativeValue() {
