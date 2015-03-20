@@ -26,6 +26,7 @@ package com.github.daytron.daytronmoney.collection;
 import com.github.daytron.daytronmoney.currency.Money;
 import com.github.daytron.daytronmoney.currency.MoneyFactory;
 import com.github.daytron.daytronmoney.currency.SignValue;
+import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -56,6 +57,27 @@ public class MoneyHashMapTest {
     
     @After
     public void tearDown() {
+    }
+    
+    /**
+     * Test of hasNegativeValue method, of class MoneyHashMap.
+     */
+    @Test
+    public void testMultipleConstructors() {
+        // Given
+        float floatingFactor = (float) 1.2;
+
+        // When
+        Map<String, Money> moneyHashMap1 = new MoneyHashMap<>(1);
+        Map<String, Money> moneyHashMap2 = new MoneyHashMap<>(1,floatingFactor);
+        Map<String, Money> moneyHashMap3 = new MoneyHashMap<>(moneyHashMap1);
+        Map<String, Money> moneyHashMap4 = new MoneyHashMap<>();
+        
+        // Then
+        assertNotNull(moneyHashMap1);
+        assertNotNull(moneyHashMap2);
+        assertNotNull(moneyHashMap3);
+        assertNotNull(moneyHashMap4);
     }
 
     /**
