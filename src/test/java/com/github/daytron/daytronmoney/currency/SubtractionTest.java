@@ -31,7 +31,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Test class for Subtraction
  * @author Ryan Gilera
  */
 public class SubtractionTest {
@@ -77,8 +77,10 @@ public class SubtractionTest {
             
             MoneyOperation additionOperation = new Subtraction(aMoney, bMoney);
             Money expectedResult = new Money(exptResults[i]);
+            
             // When 
             Money sumMoney = additionOperation.execute();
+            
             // Then
             assertEquals(expectedResult, sumMoney);
         }

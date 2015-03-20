@@ -25,7 +25,6 @@ package com.github.daytron.daytronmoney.collection;
 
 import com.github.daytron.daytronmoney.currency.Money;
 import com.github.daytron.daytronmoney.currency.SignValue;
-import java.util.Collection;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -35,7 +34,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Test class for MoneyArrayList
  * @author Ryan Gilera
  */
 public class MoneyArrayListTest {
@@ -97,7 +96,6 @@ public class MoneyArrayListTest {
         
         boolean[] expResults = new boolean[] {true,false};
         
-        
         for (int i = 0; i < expResults.length; i++) {
             // When
             boolean result = listOfInputs[i].hasNegativeValue();
@@ -132,7 +130,6 @@ public class MoneyArrayListTest {
         
         boolean[] expResults = new boolean[] {true,false,false};
         
-        
         for (int i = 0; i < expResults.length; i++) {
             // When
             boolean result = listOfInputs[i].hasPositiveValue();
@@ -163,7 +160,6 @@ public class MoneyArrayListTest {
         // Then
         assertEquals(expResult.size(), result.size());
         assertEquals(expResult.get(0), result.get(0));
-        
     }
 
     /**
@@ -199,7 +195,6 @@ public class MoneyArrayListTest {
         moneyArrayList.add(new Money(SignValue.Positive, 0, 0));
         moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
         
-        
         MoneyArrayList expResult = new MoneyArrayList();
         expResult.add(new Money(SignValue.Positive, 1, 5));
         
@@ -221,7 +216,6 @@ public class MoneyArrayListTest {
         moneyArrayList.add(new Money(SignValue.Negative, 12, 0));
         moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
         
-        
         MoneyArrayList expResult = new MoneyArrayList();
         expResult.add(new Money(SignValue.Positive, 1, 5));
         
@@ -242,7 +236,6 @@ public class MoneyArrayListTest {
         MoneyArrayList moneyArrayList = new MoneyArrayList();
         moneyArrayList.add(new Money(SignValue.Positive, 12, 0));
         moneyArrayList.add(new Money(SignValue.Negative, 1, 5));
-        
         
         MoneyArrayList expResult = new MoneyArrayList();
         expResult.add(new Money(SignValue.Negative, 1, 5));

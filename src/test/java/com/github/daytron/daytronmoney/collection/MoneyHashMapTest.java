@@ -35,7 +35,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Test class for MoneyHashMap
  * @author Ryan Gilera
  */
 public class MoneyHashMapTest {
@@ -102,7 +102,6 @@ public class MoneyHashMapTest {
         
         boolean[] expResults = new boolean[] {true,false};
         
-        
         for (int i = 0; i < expResults.length; i++) {
             // When
             boolean result = listOfInputs[i].hasNegativeValue();
@@ -133,7 +132,6 @@ public class MoneyHashMapTest {
         };
         
         boolean[] expResults = new boolean[] {true,false};
-        
         
         for (int i = 0; i < expResults.length; i++) {
             // When

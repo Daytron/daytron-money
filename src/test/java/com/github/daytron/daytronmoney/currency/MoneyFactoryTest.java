@@ -33,7 +33,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Test Cases for MoneyFactory class
+ * Test class for MoneyFactory
  * @author Ryan Gilera
  */
 public class MoneyFactoryTest {
@@ -197,8 +197,6 @@ public class MoneyFactoryTest {
      */
     @Test
     public void testValueOf_String() {
-        System.out.println("Test MoneyFactory valueOf(String valueString):");
-        
         // Given
         MoneyFactory moneyFactoryLocal = new MoneyFactory();
         MoneyFactory moneyFactoryUSD = new MoneyFactory();
@@ -284,7 +282,6 @@ public class MoneyFactoryTest {
      */
     @Test
     public void testValueOf_long() {
-        System.out.println("Test MoneyFactory valueOf(long valueString):");
         // Given
         MoneyFactory moneyFactory = new MoneyFactory(Locale.JAPAN);
         long[] listOfLongInputs = new long[]

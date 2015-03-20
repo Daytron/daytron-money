@@ -31,7 +31,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ *Test class for Addition
  * @author Ryan Gilera
  */
 public class AdditionTest {
@@ -77,8 +77,10 @@ public class AdditionTest {
             
             MoneyOperation additionOperation = new Addition(aMoney, bMoney);
             Money expectedResult = new Money(exptResults[i]);
+            
             // When 
             Money sumMoney = additionOperation.execute();
+            
             // Then
             assertEquals(expectedResult, sumMoney);
         }

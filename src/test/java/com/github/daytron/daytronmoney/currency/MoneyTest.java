@@ -23,7 +23,6 @@
  */
 package com.github.daytron.daytronmoney.currency;
 
-import java.awt.Color;
 import java.util.Currency;
 import java.util.Locale;
 import org.junit.After;
@@ -34,7 +33,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Test cases for Money class
+ * Test class for Money
  * @author Ryan Gilera
  */
 public class MoneyTest {
@@ -1195,6 +1194,13 @@ public class MoneyTest {
      */
     @Test
     public void testHashCode() {
+        // Given
+        Money moneyA = new Money(1);
+        Money moneyB = new Money(1);
+        
+        // When and Then
+        assertTrue(moneyA.equals(moneyB) && moneyB.equals(moneyA));
+        assertTrue(moneyA.hashCode() == moneyB.hashCode());
     }
 
     /**
@@ -1587,7 +1593,6 @@ public class MoneyTest {
                 ", but instead it's " + result, expResult, result);
     }
 
-
     /**
      * Test of multiply method, of class Money.
      */
@@ -1640,6 +1645,7 @@ public class MoneyTest {
         for (int i = 0; i < listOfExpResults.length; i++) {
             // When
             Money result = listOfInput1[i].multiply(listOfInput2[i]);
+            
             // Then
             assertEquals(result, listOfExpResults[i]);
         }
@@ -1687,6 +1693,7 @@ public class MoneyTest {
         for (int i = 0; i < listOfExpResults.length; i++) {
             // When
             Money result = listOfInput1[i].multiply(listOfInput2[i]);
+            
             // Then
             assertEquals(result, listOfExpResults[i]);
         }
@@ -1734,6 +1741,7 @@ public class MoneyTest {
         for (int i = 0; i < listOfExpResults.length; i++) {
             // When
             Money result = listOfInput1[i].multiply(listOfInput2[i]);
+            
             // Then
             assertEquals(result, listOfExpResults[i]);
         }
@@ -1786,6 +1794,7 @@ public class MoneyTest {
         for (int i = 0; i < listOfExpResults.length; i++) {
             // When
             Money result = listOfInput1[i].divide(listOfInput2[i]);
+            
             // Then
             assertEquals(result, listOfExpResults[i]);
         }

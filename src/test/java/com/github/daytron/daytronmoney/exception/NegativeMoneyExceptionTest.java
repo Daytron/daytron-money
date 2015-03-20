@@ -30,7 +30,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- *
+ * Test class for NegativeMoneyException
  * @author Ryan Gilera
  */
 public class NegativeMoneyExceptionTest {

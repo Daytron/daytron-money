@@ -31,7 +31,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Test class for Division
  * @author Ryan Gilera
  */
 public class DivisionTest {

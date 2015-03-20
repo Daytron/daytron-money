@@ -33,7 +33,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Test class for CurrencyExchange
  * @author Ryan Gilera
  */
 public class CurrencyExchangeTest {
@@ -81,6 +81,7 @@ public class CurrencyExchangeTest {
         
         String toCurrencyCode = "PHP";
         String expCurrency = "PHP";
+        
         // When
         Money result = cex.convert(fromMoney, toCurrencyCode);
         

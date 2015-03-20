@@ -31,10 +31,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
- *
+ * Test class for ConversionTypeUtil
  * @author Ryan Gilera
  */
 public class ConversionTypeUtilTest {
