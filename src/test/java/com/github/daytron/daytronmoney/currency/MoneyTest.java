@@ -1118,29 +1118,29 @@ public class MoneyTest {
         
         // Case 2: Value = 0
         // Given:
-        instance = new Money();
+        Money instance2 = new Money();
         String currencyCode = 
                 Currency.getInstance(Locale.getDefault()).getSymbol();
-        expResult = currencyCode + "0.00";
+        String expResult2 = currencyCode + "0.00";
 
         // When:
-        result = instance.toString();
+        String result2 = instance2.toString();
 
         // Then:
-        assertEquals("Case 2: Value = 0. Should be " + expResult + 
-                ", but instead it's " + result, expResult, result);
+        assertEquals("Case 2: Value = 0. Should be " + expResult2 + 
+                ", but instead it's " + result2, expResult2, result2);
         
         // Case 3: Value < 0
         // Given:
-        instance = new Money("PHP", SignValue.Negative, 1246580, 89, 0);
-        expResult = "-PHP1,246,580.89";
+        Money instance3 = new Money("PHP", SignValue.Negative, 1246580, 89, 0);
+        String expResult3 = "-PHP1,246,580.89";
 
         // When:
-        result = instance.toString();
+        String result3 = instance3.toString();
 
         // Then:
-        assertEquals("Case 3: Value < 0. Should be " + expResult + 
-                ", but instead it's " + result, expResult, result);
+        assertEquals("Case 3: Value < 0. Should be " + expResult3 + 
+                ", but instead it's " + result, expResult3, result3);
     }
 
     /**
