@@ -270,7 +270,6 @@ public class MoneyHashMapTest {
         
         // When
         Money result = moneyHashMap.quotient();
-        System.out.println("res: " + result.toStringDecimal());
         
         // Then
         assertEquals(expResult, result);
