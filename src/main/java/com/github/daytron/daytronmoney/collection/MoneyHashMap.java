@@ -24,6 +24,7 @@
 package com.github.daytron.daytronmoney.collection;
 
 import com.github.daytron.daytronmoney.currency.Money;
+import java.util.Map;
 
 /**
  *
@@ -99,9 +100,14 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
     
     @Override
     public Money difference() {
-        Money differenceMoney = new Money();
+        Money differenceMoney = null;
         for (Money money : this.values()) {
-            differenceMoney = differenceMoney.subtract(money);
+            if (differenceMoney == null) {
+                differenceMoney = money;
+            } else {
+                differenceMoney = differenceMoney.subtract(money);
+            }
+            
         }
         
         return differenceMoney;
@@ -109,9 +115,14 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
 
     @Override
     public Money product() {
-        Money productMoney = new Money();
+        Money productMoney = null;
         for (Money money : this.values()) {
-            productMoney = productMoney.multiply(money);
+            if (productMoney == null) {
+                productMoney = money;
+            } else {
+                productMoney = productMoney.multiply(money);
+            }
+            
         }
         
         return productMoney;
@@ -119,47 +130,48 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
 
     @Override
     public Money quotient() {
-        Money quotientMoney = new Money();
+        Money quotientMoney = null;
         for (Money money : this.values()) {
-            quotientMoney = quotientMoney.divide(money);
+            if (quotientMoney == null) {
+                quotientMoney = money;
+            } else {
+                quotientMoney = quotientMoney.divide(money);
+            }
+            
         }
         
-        return quotientMoney;
+            return quotientMoney;
     }
 
     @Override
     public void addEachWith(Money money) {
-        for (K k : keySet()){
-            Money oldMoney = get(k);
-            Money newMoney = oldMoney.add(money);
-            put(k, newMoney);
+        for (Map.Entry<K,Money> anEntry : this.entrySet()){
+            Money newMoney = anEntry.getValue().add(money);
+            put(anEntry.getKey(), newMoney);
         }
     }
 
     @Override
     public void subtractEachWith(Money money) {
-        for (K k : keySet()){
-            Money oldMoney = get(k);
-            Money newMoney = oldMoney.subtract(money);
-            put(k, newMoney);
+        for (Map.Entry<K,Money> anEntry : this.entrySet()){
+            Money newMoney = anEntry.getValue().subtract(money);
+            put(anEntry.getKey(), newMoney);
         }
     }
 
     @Override
     public void multiplyEachWith(Money money) {
-       for (K k : keySet()){
-            Money oldMoney = get(k);
-            Money newMoney = oldMoney.multiply(money);
-            put(k, newMoney);
+       for (Map.Entry<K,Money> anEntry : this.entrySet()){
+            Money newMoney = anEntry.getValue().multiply(money);
+            put(anEntry.getKey(), newMoney);
         }
     }
 
     @Override
     public void divideEachWith(Money money) {
-        for (K k : keySet()){
-            Money oldMoney = get(k);
-            Money newMoney = oldMoney.divide(money);
-            put(k, newMoney);
+        for (Map.Entry<K,Money> anEntry : this.entrySet()){
+            Money newMoney = anEntry.getValue().divide(money);
+            put(anEntry.getKey(), newMoney);
         }
     }
     
