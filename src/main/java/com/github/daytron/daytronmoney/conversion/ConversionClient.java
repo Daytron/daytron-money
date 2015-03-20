@@ -63,12 +63,12 @@ class ConversionClient {
             return rootElement.getAsJsonObject();
             
         } catch (MalformedURLException ex) {
-            Logger.getLogger(CurrencyConverter.class
+            Logger.getLogger(CurrencyExchange.class
                     .getName()).log(Level.SEVERE, null, ex);
             
             return null;
         } catch (IOException ex) {
-            Logger.getLogger(CurrencyConverter.class
+            Logger.getLogger(CurrencyExchange.class
                     .getName()).log(Level.SEVERE, null, ex);
             
             return null;
