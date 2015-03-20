@@ -86,12 +86,12 @@ public class MoneyHashMapTest {
     @Test
     public void testHasNegativeValue() {
          // Given
-        MoneyHashMap moneyHashMapCase1 = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMapCase1 = new MoneyHashMap<>();
         moneyHashMapCase1.put("1", new Money(SignValue.Negative, 1, 2));
         moneyHashMapCase1.put("2", new Money(SignValue.Positive, 123, 1234));
         moneyHashMapCase1.put("3", new Money(SignValue.Positive, 131, 3));
         
-        MoneyHashMap moneyHashMapCase2 = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMapCase2 = new MoneyHashMap<>();
         moneyHashMapCase2.put("1", new Money(SignValue.Positive, 1, 2));
         moneyHashMapCase2.put("2", new Money(SignValue.Positive, 123, 1234));
         moneyHashMapCase2.put("3", new Money(SignValue.Positive, 131, 3));
@@ -117,12 +117,12 @@ public class MoneyHashMapTest {
     @Test
     public void testHasPositiveValue() {
          // Given
-        MoneyHashMap moneyHashMapCase1 = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMapCase1 = new MoneyHashMap<>();
         moneyHashMapCase1.put("1", new Money(SignValue.Negative, 1, 2));
         moneyHashMapCase1.put("2", new Money(SignValue.Positive, 123, 1234));
         moneyHashMapCase1.put("3", new Money(SignValue.Positive, 131, 3));
         
-        MoneyHashMap moneyHashMapCase2 = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMapCase2 = new MoneyHashMap<>();
         moneyHashMapCase2.put("1", new Money(SignValue.Negative, 1, 2));
         moneyHashMapCase2.put("2", new Money(SignValue.Negative, 123, 1234));
         moneyHashMapCase2.put("3", new Money(SignValue.Negative, 131, 3));
@@ -148,17 +148,18 @@ public class MoneyHashMapTest {
     @Test
     public void testRetrieveAllPositiveValues() {
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
         moneyHashMap.put("2", new Money(SignValue.Positive, 0, 0));
         moneyHashMap.put("3", new Money(SignValue.Negative, 123, 5));
         moneyHashMap.put("4", new Money(SignValue.Negative, 13, 5));
         
-        MoneyHashMap expResult = new MoneyHashMap();
+        MoneyHashMap<String, Money> expResult = new MoneyHashMap<>();
         expResult.put("1", new Money(SignValue.Positive, 1, 5));
         
         // When
-        MoneyHashMap result = moneyHashMap.retrieveAllPositiveValues();
+        MoneyHashMap<String, Money> result = 
+                moneyHashMap.retrieveAllPositiveValues();
         
         // Then
         assertEquals(expResult.size(), result.size());
@@ -171,18 +172,19 @@ public class MoneyHashMapTest {
     @Test
     public void testRetrieveAllNegativeValues() {
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
         moneyHashMap.put("2", new Money(SignValue.Positive, 0, 0));
         moneyHashMap.put("3", new Money(SignValue.Negative, 123, 5));
         moneyHashMap.put("4", new Money(SignValue.Negative, 13, 5));
         
-        MoneyHashMap expResult = new MoneyHashMap();
+        MoneyHashMap<String, Money> expResult = new MoneyHashMap<>();
         expResult.put("1", new Money(SignValue.Negative, 123, 5));
         expResult.put("2", new Money(SignValue.Negative, 13, 5));
         
         // When
-        MoneyHashMap result = moneyHashMap.retrieveAllNegativeValues();
+        MoneyHashMap<String, Money> result = 
+                moneyHashMap.retrieveAllNegativeValues();
         
         // Then
         assertEquals(expResult.size(), result.size());
@@ -196,7 +198,7 @@ public class MoneyHashMapTest {
     @Test
     public void testSum() {
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
         moneyHashMap.put("2", new Money(SignValue.Positive, 0, 0));
         moneyHashMap.put("3", new Money(SignValue.Negative, 13, 5));
@@ -217,7 +219,7 @@ public class MoneyHashMapTest {
     @Test
     public void testDifference() {
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
         moneyHashMap.put("2", new Money(SignValue.Positive, 0, 0));
         moneyHashMap.put("3", new Money(SignValue.Negative, 13, 5));
@@ -238,7 +240,7 @@ public class MoneyHashMapTest {
     @Test
     public void testProduct() {
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
         moneyHashMap.put("2", new Money(SignValue.Positive, 2, 0));
         moneyHashMap.put("3", new Money(SignValue.Negative, 13, 5));
@@ -261,7 +263,7 @@ public class MoneyHashMapTest {
         MoneyFactory mf = new MoneyFactory();
         
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 142, 5));
         moneyHashMap.put("2", new Money(SignValue.Positive, 2, 0));
         moneyHashMap.put("3", new Money(SignValue.Negative, 13, 0));
@@ -281,11 +283,11 @@ public class MoneyHashMapTest {
     @Test
     public void testAddEachWith() {
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
         moneyHashMap.put("2", new Money(SignValue.Negative, 13, 5));
         
-        MoneyHashMap expResultMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> expResultMap = new MoneyHashMap<>();
         expResultMap.put("1", new Money(SignValue.Positive, 3, 5));
         expResultMap.put("2", new Money(SignValue.Negative, 11, 5));
         
@@ -303,11 +305,11 @@ public class MoneyHashMapTest {
     @Test
     public void testSubtractEachWith() {
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 10, 5));
         moneyHashMap.put("2", new Money(SignValue.Negative, 13, 5));
         
-        MoneyHashMap expResultMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> expResultMap = new MoneyHashMap<>();
         expResultMap.put("1", new Money(SignValue.Positive, 8, 5));
         expResultMap.put("2", new Money(SignValue.Negative, 15, 5));
         
@@ -325,11 +327,11 @@ public class MoneyHashMapTest {
     @Test
     public void testMultiplyEachWith() {
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 10, 5));
         moneyHashMap.put("2", new Money(SignValue.Negative, 13, 5));
         
-        MoneyHashMap expResultMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> expResultMap = new MoneyHashMap<>();
         expResultMap.put("1", new Money(SignValue.Positive, 20, 10));
         expResultMap.put("2", new Money(SignValue.Negative, 26, 10));
         
@@ -347,11 +349,11 @@ public class MoneyHashMapTest {
     @Test
     public void testDivideEachWith() {
         // Given
-        MoneyHashMap moneyHashMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
         moneyHashMap.put("1", new Money(SignValue.Positive, 10, 5));
         moneyHashMap.put("2", new Money(SignValue.Negative, 13, 5));
         
-        MoneyHashMap expResultMap = new MoneyHashMap();
+        MoneyHashMap<String, Money> expResultMap = new MoneyHashMap<>();
         expResultMap.put("1", new Money(SignValue.Positive, 5, 25, 1));
         expResultMap.put("2", new Money(SignValue.Negative, 6, 525));
         
