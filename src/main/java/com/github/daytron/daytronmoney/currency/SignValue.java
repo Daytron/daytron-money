@@ -24,14 +24,20 @@
 package com.github.daytron.daytronmoney.currency;
 
 /**
- *
+ * Constant values that represents <code>Money</code> object's sign.
+ * 
  * @author Ryan Gilera
  */
 public enum SignValue {
 
-    // Including zero
+    /**
+     * Positive value 
+     */
     Positive("+"),
-    // Below zero
+    
+    /**
+     * Negative value
+     */
     Negative("-");
 
     private final String text;
@@ -40,10 +46,20 @@ public enum SignValue {
         this.text = sign;
     }
 
+    /**
+     * Returns String representation from it's argument.
+     * 
+     * @return A <code>String</code> object 
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Reverse sign value.
+     * 
+     * @return Reversed <code>SignValue</code> 
+     */
     public SignValue oppositeOf() {
         if (this == SignValue.Positive) {
             return SignValue.Negative;

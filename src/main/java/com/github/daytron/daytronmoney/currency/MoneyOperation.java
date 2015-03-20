@@ -24,26 +24,49 @@
 package com.github.daytron.daytronmoney.currency;
 
 /**
- *
+ * A abstract class as the base for all money operations.
+ * 
  * @author Ryan Gilera
  */
 abstract class MoneyOperation {
     private final Money thisMoney;
     private final Money thatMoney;
     
+    /**
+     * The constructor accepts two <code>Money</code> objects for money 
+     * operation.
+     * 
+     * @param thisMoney A <code>Money</code> object
+     * @param thatMoney A <code>Money</code> object
+     */
     protected MoneyOperation(Money thisMoney, Money thatMoney) {
         this.thisMoney = thisMoney;
         this.thatMoney = thatMoney;
     }
 
+    /**
+     * Returns the first <code>Money</code> object.
+     * 
+     * @return A <code>Money</code> object
+     */
     public Money getThisMoney() {
         return thisMoney;
     }
 
+    /**
+     * Returns the second  <code>Money</code> object.
+     * 
+     * @return A <code>Money</code> object
+     */
     public Money getThatMoney() {
         return thatMoney;
     }
     
+    /**
+     * An abstract method for the operation execution.
+     * 
+     * @return A <code>Money</code> object
+     */
     public abstract Money execute();
     
 }

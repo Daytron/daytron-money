@@ -58,10 +58,10 @@ public class ConversionTypeUtilTest {
     }
 
     /**
-     * Test of concatWholeAndDecThenConvertToLong method, of class ConversionTypeUtil.
+     * Test of concatWholeAndDecThenConvertBigInteger method, of class ConversionTypeUtil.
      */
     @Test
-    public void testConcatWholeAndDecThenConvertToLong() {
+    public void testConcatWholeAndDecThenConvertBigInteger() {
         // Given
         Money moneyA = new Money(10, 2634);
         Money moneyB = new Money(30, 12);
@@ -74,7 +74,7 @@ public class ConversionTypeUtilTest {
         
         // When 
         BigInteger[] result = ConversionTypeUtil
-                .concatWholeAndDecThenConvertToLong(moneyA, moneyB);
+                .concatWholeAndDecThenConvertBigInteger(moneyA, moneyB);
         
         // Then
         Assert.assertArrayEquals(expectedResult, result);

@@ -28,15 +28,29 @@ import com.github.daytron.daytronmoney.utility.StringUtil;
 import java.math.BigInteger;
 
 /**
- *
+ * A <code>MoneyOperation</code> subclass implementing multiplication operation
+ * for <code>Money</code> objects.
+ * 
  * @author Ryan Gilera
  */
 class Multiplication extends MoneyOperation {
 
+    /**
+     * Constructor for accepting two <code>Money</code> objects for multiplication.
+     * 
+     * @param thisMoney A <code>Money</code> object
+     * @param thatMoney A <code>Money</code> object
+     */
     protected Multiplication(Money thisMoney, Money thatMoney) {
         super(thisMoney, thatMoney);
     }
     
+    /**
+     * Implements execute method from it's super class. Multiplication operation of 
+     * two <code>Money</code> objects.
+     * 
+     * @return A <code>Money</code> object representing the product. 
+     */
     @Override
     public Money execute() {
         if (getThatMoney() == null) {
@@ -57,7 +71,7 @@ class Multiplication extends MoneyOperation {
         
         
         final BigInteger[] resultArray = ConversionTypeUtil
-                    .concatWholeAndDecThenConvertToLong(getThisMoney(), getThatMoney());
+                    .concatWholeAndDecThenConvertBigInteger(getThisMoney(), getThatMoney());
         // For multiplication the cutoff decimal is total length of all values' decimal
         // places.
         // Note: resultArray[0] length is normalize for each value thus have the same

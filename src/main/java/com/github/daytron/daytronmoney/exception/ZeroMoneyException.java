@@ -24,14 +24,24 @@
 package com.github.daytron.daytronmoney.exception;
 
 /**
- *
+ * Exception class for zero money argument.
+ * 
  * @author Ryan Gilera
  */
 public class ZeroMoneyException extends RuntimeException {
 
+    /**
+     * Default constructor.
+     */
     public ZeroMoneyException() {
+        super();
     }
 
+    /**
+     * Exception constructor with message as its parameter
+     * 
+     * @param message A <code>String</code> message
+     */
     public ZeroMoneyException(String message) {
         super(message);
     }

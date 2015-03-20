@@ -24,20 +24,35 @@
 package com.github.daytron.daytronmoney.currency;
 
 /**
- *
+ * A <code>MoneyOperation</code> subclass implementing subtraction operation
+ * for <code>Money</code> objects.
+ * 
  * @author Ryan Gilera
  */
 class Subtraction extends MoneyOperation{
 
+    /**
+     * Constructor for accepting two <code>Money</code> objects for subtraction.
+     * 
+     * @param thisMoney A <code>Money</code> object
+     * @param thatMoney A <code>Money</code> object
+     */
     protected Subtraction(Money thisMoney, Money thatMoney) {
         super(thisMoney, thatMoney);
     }
 
+    /**
+     * Implements execute method from it's super class. Subtraction operation of 
+     * two <code>Money</code> objects.
+     * 
+     * @return A <code>Money</code> object representing the difference. 
+     */
     @Override
     public Money execute() {
         if (getThatMoney() == null) {
             throw new NullPointerException("Cannot subtract Null value.");
         }
+        
         MoneyOperation subtracttionOperation = new Addition(getThisMoney(), 
                 getThatMoney().negate());
         

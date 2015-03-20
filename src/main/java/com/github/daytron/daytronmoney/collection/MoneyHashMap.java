@@ -27,29 +27,61 @@ import com.github.daytron.daytronmoney.currency.Money;
 import java.util.Map;
 
 /**
- *
+ * Custom data structure for handling Monies that extends the capabilities of 
+ * a <code>HashMap</code> class. Implements custom methods from 
+ * <code>MoneyCollection</code> interface and <code>AbstractMoneyMap</code> abstract 
+ * class.
+ * 
  * @author Ryan Gilera
- * @param <K>
- * @param <V>
+ * @param <K> A generic data type that extends Object class
+ * @param <V> A generic data type that extends <code>Money</code> class
  */
 public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
     
-    
+    /**
+     * Creates <code>MoneyHashMap</code> object with no arguments
+     */
     public MoneyHashMap() {
+        super();
     }
     
+    /**
+     * Creates <code>MoneyHashMap</code> object that takes an <code>integer</code>
+     * as its initial size.
+     * 
+     * @param size <code>integer</code> value
+     */
     public MoneyHashMap(int size) {
         super(size);
     }
     
+    /**
+     * Creates <code>MoneyHashMap</code> object that takes any <code>Map</code>
+     * objects as its argument.
+     * 
+     * @param m <code>Map</code> object
+     */
     public MoneyHashMap(Map<? extends K, ? extends Money> m) {
         super(m);
     }
     
+    /**
+     * Creates <code>MoneyHashMap</code> object that takes an <code>integer</code>
+     * value for initial capacity and <code>float</code> for load factor 
+     * as its argument.
+     * 
+     * @param initialCapacity <code>integer</code> value
+     * @param loadFactor <code>float</code> value
+     */
     public MoneyHashMap(int initialCapacity, float loadFactor) {
         super(initialCapacity, loadFactor);
     }
 
+    /**
+     * Checks of this object has negative <code>Money</code> objects.
+     * 
+     * @return <code>boolean</code> value
+     */
     @Override
     public boolean hasNegativeValue() {
         boolean hasNegative = false;
@@ -62,6 +94,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         return hasNegative;
     }
 
+    /**
+     * Checks of this object has positive <code>Money</code> objects.
+     * 
+     * @return <code>boolean</code> value
+     */
     @Override
     public boolean hasPositiveValue() {
         boolean hasPositive = false;
@@ -74,6 +111,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         return hasPositive;
     }
 
+    /**
+     * Retrieves all positive values.
+     * 
+     * @return <code>MoneyHashMap</code> object with all positive values.
+     */
     @Override
     public MoneyHashMap<K, Money> retrieveAllPositiveValues() {
         MoneyHashMap<K,Money> listOfPositives = new MoneyHashMap();
@@ -87,6 +129,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         return listOfPositives;
     }
 
+    /**
+     * Retrieves all negative values.
+     * 
+     * @return <code>MoneyHashMap</code> object with all negative values.
+     */
     @Override
     public MoneyHashMap<K, Money> retrieveAllNegativeValues() {
         MoneyHashMap<K,Money> listOfNegatives = new MoneyHashMap();
@@ -100,6 +147,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         return listOfNegatives;
     }
 
+    /**
+     * Calculates the sum of all values stored.
+     * 
+     * @return <code>Money</code> as sum
+     */
     @Override
     public Money sum() {
         Money sumMoney = new Money();
@@ -110,6 +162,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         return sumMoney;
     }
     
+    /**
+     * Calculates the difference of all values stored.
+     * 
+     * @return <code>Money</code> as difference
+     */
     @Override
     public Money difference() {
         Money differenceMoney = null;
@@ -125,6 +182,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         return differenceMoney;
     }
 
+    /**
+     * Calculates the product of all values stored.
+     * 
+     * @return <code>Money</code> as product
+     */
     @Override
     public Money product() {
         Money productMoney = null;
@@ -140,6 +202,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         return productMoney;
     }
 
+    /**
+     * Calculates the quotient of all values stored.
+     * 
+     * @return <code>Money</code> object as quotient
+     */
     @Override
     public Money quotient() {
         Money quotientMoney = null;
@@ -155,6 +222,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
             return quotientMoney;
     }
 
+    /**
+     * Calculates the sum for each values stored with the given value.
+     * 
+     * @param money <code>Money</code> object
+     */
     @Override
     public void addEachWith(Money money) {
         for (Map.Entry<K,Money> anEntry : this.entrySet()){
@@ -163,6 +235,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         }
     }
 
+    /**
+     * Calculates the difference for each values stored with the given value.
+     * 
+     * @param money <code>Money</code> object
+     */
     @Override
     public void subtractEachWith(Money money) {
         for (Map.Entry<K,Money> anEntry : this.entrySet()){
@@ -171,6 +248,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         }
     }
 
+    /**
+     * Calculates the product for each values stored with the given value.
+     * 
+     * @param money <code>Money</code> object
+     */
     @Override
     public void multiplyEachWith(Money money) {
        for (Map.Entry<K,Money> anEntry : this.entrySet()){
@@ -179,6 +261,11 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
         }
     }
 
+    /**
+     * Calculates the quotient for each values stored with the given value.
+     * 
+     * @param money <code>Money</code> object
+     */
     @Override
     public void divideEachWith(Money money) {
         for (Map.Entry<K,Money> anEntry : this.entrySet()){

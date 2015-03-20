@@ -24,7 +24,8 @@
 package com.github.daytron.daytronmoney.utility;
 
 /**
- *
+ * Utility class for <code>String</code> formatting.
+ * 
  * @author Ryan Gilera
  */
 public class StringUtil {
@@ -33,11 +34,16 @@ public class StringUtil {
     }
 
     /**
-     * Reformats the text by removing any characters prior to value (including
-     * the sign).
-     *
-     * @param valueString
-     * @return
+     * <p>Extracts any characters prior to value (including
+     * the sign) and its value.
+     * 
+     * <p>Returns a <code>String</code> array as the result. The 
+     * first element is the extracted currency code (could be an 
+     * empty <code>String</code> if no extra characters found) while the
+     * second element is the value.
+     * 
+     * @param valueString Input <code>String</code> to parse
+     * @return <code>String</code> array
      */
     public static String[] parseAndRemoveCurrencyCode(String valueString) {
         String[] result = new String[2];
@@ -84,7 +90,7 @@ public class StringUtil {
      * Reformats the text by removing all commas.
      *
      * @param valueString A <code>String</code> input.
-     * @return The newly formatted <code>String</code> value.
+     * @return The newly formatted <code>String</code> without the commas.
      */
     public static String removeCommas(String valueString) {
         if (valueString.contains(",")) {
@@ -94,48 +100,31 @@ public class StringUtil {
         return valueString;
     }
 
+    /**
+     * Parse and extracts leading zeros and the newly formatted 
+     * <code>String</code>. Any leading and trailing zeros (excluding 
+     * value is less than 10 can retain a single trailing zero) are analyzed and removed.
+     * 
+     * @param valueString Input <code>String</code> to parse
+     * @return <code>long</code> array object
+     */
     public static long[] analyzeDecimalValue(String valueString) {
         final long[] result = new long[2];
 
         result[0] = countLeadingZeros(valueString);
 
-        if (result[0] > 0) {
-            valueString = valueString.substring((int) result[0]);
-            valueString = normalizeTrailingZeros(valueString);
-            result[1] = Long.valueOf(valueString);
-        } else {
-            valueString = normalizeTrailingZeros(valueString);
-            if (valueString.length() == 1
-                    && valueString.charAt(0) != '0') {
-                valueString += "0";
-            }
-            result[1] = Long.valueOf(valueString);
-        }
-
+        valueString = removeAnyLeadingAndTrailingZeroes(valueString);
+        result[1] = Long.valueOf(valueString);
+        
         return result;
     }
 
-    private static String normalizeTrailingZeros(String valueString) {
-        // default trim limit index 
-        int indexOfCharacterTrimLimit = 0;
-        for (int i = (valueString.length() - 1); i >= 0; i--) {
-            char character = valueString.charAt(i);
-            if (character != '0') {
-                indexOfCharacterTrimLimit = i + 1;
-                break;
-            }
-        }
-
-        valueString = valueString.substring(0, indexOfCharacterTrimLimit);
-
-        if (valueString.isEmpty()) {
-            valueString = "0";
-        }
-
-        return valueString;
-
-    }
-
+    /**
+     * Counts the number of leading zeros.
+     * 
+     * @param valueString Input <code>String</code> to parse
+     * @return long value that represents the number of leading zeroes.
+     */
     public static long countLeadingZeros(String valueString) {
         long count = 0;
         for (int i = 0; i < valueString.length(); i++) {
@@ -156,6 +145,13 @@ public class StringUtil {
         return count;
     }
 
+    /**
+     * Removes any leading zeroes. A single digit can retain one leading zero
+     * if the value it represents is less than 10.
+     * 
+     * @param valueString Input <code>String</code> to format
+     * @return <code>String</code> formatted text
+     */
     public static String removeAnyLeadingZeroes(String valueString) {
         String strHelper = "";
         boolean thereIsStillLeadingZeroes = true;
@@ -178,6 +174,13 @@ public class StringUtil {
         return valueString;
     }
     
+    /**
+     * Removes any leading zeroes. A single digit can retain one trailing zero
+     * if the value it represents is in tens.
+     * 
+     * @param valueString Input <code>String</code> to format
+     * @return <code>String</code> formatted text
+     */
     public static String removeAnyTrailingZeroes(String valueString) {
         boolean itsAllZeroes = false;
         int lastZeroIndex = 0;
@@ -213,11 +216,27 @@ public class StringUtil {
         return valueString;
     }
     
+    /**
+     * Combines removing leading trailing methods in order. It is ideal to
+     * remove trailing zeroes first before removing any leading zeroes.
+     * 
+     * @param value Input <code>String</code> to format
+     * @return <code>String</code> formatted text
+     */
     public static String removeAnyLeadingAndTrailingZeroes(String value) {
         String newString = removeAnyTrailingZeroes(value);
         return removeAnyLeadingZeroes(newString);
     }
     
+    /**
+     * Combines Money units into a <code>String</code> formate without the 
+     * decimal point.
+     * 
+     * @param whole <code>long</code> value for whole units
+     * @param decimal <code>long</code> value for decimal units
+     * @param leadingZeroes <code>long</code> value for any leading zeroes
+     * @return <code>String</code> formatted text
+     */
     public static String combineValueIntoString(long whole, long decimal, long leadingZeroes) {
         String thisValueStr = Long.toString(whole);
         for (int j = 0; j < leadingZeroes; j++) {

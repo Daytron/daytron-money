@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2015 Ryan Gilera.
+ * Copyright 2014 Ryan Gilera.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,30 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.daytron.daytronmoney.exception;
 
 /**
- * Exception class for negative money argument.
- * 
- * @author Ryan Gilera
+ * The base package for all collection type classes, for storing <code>Money</code> 
+ * objects.
+ *
+ * @since 1.0.0
+ * @author Ryan Gilera ryangilera@gmail.com
+ * @version 1.0
  */
-public class NegativeMoneyException extends RuntimeException {
-
-    /**
-     * Default constructor. 
-     */
-    public NegativeMoneyException() {
-        super();
-    }
-
-    /**
-     * Exception constructor with message as its parameter.
-     * 
-     * @param message A <code>String</code> message
-     */
-    public NegativeMoneyException(String message) {
-        super(message);
-    }
-    
-    
-}
+package com.github.daytron.daytronmoney.collection;

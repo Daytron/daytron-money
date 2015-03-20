@@ -29,32 +29,63 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- *
+ * An abstract class for all structures that extends <code>ArrayList</code> class.
+ * 
  * @author Ryan Gilera
  */
 public abstract class AbstractMoneyList 
         extends ArrayList<Money> implements MoneyCollection{
     private MoneyFactory moneyFactory;
 
+    /**
+     * An abstract constructor that takes no arguments.
+     */
     public AbstractMoneyList() {
         super();
         this.moneyFactory = new MoneyFactory();
     }
 
+    /**
+     * An abstract constructor that takes an <code>integer</code>
+     * value as its initial size.
+     * 
+     * @param initialCapacity <code>integer</code> value
+     */
     public AbstractMoneyList(int initialCapacity) {
         super(initialCapacity);
         this.moneyFactory = new MoneyFactory();
     }
     
+    /**
+     * An abstract constructor that takes an <code>Collection</code>
+     * object as its argument.
+     * 
+     * @param c <code>Collection</code> object
+     */
     public AbstractMoneyList(Collection<? extends Money> c) {
         super(c);
         this.moneyFactory = new MoneyFactory();
     }
 
-    
+    /**
+     * Retrieves all positive values.
+     * 
+     * @return <code>MoneyArrayList</code> object with all positive values.
+     */
     public abstract MoneyArrayList retrieveAllPositiveValues();
+
+    /**
+     * Retrieves all negative values.
+     * 
+     * @return <code>MoneyArrayList</code> object with all negative values.
+     */
     public abstract MoneyArrayList retrieveAllNegativeValues();
     
+    /**
+     * Overloads add method to accept <code>String</code> values.
+     * 
+     * @param amount <code>String</code> object
+     */
     public void add(String amount) {
         Money money = moneyFactory.valueOf(amount);
         add(money);
@@ -79,8 +110,5 @@ public abstract class AbstractMoneyList
     public boolean isAllNegativeValues() {
         return !hasPositiveValue();
     }
-
-    
-    
     
 }

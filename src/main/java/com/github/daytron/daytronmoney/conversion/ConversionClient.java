@@ -23,7 +23,6 @@
  */
 package com.github.daytron.daytronmoney.conversion;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -37,7 +36,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A client class to extract json object from the GetExchangeRate API
+ * A client class to extract json object from the GetExchangeRate API.
  * @author Ryan Gilera
  */
 class ConversionClient {
@@ -47,6 +46,11 @@ class ConversionClient {
     private ConversionClient() {
     }
     
+    /**
+     * Connects and parse json from the external API. 
+     * 
+     * @return Resulting json object as <code>JsonObject</code> 
+     */
     static JsonObject connectAndExtractJsonObject() {
         try {
             // Connect to the URL using java's native library

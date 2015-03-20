@@ -28,15 +28,29 @@ import com.github.daytron.daytronmoney.utility.StringUtil;
 import java.math.BigInteger;
 
 /**
- *
+ * A <code>MoneyOperation</code> subclass implementing addition operation
+ * for <code>Money</code> objects.
+ * 
  * @author Ryan Gilera
  */
 class Addition extends MoneyOperation {
 
+    /**
+     * Constructor for accepting two <code>Money</code> objects for addition.
+     * 
+     * @param thisMoney A <code>Money</code> object
+     * @param thatMoney A <code>Money</code> object
+     */
     protected Addition(Money thisMoney, Money thatMoney) {
         super(thisMoney, thatMoney);
     }
 
+    /**
+     * Implements execute method from it's super class. Addition operation of 
+     * two <code>Money</code> objects.
+     * 
+     * @return A <code>Money</code> object representing the sum. 
+     */
     @Override
     public Money execute() {
         if (getThatMoney() == null) {
@@ -51,7 +65,7 @@ class Addition extends MoneyOperation {
         SignValue thatSign = getThatMoney().getSign();
         
         final BigInteger[] resultArray = ConversionTypeUtil
-                    .concatWholeAndDecThenConvertToLong(getThisMoney(), getThatMoney());
+                    .concatWholeAndDecThenConvertBigInteger(getThisMoney(), getThatMoney());
         final BigInteger cutOffDecimalPlace = resultArray[0];
         final BigInteger concatThisMoney = resultArray[1];
         final BigInteger concatThatMoney = resultArray[2];

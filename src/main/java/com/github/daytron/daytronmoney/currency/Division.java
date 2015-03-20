@@ -25,20 +25,32 @@ package com.github.daytron.daytronmoney.currency;
 
 import com.github.daytron.daytronmoney.utility.ConversionTypeUtil;
 import com.github.daytron.daytronmoney.utility.StringUtil;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 
 /**
- *
+ * A <code>MoneyOperation</code> subclass implementing division operation
+ * for <code>Money</code> objects.
+ * 
  * @author Ryan Gilera
  */
 class Division extends MoneyOperation {
     
+    /**
+     * Constructor for accepting two <code>Money</code> objects for division.
+     * 
+     * @param thisMoney A <code>Money</code> object
+     * @param thatMoney A <code>Money</code> object
+     */
     protected Division(Money thisMoney, Money thatMoney) {
         super(thisMoney, thatMoney);
     }
 
+    /**
+     * Implements execute method from it's super class. Division operation of 
+     * two <code>Money</code> objects.
+     * 
+     * @return A <code>Money</code> object representing the quotient. 
+     */
     @Override
     public Money execute() {
         if (getThatMoney() == null) {
@@ -63,7 +75,7 @@ class Division extends MoneyOperation {
         
         
         final BigInteger[] resultArray = ConversionTypeUtil
-                    .concatWholeAndDecThenConvertToLong(getThisMoney(), getThatMoney());
+                    .concatWholeAndDecThenConvertBigInteger(getThisMoney(), getThatMoney());
         // Cutoff decimal is not needed here
         final BigInteger concatThisMoney = resultArray[1];
         final BigInteger concatThatMoney = resultArray[2];

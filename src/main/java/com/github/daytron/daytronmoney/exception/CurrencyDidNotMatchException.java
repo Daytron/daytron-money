@@ -24,14 +24,24 @@
 package com.github.daytron.daytronmoney.exception;
 
 /**
- *
+ * Exception class for mismatch currency codes between two monies.
+ * 
  * @author Ryan Gilera
  */
 public class CurrencyDidNotMatchException extends RuntimeException {
 
+    /**
+     * Default constructor
+     */
     public CurrencyDidNotMatchException() {
+        super();
     }
 
+    /**
+     * Exception constructor with message as its parameter
+     * 
+     * @param message A <code>String</code> message
+     */
     public CurrencyDidNotMatchException(String message) {
         super(message);
     }
