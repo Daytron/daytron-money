@@ -134,4 +134,4 @@ MIT
 
 
 [getexchangerates]:http://www.getexchangerates.com
-[Javadoc]:http://
+[Javadoc]:https://daytron.github.io/daytron-money/
