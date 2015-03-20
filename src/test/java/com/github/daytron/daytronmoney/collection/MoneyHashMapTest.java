@@ -60,7 +60,7 @@ public class MoneyHashMapTest {
     }
     
     /**
-     * Test of hasNegativeValue method, of class MoneyHashMap.
+     * Test of different types of object creation for class MoneyHashMap.
      */
     @Test
     public void testMultipleConstructors() {
