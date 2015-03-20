@@ -35,9 +35,9 @@ import static org.junit.Assert.*;
  *
  * @author Ryan Gilera
  */
-public class ConversionClientIT {
+public class ConversionClientTest {
     
-    public ConversionClientIT() {
+    public ConversionClientTest() {
     }
     
     @BeforeClass
@@ -57,7 +57,7 @@ public class ConversionClientIT {
     }
 
     /**
-     * Test of connectAndExtractJsonObject method, of class ConversionClient.
+     * Test of connectAndExtractJsonObject method, of class ConversionClientTest.
      */
     @Test
     public void testConnectAndExtractJsonObject() {

@@ -36,9 +36,9 @@ import static org.junit.Assert.*;
  *
  * @author Ryan Gilera
  */
-public class CurrencyExchangeIT {
+public class CurrencyExchangeTest {
     
-    public CurrencyExchangeIT() {
+    public CurrencyExchangeTest() {
     }
     
     @BeforeClass
