@@ -25,6 +25,8 @@ package com.github.daytron.daytronmoney.collection;
 
 import com.github.daytron.daytronmoney.currency.Money;
 import com.github.daytron.daytronmoney.currency.SignValue;
+import java.util.Collection;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -55,6 +57,22 @@ public class MoneyArrayListTest {
     
     @After
     public void tearDown() {
+    }
+    
+     /**
+     * Test of different types of object creation for class MoneyArrayList.
+     */
+    @Test
+    public void testMultipleConstructors() {
+        // When
+        List<Money> moneyArrayList1 = new MoneyArrayList(1);
+        List<Money> moneyArrayList2 = new MoneyArrayList(moneyArrayList1);
+        List<Money> moneyArrayList3 = new MoneyArrayList();
+        
+        // Then
+        assertNotNull(moneyArrayList1);
+        assertNotNull(moneyArrayList2);
+        assertNotNull(moneyArrayList3);
     }
 
     /**
