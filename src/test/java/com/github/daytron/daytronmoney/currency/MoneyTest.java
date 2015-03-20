@@ -1104,7 +1104,6 @@ public class MoneyTest {
      * Test of toString method, of class Money.
      */
     @Test
-    @Ignore
     public void testToString() {
         // Case 1: Value > 0
         // Given:
@@ -1129,20 +1128,8 @@ public class MoneyTest {
         String result2 = instance2.toString();
 
         // Then:
-        assertEquals("Case 2: Value = 0. Should be " + expResult2 + 
-                ", but instead it's " + result2, expResult2, result2);
+        assertEquals("Case 2: Value = 0.", expResult2, result2);
         
-        // Case 3: Value < 0
-        // Given:
-        Money instance3 = new Money("PHP", SignValue.Negative, 1246, 89, 0);
-        String expResult3 = "-PHP1,246.89";
-
-        // When:
-        String result3 = instance3.toString();
-
-        // Then:
-        //assertEquals("Case 3: Value < 0. Should be " + expResult3 + 
-        //        ", but instead it's " + result3, expResult3, result3);
     }
 
     /**
