@@ -57,7 +57,7 @@ Maven Artifact
 ### <a name='documentation'></a>Documentation 
 <sup><a href='#home'>[back to top]</a></sup> 
 
-Please refer for [Javadoc] for more information.
+Please refer to [Javadoc] for more information.
 
 
 ### <a name='usage'></a>Usage 
