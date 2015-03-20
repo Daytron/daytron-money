@@ -38,7 +38,7 @@ import java.util.Set;
  * Class to handle all currency conversions.
  * @author Ryan Gilera
  */
-public class CurrencyConverter {
+public class CurrencyExchange {
     private static final String BASE_CURRENCY_CODE = "USD";
     private static final long TIME_INTERVAL_SECONDS = 43200;
     private static final long TIME_MILLISECONDS_PER_SECOND = 1000;
@@ -48,7 +48,7 @@ public class CurrencyConverter {
     private String dateStamp;
     
 
-    private CurrencyConverter() {
+    private CurrencyExchange() {
         JsonObject tempObject = ConversionClient.connectAndExtractJsonObject();
         
         if (tempObject == null) {
@@ -72,16 +72,19 @@ public class CurrencyConverter {
         this.dateStamp = date;
     }
     
-    public static CurrencyConverter getInstance() {
+    public static CurrencyExchange getInstance() {
         return MySingletonContainer.INSTANCE;
     }
     
     private static class MySingletonContainer {
-        private static final CurrencyConverter INSTANCE = new CurrencyConverter();
+        private static final CurrencyExchange INSTANCE = new CurrencyExchange();
     }
     
     public Money convert(Money fromMoney, String toCurrencyCode) {
         validateInput(fromMoney, toCurrencyCode);
+        
+        toCurrencyCode = toCurrencyCode.trim();
+        toCurrencyCode = toCurrencyCode.toUpperCase();
         
         if (fromMoney.getCurrencyCode().equalsIgnoreCase(toCurrencyCode)) {
             return fromMoney;
