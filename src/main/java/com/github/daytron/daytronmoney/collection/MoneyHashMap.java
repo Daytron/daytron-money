@@ -37,6 +37,18 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
     
     public MoneyHashMap() {
     }
+    
+    public MoneyHashMap(int size) {
+        super(size);
+    }
+    
+    public MoneyHashMap(Map<? extends K, ? extends Money> m) {
+        super(m);
+    }
+    
+    public MoneyHashMap(int initialCapacity, float loadFactor) {
+        super(initialCapacity, loadFactor);
+    }
 
     @Override
     public boolean hasNegativeValue() {
