@@ -64,7 +64,7 @@ public class CurrencyExchange {
         
         Set<Map.Entry<String,JsonElement>> rateList = tempObject.entrySet();
         
-        // Creates a copy
+        // Creates a copy without dateTime element
         this.listOfRates = new HashMap<>();
         String date = "";
         for (Map.Entry<String, JsonElement> rateItem : rateList) {
@@ -111,7 +111,7 @@ public class CurrencyExchange {
             return fromMoney;
         }
         
-        MoneyFactory mf = new MoneyFactory(toCurrencyCode);
+        final MoneyFactory mf = new MoneyFactory(toCurrencyCode);
         
         // Change to new currency first to allow same currency operation
         Money baseMoney = new Money(
