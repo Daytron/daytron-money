@@ -59,9 +59,8 @@ public abstract class  AbstractMoneyMap<K, V extends Money>
     }
 
     /**
-     * Abstract constructor that takes an <code>integer</code>
-     * value for initial capacity and <code>float</code> for load factor 
-     * as its argument.
+     * Abstract constructor that takes any <code>Map</code>
+     * objects as its argument.
      * 
      * @param m <code>Map</code> object
      */
