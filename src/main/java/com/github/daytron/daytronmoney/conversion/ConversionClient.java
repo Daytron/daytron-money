@@ -58,12 +58,11 @@ class ConversionClient {
             HttpURLConnection request = (HttpURLConnection) url.openConnection();
             request.connect();
 
-            // Convert to a JSON object to print data
+            // Parse content as JsonElement object
             JsonParser jsonParser = new JsonParser();
             JsonElement rootElement = jsonParser.parse(new InputStreamReader(
                     (InputStream) request.getContent()));             
 
-            //convert the input stream to a json element
             return rootElement.getAsJsonObject();
             
         } catch (MalformedURLException ex) {
