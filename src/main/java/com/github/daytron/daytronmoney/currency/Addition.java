@@ -106,12 +106,13 @@ class Addition extends MoneyOperation {
             }
 
             sumBigInt = greaterBigInt.subtract(lesserBigInt);
-
         }
         
         // Return to String and separate whole from decimal values
-        String sumValueStr = sumBigInt.toString();
-        long lastIndexOfWhole = ((sumValueStr.length()-1) - 
+        final String sumValueStr = sumBigInt.toString();
+        // Determine the index of the last character for whole unit
+        // to determine the position of decimal point.
+        final long lastIndexOfWhole = ((sumValueStr.length()-1) - 
                 cutOffDecimalPlace.intValue());
 
         String newWholeStr ="", newDecimalStr="";
@@ -132,7 +133,7 @@ class Addition extends MoneyOperation {
         newDecimalStr = StringUtil.removeAnyLeadingZeroes(newDecimalStr);
 
         // Get the long value
-        // If string is empty means zero
+        // If string is empty, it means zero
         newWholeUnit = ((newWholeStr.isEmpty()) ? 0:Long.valueOf(newWholeStr));
         newDecimalUnit = ((newDecimalStr.isEmpty()) ? 0:Long.valueOf(newDecimalStr));
         

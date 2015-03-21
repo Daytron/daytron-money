@@ -193,11 +193,7 @@ public class MoneyFactory {
         long wholeUnit, decimalUnit, leadingDecimalZeros;
 
         // Parse sign
-        if (parsedData[0] == 1) {
-            sign = SignValue.Positive;
-        } else {
-            sign = SignValue.Negative;
-        }
+        sign = ((parsedData[0] == 1)?SignValue.Positive:SignValue.Negative);
 
         wholeUnit = parsedData[1];
         decimalUnit = parsedData[2];
@@ -281,13 +277,12 @@ public class MoneyFactory {
                 parsedData[3] = 0;
             }
             
-
             return parsedData;
 
         } else if ((valueString.indexOf('.', valueString.indexOf('.') + 1) != -1)) {
             /*
              Throws an illegal argument exeption if multiple occurences of dot 
-             is detected in the argument input.
+             are detected in the argument input.
              */
             throw new IllegalArgumentException("Invalid number entry. "
                     + "Multiple dots detected.");

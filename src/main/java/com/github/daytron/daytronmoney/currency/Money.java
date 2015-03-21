@@ -110,7 +110,7 @@ public final class Money {
 
         // Check also if user's long type input is negative
         // ex new Money("USD",SignValue.Positive, -12,7,1);
-        // after the sign is change (see above code), remove negative
+        // after the sign is normalized (see above code), remove negative
         if (wholeUnit < 0 || decimalUnit < 0) {
             this.wholeUnit = Math.abs(wholeUnit);
             this.decimalUnit = Math.abs(decimalUnit);

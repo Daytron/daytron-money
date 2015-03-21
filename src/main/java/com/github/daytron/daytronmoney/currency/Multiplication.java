@@ -61,8 +61,7 @@ class Multiplication extends MoneyOperation {
             return new Money(getThisMoney().getCurrencyCode(), 
                     SignValue.Positive, 0, 0, 0);
         }
-
-        Money productMoney;
+        
         long newWholeUnit, newDecimalUnit, newLeadingZeroes;
         SignValue newSign;
         
@@ -77,8 +76,8 @@ class Multiplication extends MoneyOperation {
         // Note: resultArray[0] length is normalize for each value thus have the same
         // length, hence cutOffDecimal multiply by 2
         final BigInteger cutOffDecimalPlace = resultArray[0].multiply(new BigInteger("2"));
-        final BigInteger concatThisMoney = resultArray[1];
-        final BigInteger concatThatMoney = resultArray[2];
+        final BigInteger concatThisBigInt = resultArray[1];
+        final BigInteger concatThatBigInt = resultArray[2];
         
         // Determine sign first
         if (thisSign == SignValue.Negative && thatSign == SignValue.Positive) {
@@ -92,9 +91,9 @@ class Multiplication extends MoneyOperation {
             newSign = thisSign;
         }
         
-        BigInteger productBigContainer = concatThisMoney.multiply(concatThatMoney);
+        BigInteger productBigInt = concatThisBigInt.multiply(concatThatBigInt);
         
-        String productValueStr = productBigContainer.toString();
+        String productValueStr = productBigInt.toString();
         
         String newWholeStr ="", newDecimalStr="";
         // if the cutoff decimal is within the range of product
@@ -113,7 +112,7 @@ class Multiplication extends MoneyOperation {
                 }
             }
         // Otherwise whole unit is zero and must calculate the leading zero
-        // if there is any leading zeros.
+        // if there are any leading zeros.
         } else {
             int leadingZeroesToAdd = cutOffDecimalPlace.intValue() - 
                     productValueStr.length();
@@ -126,28 +125,16 @@ class Multiplication extends MoneyOperation {
         }
         
         newLeadingZeroes = StringUtil.countLeadingZeros(newDecimalStr);
-        
         newDecimalStr = StringUtil.removeAnyLeadingAndTrailingZeroes(newDecimalStr);
         
         // Get the long value
         // If string is empty means zero
-        if (newWholeStr.isEmpty()) {
-            newWholeUnit = 0;
-        } else {
-            newWholeUnit = Long.valueOf(newWholeStr);
-        }
+        newWholeUnit = ((newWholeStr.isEmpty())?0:Long.valueOf(newWholeStr));
+        newDecimalUnit = ((newDecimalStr.isEmpty())?0:Long.valueOf(newDecimalStr));
         
-        if (newDecimalStr.isEmpty()) {
-            newDecimalUnit = 0;
-        } else {
-            newDecimalUnit = Long.valueOf(newDecimalStr);
-        }
-
-        productMoney = new Money(
+        return new Money(
                 getThisMoney().getCurrencyCode(),newSign, 
                 newWholeUnit, newDecimalUnit, newLeadingZeroes);
-        
-        return productMoney;
     }
     
 }

@@ -66,7 +66,6 @@ class Division extends MoneyOperation {
                     SignValue.Positive, 0, 0, 0);
         }
 
-        Money quotientMoney;
         long newWholeUnit, newDecimalUnit, newLeadingZeroes;
         SignValue newSign;
         
@@ -77,8 +76,8 @@ class Division extends MoneyOperation {
         final BigInteger[] resultArray = ConversionTypeUtil
                     .concatWholeAndDecThenConvertBigInteger(getThisMoney(), getThatMoney());
         // Cutoff decimal is not needed here
-        final BigInteger concatThisMoney = resultArray[1];
-        final BigInteger concatThatMoney = resultArray[2];
+        final BigInteger concatThisBigInt = resultArray[1];
+        final BigInteger concatThatBigInt = resultArray[2];
         
         // Determine sign first
         if (thisSign == SignValue.Negative && thatSign == SignValue.Positive) {
@@ -92,13 +91,13 @@ class Division extends MoneyOperation {
             newSign = thisSign;
         }
         
-        BigInteger[] resultContainer = concatThisMoney.divideAndRemainder(concatThatMoney);
+        BigInteger[] resultBigInt = concatThisBigInt.divideAndRemainder(concatThatBigInt);
         String newWholeStr, newDecimalStr;
-        newWholeStr = resultContainer[0].toString();
+        newWholeStr = resultBigInt[0].toString();
         
         // Get decimal part
-        long dividend = resultContainer[1].longValue();
-        long divisor = concatThatMoney.longValue();
+        long dividend = resultBigInt[1].longValue();
+        long divisor = concatThatBigInt.longValue();
         double newDecimal = dividend / (divisor * 1.0);
         
         newDecimalStr = String.format("%.19f", newDecimal);
@@ -106,29 +105,16 @@ class Division extends MoneyOperation {
                 newDecimalStr.length()-1);
         
         newLeadingZeroes = StringUtil.countLeadingZeros(newDecimalStr);
-        
-        newDecimalStr = StringUtil.removeAnyLeadingZeroes(newDecimalStr);
-        newDecimalStr = StringUtil.removeAnyTrailingZeroes(newDecimalStr);
+        newDecimalStr = StringUtil.removeAnyLeadingAndTrailingZeroes(newDecimalStr);
         
         // Get the long value
-        // If string is empty means zero
-        if (newWholeStr.isEmpty()) {
-            newWholeUnit = 0;
-        } else {
-            newWholeUnit = Long.valueOf(newWholeStr);
-        }
+        // If string is empty, it means zero
+        newWholeUnit = ((newWholeStr.isEmpty())?0:Long.valueOf(newWholeStr));
+        newDecimalUnit = ((newDecimalStr.isEmpty())?0:Long.valueOf(newDecimalStr));
         
-        if (newDecimalStr.isEmpty()) {
-            newDecimalUnit = 0;
-        } else {
-            newDecimalUnit = Long.valueOf(newDecimalStr);
-        }
-
-        quotientMoney = new Money(
+        return new Money(
                 getThisMoney().getCurrencyCode(),newSign, 
                 newWholeUnit, newDecimalUnit, newLeadingZeroes);
-        
-        return quotientMoney;
     }
     
 }
