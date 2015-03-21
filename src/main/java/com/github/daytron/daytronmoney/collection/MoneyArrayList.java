@@ -107,11 +107,11 @@ public class MoneyArrayList extends AbstractMoneyList {
     public MoneyArrayList retrieveAllPositiveValues() {
         MoneyArrayList listOfPositives = new MoneyArrayList();
         
-        for (Money money : this) {
-            if (money.isPositive()) {
-                listOfPositives.add(money);
-            }
-        }
+        this.stream().filter((money) -> {
+            return money.isPositive();
+        }).forEach((money) -> {
+            listOfPositives.add(money);
+        });
         
         return listOfPositives;
     }
@@ -200,12 +200,10 @@ public class MoneyArrayList extends AbstractMoneyList {
         if (size() > 1) {
             for (int i = 1; i <= (size()-1);i++) {
                 differenceMoney = differenceMoney.subtract(get(i));
-            }
-            
-            return differenceMoney;
-        } else {
-            return get(0);
+            }   
         }
+        
+        return differenceMoney;
     }
 
     /**
@@ -224,13 +222,10 @@ public class MoneyArrayList extends AbstractMoneyList {
         if (size() > 1) {
             for (int i = 1; i <= (size()-1);i++) {
                 productMoney = productMoney.multiply(get(i));
-            }
-            
-            return productMoney;
-        } else {
-            return get(0);
-        }
+            }  
+        } 
         
+        return productMoney;
     }
 
     /**
@@ -250,11 +245,9 @@ public class MoneyArrayList extends AbstractMoneyList {
             for (int i = 1; i <= (size()-1);i++) {
                 quotientMoney = quotientMoney.divide(get(i));
             }
-            
-            return quotientMoney;
-        } else {
-            return get(0);
         }
+        
+        return quotientMoney;
     }
     
     /**
