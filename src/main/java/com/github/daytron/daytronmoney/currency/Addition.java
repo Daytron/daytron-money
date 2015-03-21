@@ -57,7 +57,6 @@ class Addition extends MoneyOperation {
             throw new NullPointerException("Cannot add Null value.");
         }
 
-        Money sumMoney;
         long newWholeUnit, newDecimalUnit, newLeadingZeroes;
         SignValue newSign;
         
@@ -67,40 +66,34 @@ class Addition extends MoneyOperation {
         final BigInteger[] resultArray = ConversionTypeUtil
                     .concatWholeAndDecThenConvertBigInteger(getThisMoney(), getThatMoney());
         final BigInteger cutOffDecimalPlace = resultArray[0];
-        final BigInteger concatThisMoney = resultArray[1];
-        final BigInteger concatThatMoney = resultArray[2];
+        final BigInteger concatThisBigInt = resultArray[1];
+        final BigInteger concatThatBigInt = resultArray[2];
 
-        BigInteger sumBigContainer;
+        BigInteger sumBigInt;
         
         if ((thisSign == SignValue.Positive && thatSign == SignValue.Positive)
-                || (thisSign == SignValue.Negative && thatSign == SignValue.Negative)) {
+           || (thisSign == SignValue.Negative && thatSign == SignValue.Negative)) {
 
-            sumBigContainer = concatThisMoney.add(concatThatMoney);
+            sumBigInt = concatThisBigInt.add(concatThatBigInt);
             
             // Determine sign
-            if (thisSign == SignValue.Positive) {
-                newSign = SignValue.Positive;
-            } else {
-                newSign = SignValue.Negative;
-            }
-
+            newSign = ((thisSign == SignValue.Positive)?SignValue.Positive:SignValue.Negative);
         } else {
-
-            BigInteger greaterConcatMoney, lesserConcatMoney;
+            BigInteger greaterBigInt, lesserBigInt;
             // Determine sign
             // Determine the larger amount and assign them respectively.
-            if (concatThisMoney.compareTo(concatThatMoney) < 0) {
+            if (concatThisBigInt.compareTo(concatThatBigInt) < 0) {
                 // Choose the sign of the greater money
                 newSign = thatSign;
 
-                greaterConcatMoney = concatThatMoney;
-                lesserConcatMoney = concatThisMoney;
-            } else if (concatThisMoney.compareTo(concatThatMoney) > 0) {
+                greaterBigInt = concatThatBigInt;
+                lesserBigInt = concatThisBigInt;
+            } else if (concatThisBigInt.compareTo(concatThatBigInt) > 0) {
                 // Choose the sign of the greater money
                 newSign = thisSign;
                 
-                greaterConcatMoney = concatThisMoney;
-                lesserConcatMoney = concatThatMoney;
+                greaterBigInt = concatThisBigInt;
+                lesserBigInt = concatThatBigInt;
             } else {
                 // Otherwise they are both equal and will result to zero.
                 // For simplicity sake, zero is assume positive
@@ -108,16 +101,16 @@ class Addition extends MoneyOperation {
                 // show no sign at all
                 newSign = SignValue.Positive;
                 // Doesn't matter which one is which since they are equal
-                greaterConcatMoney = concatThisMoney;
-                lesserConcatMoney = concatThatMoney;
+                greaterBigInt = concatThisBigInt;
+                lesserBigInt = concatThatBigInt;
             }
 
-            sumBigContainer = greaterConcatMoney.subtract(lesserConcatMoney);
+            sumBigInt = greaterBigInt.subtract(lesserBigInt);
 
         }
         
         // Return to String and separate whole from decimal values
-        String sumValueStr = sumBigContainer.toString();
+        String sumValueStr = sumBigInt.toString();
         long lastIndexOfWhole = ((sumValueStr.length()-1) - 
                 cutOffDecimalPlace.intValue());
 
@@ -140,23 +133,12 @@ class Addition extends MoneyOperation {
 
         // Get the long value
         // If string is empty means zero
-        if (newWholeStr.isEmpty()) {
-            newWholeUnit = 0;
-        } else {
-            newWholeUnit = Long.valueOf(newWholeStr);
-        }
+        newWholeUnit = ((newWholeStr.isEmpty()) ? 0:Long.valueOf(newWholeStr));
+        newDecimalUnit = ((newDecimalStr.isEmpty()) ? 0:Long.valueOf(newDecimalStr));
         
-        if (newDecimalStr.isEmpty()) {
-            newDecimalUnit = 0;
-        } else {
-            newDecimalUnit = Long.valueOf(newDecimalStr);
-        }
-
-        sumMoney = new Money(
+        return new Money(
                 getThisMoney().getCurrencyCode(),newSign, 
                 newWholeUnit, newDecimalUnit, newLeadingZeroes);
-        
-        return sumMoney;
     }
 
 
