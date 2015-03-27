@@ -1,4 +1,4 @@
-# <a name='home'></a>daytron-money  [![Coverage Status](https://coveralls.io/repos/Daytron/daytron-money/badge.svg?branch=master)](https://coveralls.io/r/Daytron/daytron-money?branch=master) [![Build Status](https://travis-ci.org/Daytron/daytron-money.svg?branch=master)](https://travis-ci.org/Daytron/daytron-money)
+# <a name='home'></a>daytron-money  [![Coverage Status](https://coveralls.io/repos/Daytron/daytron-money/badge.svg?branch=master)](https://coveralls.io/r/Daytron/daytron-money?branch=master) [![Build Status](https://travis-ci.org/Daytron/daytron-money.svg?branch=master)](https://travis-ci.org/Daytron/daytron-money) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.daytron/DaytronMoney/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.daytron/DaytronMoney) 
 
 A Java library for dealing simple monetary operations and conversions. 
 
