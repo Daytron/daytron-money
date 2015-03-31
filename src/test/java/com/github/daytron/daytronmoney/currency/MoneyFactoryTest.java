@@ -37,6 +37,11 @@ import static org.junit.Assert.*;
  * @author Ryan Gilera
  */
 public class MoneyFactoryTest {
+    private MoneyFactory localMoneyFactory;
+    private MoneyFactory usdMoneyFactory;
+    private MoneyFactory localDefaultMoneyFactory;
+    private MoneyFactory localeJapanMoneyFactory;
+    private MoneyFactory localFranceMoneyFactory;
     
     public MoneyFactoryTest() {
     }
@@ -51,10 +56,20 @@ public class MoneyFactoryTest {
     
     @Before
     public void setUp() {
+        localMoneyFactory = new MoneyFactory();
+        usdMoneyFactory = new MoneyFactory("USD");
+        localDefaultMoneyFactory = new MoneyFactory(Locale.getDefault());
+        localeJapanMoneyFactory = new MoneyFactory(Locale.JAPAN);
+        localFranceMoneyFactory = new MoneyFactory(Locale.FRANCE);
     }
     
     @After
     public void tearDown() {
+        localMoneyFactory = null;
+        usdMoneyFactory = null;
+        localDefaultMoneyFactory = null;
+        localeJapanMoneyFactory = null;
+        localFranceMoneyFactory = null;
     }
 
     /**
@@ -64,35 +79,32 @@ public class MoneyFactoryTest {
     public void testGetCurrencyCode() {
         // Case 1: MoneyFactory()
         // Given
-        MoneyFactory moneyFactory = new MoneyFactory();
         String expCurrencyCode = 
                 Currency.getInstance(Locale.getDefault()).getCurrencyCode();
         
         // When
-        String currencyCodeResult = moneyFactory.getCurrencyCode();
+        String currencyCodeResult = localMoneyFactory.getCurrencyCode();
         
         // Then
         assertEquals(expCurrencyCode, currencyCodeResult);
         
         // Case 2: MoneyFactory(String currencyCode)
         // Given
-        MoneyFactory moneyFactory2 = new MoneyFactory("USD");
         String expCurrencyCode2 = "USD";
         
         // When
-        String currencyCodeResult2 = moneyFactory2.getCurrencyCode();
+        String currencyCodeResult2 = usdMoneyFactory.getCurrencyCode();
         
         // Then
         assertEquals(expCurrencyCode2, currencyCodeResult2);
         
         // Case 3: MoneyFactory(Locale locale)
         // Given
-        MoneyFactory moneyFactory3 = new MoneyFactory(Locale.getDefault());
         String expCurrencyCode3 = 
                 Currency.getInstance(Locale.getDefault()).getCurrencyCode();
         
         // When
-        String currencyCodeResult3 = moneyFactory3.getCurrencyCode();
+        String currencyCodeResult3 = localDefaultMoneyFactory.getCurrencyCode();
         
         // Then
         assertEquals(expCurrencyCode3, currencyCodeResult3);
@@ -105,36 +117,33 @@ public class MoneyFactoryTest {
     public void testSetCurrencyCode() {
         // Case 1: MoneyFactory()
         // Given
-        MoneyFactory moneyFactory = new MoneyFactory();
-        moneyFactory.setCurrencyCode("PHP");
+        localMoneyFactory.setCurrencyCode("PHP");
         String expCurrencyCode = "PHP";
         
         // When
-        String currencyCodeResult = moneyFactory.getCurrencyCode();
+        String currencyCodeResult = localMoneyFactory.getCurrencyCode();
         
         // Then
         assertEquals(expCurrencyCode, currencyCodeResult);
         
         // Case 2: MoneyFactory(String currencyCode)
         // Given
-        MoneyFactory moneyFactory2 = new MoneyFactory();
-        moneyFactory2.setCurrencyCode("USD");
+        localMoneyFactory.setCurrencyCode("USD");
         String expCurrencyCode2 = "USD";
         
         // When
-        String currencyCodeResult2 = moneyFactory2.getCurrencyCode();
+        String currencyCodeResult2 = localMoneyFactory.getCurrencyCode();
         
         // Then
         assertEquals(expCurrencyCode2, currencyCodeResult2);
         
         // Case 3: MoneyFactory(Locale locale)
         // Given
-        MoneyFactory moneyFactory3 = new MoneyFactory();
-        moneyFactory3.setCurrencyCode("GBP");
+        localMoneyFactory.setCurrencyCode("GBP");
         String expCurrencyCode3 = "GBP";
         
         // When
-        String currencyCodeResult3 = moneyFactory3.getCurrencyCode();
+        String currencyCodeResult3 = localMoneyFactory.getCurrencyCode();
         
         // Then
         assertEquals(expCurrencyCode3, currencyCodeResult3);
@@ -146,12 +155,11 @@ public class MoneyFactoryTest {
     @Test
     public void testValueOf_0args() {
         // Given
-        MoneyFactory moneyFactory = new MoneyFactory("USD");
         Money expMoney = new Money("USD", SignValue.Positive, 
                 0, 0, 0);
         
         // When
-        Money resultMoney = moneyFactory.valueOf();
+        Money resultMoney = usdMoneyFactory.valueOf();
         
         // Then
         assertEquals(expMoney, resultMoney);
@@ -177,11 +185,9 @@ public class MoneyFactoryTest {
         new Money("USD", SignValue.Positive, 0, 0, 0),
         new Money("USD", SignValue.Negative, 0, 856984478, 2)};
         
-        MoneyFactory moneyFactory = new MoneyFactory("USD");
-        
         for (int i = 0; i < listOfWholeUnits.length; i++) {
             // When
-            Money resultMoney = moneyFactory.valueOf(
+            Money resultMoney = usdMoneyFactory.valueOf(
                     listOfWholeUnits[i], 
                     listOfDecimalUnits[i], 
                     listOfLeadingZeroUnits[i]);
@@ -198,10 +204,6 @@ public class MoneyFactoryTest {
     @Test
     public void testValueOf_String() {
         // Given
-        MoneyFactory moneyFactoryLocal = new MoneyFactory();
-        MoneyFactory moneyFactoryUSD = new MoneyFactory();
-        moneyFactoryUSD.setCurrencyCode("USD");
-        
         String[] listOfInputs = new String[]
         {"GBP 12.5",
          "GBP12.5",
@@ -220,7 +222,7 @@ public class MoneyFactoryTest {
          "12,856,896.00963"};
         
         Money specialCaseMoneyForLongInput = 
-                moneyFactoryUSD.valueOf("USD -896,586,785,785,896.0025634589");
+                usdMoneyFactory.valueOf("USD -896,586,785,785,896.0025634589");
         
         Money[] expectedResults = new Money[]
         {new Money("gbp",SignValue.Positive, 12, 50, 0),
@@ -266,9 +268,9 @@ public class MoneyFactoryTest {
             // When
             Money resultMoney;
             if (i == 2 || i == 3) {
-                resultMoney = moneyFactoryUSD.valueOf(listOfInputs[i]);
+                resultMoney = usdMoneyFactory.valueOf(listOfInputs[i]);
             } else {
-                resultMoney = moneyFactoryLocal.valueOf(listOfInputs[i]);
+                resultMoney = localMoneyFactory.valueOf(listOfInputs[i]);
             }
             
             // Then
@@ -283,7 +285,6 @@ public class MoneyFactoryTest {
     @Test
     public void testValueOf_long() {
         // Given
-        MoneyFactory moneyFactory = new MoneyFactory(Locale.JAPAN);
         long[] listOfLongInputs = new long[]
         {
             8569,0,-896
@@ -298,7 +299,7 @@ public class MoneyFactoryTest {
         
         for (int i = 0; i < listOfLongInputs.length; i++) {
             // When
-            Money result = moneyFactory.valueOf(listOfLongInputs[i]);
+            Money result = localeJapanMoneyFactory.valueOf(listOfLongInputs[i]);
             
             // Then
             assertEquals(result, listOfResults[i]);
@@ -313,7 +314,6 @@ public class MoneyFactoryTest {
     @Test
     public void testValueOf_int() {
         // Given
-        MoneyFactory moneyFactory = new MoneyFactory(Locale.FRANCE);
         int[] listOfLongInputs = new int[]
         {
             8569,0,-896
@@ -328,7 +328,7 @@ public class MoneyFactoryTest {
         
         for (int i = 0; i < listOfLongInputs.length; i++) {
             // When
-            Money result = moneyFactory.valueOf(listOfLongInputs[i]);
+            Money result = localFranceMoneyFactory.valueOf(listOfLongInputs[i]);
             // Then
             assertEquals(result, listOfResults[i]);
         }

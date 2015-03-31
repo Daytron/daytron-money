@@ -37,6 +37,7 @@ import static org.junit.Assert.*;
  * @author Ryan Gilera
  */
 public class CurrencyExchangeTest {
+    private CurrencyExchange cex;
     
     public CurrencyExchangeTest() {
     }
@@ -51,10 +52,12 @@ public class CurrencyExchangeTest {
     
     @Before
     public void setUp() {
+        cex = CurrencyExchange.getInstance();
     }
     
     @After
     public void tearDown() {
+        cex = null;
     }
 
     /**
@@ -62,11 +65,7 @@ public class CurrencyExchangeTest {
      */
     @Test
     public void testGetInstance() {
-        // When
-        CurrencyExchange result = CurrencyExchange.getInstance();
-        
-        // Then
-        assertNotNull(result);
+        assertNotNull(cex);
     }
 
     /**
@@ -75,7 +74,6 @@ public class CurrencyExchangeTest {
     @Test
     public void testConvert() {
         // Given
-        CurrencyExchange cex = CurrencyExchange.getInstance();
         Money fromMoney = new Money("USD", 
                 SignValue.Positive, 2, 50, 0);
         
@@ -96,11 +94,10 @@ public class CurrencyExchangeTest {
     @Test
     public void testConnectAndTryToUpdateCurrencyRates() {
         // Given
-        CurrencyExchange instance = CurrencyExchange.getInstance();
         boolean expResult = false;
         
         // When
-        boolean result = instance.connectAndTryToUpdateCurrencyRates();
+        boolean result = cex.connectAndTryToUpdateCurrencyRates();
         
         // Then
         assertEquals(expResult, result);

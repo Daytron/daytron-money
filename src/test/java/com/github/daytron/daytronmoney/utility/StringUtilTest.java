@@ -62,7 +62,6 @@ public class StringUtilTest {
     @Test
     public void testParseAndRemoveCurrencyCode() {
         // Given
-        MoneyFactory moneyFactory = new MoneyFactory("JPY");
         String input = "JPY12.34";
         String[] expectedString = new String[] {
           "JPY", "12.34"  
