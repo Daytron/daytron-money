@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  * Test class for ConversionClient
@@ -60,6 +61,7 @@ public class ConversionClientTest {
      * Test of connectAndExtractJsonObject method, of class ConversionClientTest.
      */
     @Test
+    @Ignore
     public void testConnectAndExtractJsonObject() {
         // When
         JsonObject result = ConversionClient.connectAndExtractJsonObject();
