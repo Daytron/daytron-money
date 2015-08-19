@@ -1789,4 +1789,97 @@ public class MoneyTest {
         }
     }
     
+    /**
+     * Test of power method, of class Money.
+     */
+    @Test
+    public void testPower_long() {
+        MoneyFactory mf = new MoneyFactory();
+        // Given
+        Money[] listOfInput1 = new Money[]
+        {
+            new Money(SignValue.Positive, 6, 50),
+            new Money(SignValue.Positive, 6, 05),
+            new Money(SignValue.Positive, 6, 55),
+            new Money(SignValue.Positive, 12, 105),
+            new Money(SignValue.Positive, 2963, 50),         
+            new Money(SignValue.Negative, 2963, 50),         
+            new Money(SignValue.Positive, 5, 0),         
+            new Money(SignValue.Negative, 5999, 99)
+        };
+        
+        long[] listOfInput2 = new long[]
+        {
+            6,
+            6,
+            6,
+            4,
+            3,
+            3,
+            -3,
+            2
+        };
+        
+        String[] exptResults = new String[] {
+          "75418.890625","49037.943386265625","78967.392879390625","21471.341287550625","26026441622.875","-26026441622.875","0.008","35999880.0001"
+        };
+        
+        for (int i = 0; i < exptResults.length; i++) {
+            //Given
+            Money expectedResult = mf.valueOf(exptResults[i]);            
+            
+            // When
+            Money result = listOfInput1[i].power(listOfInput2[i]);
+            
+            // Then
+            assertEquals(result, expectedResult);
+        }
+    } 
+
+    /**
+     * Test of power method, of class Money.
+     */
+    @Test
+    public void testPower_int() {
+        MoneyFactory mf = new MoneyFactory();
+        // Given
+        Money[] listOfInput1 = new Money[]
+        {
+            new Money(SignValue.Positive, 6, 50),
+            new Money(SignValue.Positive, 6, 05),
+            new Money(SignValue.Positive, 6, 55),
+            new Money(SignValue.Positive, 12, 105),
+            new Money(SignValue.Positive, 2963, 50),         
+            new Money(SignValue.Negative, 2963, 50),         
+            new Money(SignValue.Positive, 5, 0),         
+            new Money(SignValue.Negative, 5999, 99)
+        };
+        
+        int[] listOfInput2 = new int[]
+        {
+            6,
+            6,
+            6,
+            4,
+            3,
+            3,
+            -3,
+            2
+        };
+        
+        String[] exptResults = new String[] {
+          "75418.890625","49037.943386265625","78967.392879390625","21471.341287550625","26026441622.875","-26026441622.875","0.008","35999880.0001"
+        };
+        
+        for (int i = 0; i < exptResults.length; i++) {
+            //Given
+            Money expectedResult = mf.valueOf(exptResults[i]);            
+            
+            // When
+            Money result = listOfInput1[i].power(listOfInput2[i]);
+            
+            // Then
+            assertEquals(result, expectedResult);
+        }
+    }
 }

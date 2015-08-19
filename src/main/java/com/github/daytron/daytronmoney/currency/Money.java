@@ -272,7 +272,7 @@ public final class Money {
      * Calculates product of two <code>Money</code> objects 
      * and returns a new <code>Money</code>.
      * 
-     * @param money <code>Money</code> object to be multiplied to
+     * @param money exponent to be multiplied by
      * @return <code>Money</code> object as product
      */
     public Money multiply(Money money) {
@@ -320,6 +320,46 @@ public final class Money {
         return divisionOperation.execute();
     }
 
+    /**
+     * Calculates product of a <code>Money</code> object to the specified 
+     * power and returns a new <code>Money</code>.
+     * 
+     * @param money <code>Money</code> object used as the exponent
+     * @return <code>Money</code> object as product
+     */
+    private Money power(Money money) {
+        verifyInput(money);
+        
+        MoneyOperation multiplicationOperation = new Power(this, money);
+        return multiplicationOperation.execute();
+    }
+    
+   /**
+     * Calculates product of a <code>Money</code> object to the specified
+     * power and returns a new <code>Money</code>. The exponent value must
+     * be a whole number but can be positive or negative.
+     * 
+     * @param value <code>long</code> value used as the exponent
+     * @return <code>Money</code> object as product
+     */
+    public Money power(long value) {
+        Money convertedTypeMoney = new Money(value);
+        return power(convertedTypeMoney);    
+    }
+    
+    /**
+     * Calculates product of a <code>Money</code> object to the specified
+     * power and returns a new <code>Money</code>. The exponent value must
+     * be a whole number but can be positive or negative.
+     * 
+     * @param value <code>integer</code> value used as the exponent
+     * @return <code>Money</code> object as product
+     */
+    public Money power(int value) {
+        Money convertedTypeMoney = new Money((long)value);
+        return power(convertedTypeMoney);    
+    }
+    
     /**
      * Checks if this object is positive.
      * 
