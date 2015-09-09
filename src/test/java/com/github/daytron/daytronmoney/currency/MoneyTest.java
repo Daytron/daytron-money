@@ -31,7 +31,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  * Test class for Money
@@ -1789,4 +1788,137 @@ public class MoneyTest {
         }
     }
     
+    /**
+     * Test of power method, of class Money.
+     */
+    @Test
+    public void testPower_long() {
+        MoneyFactory mf = new MoneyFactory();
+        // Given
+        Money[] listOfInput1 = new Money[]
+        {
+            new Money(SignValue.Positive, 5000, 0),
+            new Money(SignValue.Positive, 2963, 0),
+            new Money(SignValue.Positive, 8, 0),
+            
+            new Money(SignValue.Positive, 5000, 0),
+            new Money(SignValue.Positive, 2000, 0),
+            new Money(SignValue.Positive, 8, 0),
+            
+            new Money(SignValue.Negative, 5000, 0),
+            new Money(SignValue.Negative, 2963, 0),
+            new Money(SignValue.Negative, 8, 0),
+            
+            new Money(SignValue.Negative, 10, 0),
+            new Money(SignValue.Negative, 800, 0),
+            new Money(SignValue.Negative, 80, 0),
+        };
+        
+        long[] listOfInput2 = new long[]
+        {
+            4,
+            5,
+            15,
+            
+            -1,
+            -2,
+            -3,
+            
+            4,
+            3,
+            7,
+            
+            -3,
+            -2,
+            -4
+        };
+        
+        String[] exptResults = new String[] {
+            "625000000000000","228380099273071043","35184372088832",
+            
+            "0.0002","0.00000025","0.001953125",
+            
+            "625000000000000","-26013270347","-2097152",
+            
+            "-0.001","0.0000015625","0.0000000244140625"
+        };
+        
+        for (int i = 0; i < exptResults.length; i++) {
+            //Given
+            Money expectedResult = mf.valueOf(exptResults[i]);            
+            
+            // When
+            Money result = listOfInput1[i].power(listOfInput2[i]);
+            
+            // Then
+            assertEquals(result, expectedResult);
+        }
+    } 
+
+    /**
+     * Test of power method, of class Money.
+     */
+    @Test
+    public void testPower_int() {
+        MoneyFactory mf = new MoneyFactory();
+        // Given
+        Money[] listOfInput1 = new Money[]
+        {
+            new Money(SignValue.Positive, 5000, 0),
+            new Money(SignValue.Positive, 2963, 0),
+            new Money(SignValue.Positive, 8, 0),
+            
+            new Money(SignValue.Positive, 5000, 0),
+            new Money(SignValue.Positive, 2000, 0),
+            new Money(SignValue.Positive, 8, 0),
+            
+            new Money(SignValue.Negative, 5000, 0),
+            new Money(SignValue.Negative, 2963, 0),
+            new Money(SignValue.Negative, 8, 0),
+            
+            new Money(SignValue.Negative, 10, 0),
+            new Money(SignValue.Negative, 800, 0),
+            new Money(SignValue.Negative, 80, 0),
+        };
+        
+        int[] listOfInput2 = new int[]
+        {
+            4,
+            5,
+            15,
+            
+            -1,
+            -2,
+            -3,
+            
+            4,
+            3,
+            7,
+            
+            -3,
+            -2,
+            -4        
+        };
+        
+        String[] exptResults = new String[] {
+            "625000000000000","228380099273071043","35184372088832",
+            
+            "0.0002","0.00000025","0.001953125",
+            
+            "625000000000000","-26013270347","-2097152",
+            
+            "-0.001","0.0000015625","0.0000000244140625"
+        };
+        
+        for (int i = 0; i < exptResults.length; i++) {
+            //Given
+            Money expectedResult = mf.valueOf(exptResults[i]);            
+            
+            // When
+            Money result = listOfInput1[i].power(listOfInput2[i]);
+            
+            // Then
+            assertEquals(result, expectedResult);
+        }
+    }
 }

@@ -272,7 +272,7 @@ public final class Money {
      * Calculates product of two <code>Money</code> objects 
      * and returns a new <code>Money</code>.
      * 
-     * @param money <code>Money</code> object to be multiplied to
+     * @param money exponent to be multiplied by
      * @return <code>Money</code> object as product
      */
     public Money multiply(Money money) {
@@ -319,7 +319,39 @@ public final class Money {
         MoneyOperation divisionOperation = new Division(this, money);
         return divisionOperation.execute();
     }
-
+    
+   /**
+     * Calculates product of a <code>Money</code> object to the specified
+     * power and returns a new <code>Money</code>. Both the exponent and base 
+     * values must whole numbers. But can be positive or negative.
+     * 
+     * @param value <code>long</code> value used as the exponent
+     * @return <code>Money</code> object as product
+     */
+    public Money power(long value) {
+        Money convertedTypeMoney = new Money(value);
+        verifyInput(convertedTypeMoney);
+        
+        MoneyOperation powerOperation = new Power(this, convertedTypeMoney);
+        return powerOperation.execute();  
+    }
+    
+    /**
+     * Calculates product of a <code>Money</code> object to the specified
+     * power and returns a new <code>Money</code>. Both the exponent and base 
+     * values must whole numbers. But can be positive or negative.
+     * 
+     * @param value <code>integer</code> value used as the exponent
+     * @return <code>Money</code> object as product
+     */
+    public Money power(int value) {
+        Money convertedTypeMoney = new Money(value);
+        verifyInput(convertedTypeMoney);
+        
+        MoneyOperation powerOperation = new Power(this, convertedTypeMoney);
+        return powerOperation.execute();   
+    }
+    
     /**
      * Checks if this object is positive.
      * 
@@ -345,6 +377,15 @@ public final class Money {
      */
     public boolean isZero() {
         return getWholeUnit() == 0 && getDecimalUnit() == 0;
+    }
+    
+    /**
+     * Checks if the object is a whole number without fractional parts. 
+     * 
+     * @return <code>boolean</code> value 
+     */
+    public boolean isWholeNumber() {
+        return getDecimalUnit() == 0 && getLeadingDecimalZeros() == 0;
     }
 
     /**
