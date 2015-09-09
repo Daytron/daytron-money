@@ -319,20 +319,6 @@ public final class Money {
         MoneyOperation divisionOperation = new Division(this, money);
         return divisionOperation.execute();
     }
-
-    /**
-     * Calculates product of a <code>Money</code> object to the specified 
-     * power and returns a new <code>Money</code>.
-     * 
-     * @param money <code>Money</code> object used as the exponent
-     * @return <code>Money</code> object as product
-     */
-    private Money power(Money money) {
-        verifyInput(money);
-        
-        MoneyOperation multiplicationOperation = new Power(this, money);
-        return multiplicationOperation.execute();
-    }
     
    /**
      * Calculates product of a <code>Money</code> object to the specified
@@ -344,7 +330,10 @@ public final class Money {
      */
     public Money power(long value) {
         Money convertedTypeMoney = new Money(value);
-        return power(convertedTypeMoney);    
+        verifyInput(convertedTypeMoney);
+        
+        MoneyOperation powerOperation = new Power(this, convertedTypeMoney);
+        return powerOperation.execute();  
     }
     
     /**
@@ -356,8 +345,11 @@ public final class Money {
      * @return <code>Money</code> object as product
      */
     public Money power(int value) {
-        Money convertedTypeMoney = new Money((long)value);
-        return power(convertedTypeMoney);    
+        Money convertedTypeMoney = new Money(value);
+        verifyInput(convertedTypeMoney);
+        
+        MoneyOperation powerOperation = new Power(this, convertedTypeMoney);
+        return powerOperation.execute();  
     }
     
     /**

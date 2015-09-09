@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2015 Ryan Gilera.
+ * Copyright 2015 Ryan Gilera, Shaun Plummer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.daytron.daytronmoney.currency;
+package com.github.daytron.daytronmoney.exception;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
 /**
- * Test class for Powers
+ *
  * @author Shaun Plummer
  */
-public class PowerTest {
+public class BaseNotAWholeNumberTest {
     
-    public PowerTest() {
+    public BaseNotAWholeNumberTest() {
     }
     
     @BeforeClass
@@ -55,37 +54,13 @@ public class PowerTest {
     public void tearDown() {
     }
 
-
-    /**
-     * Test of execute method, of class Power.
-     */
-    @Test
-    public void testExecute() {
-        MoneyFactory mf = new MoneyFactory();
-        
-        String[] valueA = new String[] {
-            "0","1","1","-1","-1","90",
-        };
-        String[] valueB = new String[] {
-            "3","-5","7","3","-4","3"
-        };
-        String[] exptResults = new String[] {
-            "0","1","1","-1","1","729000",
-        };
-        
-        for (int i = 0; i< valueA.length; i++) {
-            // Given
-            Money aMoney = mf.valueOf(valueA[i]);
-            Money bMoney = mf.valueOf(valueB[i]);
-            
-            MoneyOperation powerOperation = new Power(aMoney, bMoney);
-            Money expectedResult = mf.valueOf(exptResults[i]);
-            
-            // When 
-            Money productMoney = powerOperation.execute();
-                        
-            // Then
-            assertEquals(expectedResult, productMoney);
-        }
+    @Test(expected=BaseNotAWholeNumber.class)
+    public void testExceptionWithoutMessage() {
+        throw new BaseNotAWholeNumber();
+    }
+    
+    @Test(expected=BaseNotAWholeNumber.class)
+    public void testExceptionWithMessage() {
+        throw new BaseNotAWholeNumber("Invalid");
     }
 }

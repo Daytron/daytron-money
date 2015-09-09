@@ -1798,30 +1798,50 @@ public class MoneyTest {
         // Given
         Money[] listOfInput1 = new Money[]
         {
-            new Money(SignValue.Positive, 6, 50),
-            new Money(SignValue.Positive, 6, 05),
-            new Money(SignValue.Positive, 6, 55),
-            new Money(SignValue.Positive, 12, 105),
-            new Money(SignValue.Positive, 2963, 50),         
-            new Money(SignValue.Negative, 2963, 50),         
-            new Money(SignValue.Positive, 5, 0),         
-            new Money(SignValue.Negative, 5999, 99)
+            new Money(SignValue.Positive, 5000, 0),
+            new Money(SignValue.Positive, 2963, 0),
+            new Money(SignValue.Positive, 8, 0),
+            
+            new Money(SignValue.Positive, 5000, 0),
+            new Money(SignValue.Positive, 2000, 0),
+            new Money(SignValue.Positive, 8, 0),
+            
+            new Money(SignValue.Negative, 5000, 0),
+            new Money(SignValue.Negative, 2963, 0),
+            new Money(SignValue.Negative, 8, 0),
+            
+            new Money(SignValue.Negative, 10, 0),
+            new Money(SignValue.Negative, 800, 0),
+            new Money(SignValue.Negative, 80, 0),
         };
         
         long[] listOfInput2 = new long[]
         {
-            6,
-            6,
-            6,
+            4,
+            5,
+            15,
+            
+            -1,
+            -2,
+            -3,
+            
             4,
             3,
-            3,
+            7,
+            
             -3,
-            2
+            -2,
+            -4
         };
         
         String[] exptResults = new String[] {
-          "75418.890625","49037.943386265625","78967.392879390625","21471.341287550625","26026441622.875","-26026441622.875","0.008","35999880.0001"
+            "625000000000000","228380099273071043","35184372088832",
+            
+            "0.0002","0.00000025","0.001953125",
+            
+            "625000000000000","-26013270347","-2097152",
+            
+            "-0.001","0.0000015625","0.0000000244140625"
         };
         
         for (int i = 0; i < exptResults.length; i++) {
@@ -1845,30 +1865,50 @@ public class MoneyTest {
         // Given
         Money[] listOfInput1 = new Money[]
         {
-            new Money(SignValue.Positive, 6, 50),
-            new Money(SignValue.Positive, 6, 05),
-            new Money(SignValue.Positive, 6, 55),
-            new Money(SignValue.Positive, 12, 105),
-            new Money(SignValue.Positive, 2963, 50),         
-            new Money(SignValue.Negative, 2963, 50),         
-            new Money(SignValue.Positive, 5, 0),         
-            new Money(SignValue.Negative, 5999, 99)
+            new Money(SignValue.Positive, 5000, 0),
+            new Money(SignValue.Positive, 2963, 0),
+            new Money(SignValue.Positive, 8, 0),
+            
+            new Money(SignValue.Positive, 5000, 0),
+            new Money(SignValue.Positive, 2000, 0),
+            new Money(SignValue.Positive, 8, 0),
+            
+            new Money(SignValue.Negative, 5000, 0),
+            new Money(SignValue.Negative, 2963, 0),
+            new Money(SignValue.Negative, 8, 0),
+            
+            new Money(SignValue.Negative, 10, 0),
+            new Money(SignValue.Negative, 800, 0),
+            new Money(SignValue.Negative, 80, 0),
         };
         
         int[] listOfInput2 = new int[]
         {
-            6,
-            6,
-            6,
+            4,
+            5,
+            15,
+            
+            -1,
+            -2,
+            -3,
+            
             4,
             3,
-            3,
+            7,
+            
             -3,
-            2
+            -2,
+            -4        
         };
         
         String[] exptResults = new String[] {
-          "75418.890625","49037.943386265625","78967.392879390625","21471.341287550625","26026441622.875","-26026441622.875","0.008","35999880.0001"
+            "625000000000000","228380099273071043","35184372088832",
+            
+            "0.0002","0.00000025","0.001953125",
+            
+            "625000000000000","-26013270347","-2097152",
+            
+            "-0.001","0.0000015625","0.0000000244140625"
         };
         
         for (int i = 0; i < exptResults.length; i++) {

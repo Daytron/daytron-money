@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2015 Ryan Gilera.
+ * Copyright 2015 Ryan Gilera, Shaun Plummer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 package com.github.daytron.daytronmoney.currency;
+
+import com.github.daytron.daytronmoney.exception.BaseNotAWholeNumber;
 
 /**
  * A <code>MoneyOperation</code> subclass implementing power operation
@@ -44,13 +46,31 @@ class Power extends MoneyOperation {
     @Override
     public Money execute() {
         Money thatMoney = getThatMoney();
+        Money thisMoney = getThisMoney();
+        
+        if (thatMoney == null) {
+            throw new NullPointerException("Exponent cannot be null");
+        }
+        
+        //Check base is a whole number
+        if (thisMoney.getDecimalUnit() != 0 || thisMoney.getLeadingDecimalZeros() != 0 ) {
+            throw new BaseNotAWholeNumber("Power operation can only be applied to whole numbers.");
+        }
+        
         
         //Check exponent is a whole number
         if(thatMoney.getDecimalUnit() != 0 ) {
             throw new IllegalArgumentException("Exponent must be a whole number");
         }
+        //Ensure any number to the power of zero is 1
+        if(thatMoney.isZero()) {
+            return new Money(SignValue.Positive, 1, 0);
+        }
+        //Calculation not possible
+        if(thisMoney.isZero() && thatMoney.isLessThanZero()) {
+            throw new ArithmeticException("Zero to a negative exponent is an undefined operation");
+        }
         
-        Money thisMoney = getThisMoney();
         long newWholeUnit = thatMoney.getWholeUnit();
         Money result = new Money(thisMoney.getSign(), thisMoney.getWholeUnit(), thisMoney.getDecimalUnit(), thisMoney.getLeadingDecimalZeros());
         
@@ -66,5 +86,4 @@ class Power extends MoneyOperation {
 
         return result;
     }
-    
 }
