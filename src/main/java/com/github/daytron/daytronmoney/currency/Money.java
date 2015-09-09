@@ -322,8 +322,8 @@ public final class Money {
     
    /**
      * Calculates product of a <code>Money</code> object to the specified
-     * power and returns a new <code>Money</code>. The exponent value must
-     * be a whole number but can be positive or negative.
+     * power and returns a new <code>Money</code>. Both the exponent and base 
+     * values must whole numbers. But can be positive or negative.
      * 
      * @param value <code>long</code> value used as the exponent
      * @return <code>Money</code> object as product
@@ -338,8 +338,8 @@ public final class Money {
     
     /**
      * Calculates product of a <code>Money</code> object to the specified
-     * power and returns a new <code>Money</code>. The exponent value must
-     * be a whole number but can be positive or negative.
+     * power and returns a new <code>Money</code>. Both the exponent and base 
+     * values must whole numbers. But can be positive or negative.
      * 
      * @param value <code>integer</code> value used as the exponent
      * @return <code>Money</code> object as product
@@ -349,7 +349,7 @@ public final class Money {
         verifyInput(convertedTypeMoney);
         
         MoneyOperation powerOperation = new Power(this, convertedTypeMoney);
-        return powerOperation.execute();  
+        return powerOperation.execute();   
     }
     
     /**
@@ -377,6 +377,15 @@ public final class Money {
      */
     public boolean isZero() {
         return getWholeUnit() == 0 && getDecimalUnit() == 0;
+    }
+    
+    /**
+     * Checks if the object is a whole number without fractional parts. 
+     * 
+     * @return <code>boolean</code> value 
+     */
+    public boolean isWholeNumber() {
+        return getDecimalUnit() == 0 && getLeadingDecimalZeros() == 0;
     }
 
     /**

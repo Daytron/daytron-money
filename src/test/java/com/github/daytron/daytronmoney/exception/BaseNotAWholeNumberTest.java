@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 /**
- *
+ * Test class for BaseNotAWholeNumber Exception
  * @author Shaun Plummer
  */
 public class BaseNotAWholeNumberTest {

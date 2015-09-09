@@ -53,13 +53,13 @@ class Power extends MoneyOperation {
         }
         
         //Check base is a whole number
-        if (thisMoney.getDecimalUnit() != 0 || thisMoney.getLeadingDecimalZeros() != 0 ) {
+        if (!thisMoney.isWholeNumber()) {
             throw new BaseNotAWholeNumber("Power operation can only be applied to whole numbers.");
         }
         
         
         //Check exponent is a whole number
-        if(thatMoney.getDecimalUnit() != 0 ) {
+        if(!thatMoney.isWholeNumber()) {
             throw new IllegalArgumentException("Exponent must be a whole number");
         }
         //Ensure any number to the power of zero is 1
