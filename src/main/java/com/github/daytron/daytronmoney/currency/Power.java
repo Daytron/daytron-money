@@ -64,7 +64,10 @@ class Power extends MoneyOperation {
         }
         //Ensure any number to the power of zero is 1
         if(thatMoney.isZero()) {
-            return new Money(SignValue.Positive, 1, 0);
+            return new Money.Builder()
+                    .sign(SignValue.Positive)
+                    .wholeUnit(1)
+                    .build();
         }
         //Calculation not possible
         if(thisMoney.isZero() && thatMoney.isLessThanZero()) {
@@ -72,7 +75,11 @@ class Power extends MoneyOperation {
         }
         
         long newWholeUnit = thatMoney.getWholeUnit();
-        Money result = new Money(thisMoney.getSign(), thisMoney.getWholeUnit(), thisMoney.getDecimalUnit(), thisMoney.getLeadingDecimalZeros());
+        Money result = new Money.Builder()
+                .sign(thisMoney.getSign())
+                .wholeUnit(thisMoney.getWholeUnit())
+                .leadingDecimalZeroes(thisMoney.getLeadingDecimalZeros())
+                .build();
         
         //Multiply by the exponent
         for(int i = 1; i < newWholeUnit; i++) {
@@ -81,7 +88,11 @@ class Power extends MoneyOperation {
 
         //if the exponent was a negative number take the reciprocal
         if( thatMoney.getSign() == SignValue.Negative) {
-            result = new Money(SignValue.Positive, 1, 0).divide(result);
+            result = new Money.Builder()
+                    .sign(SignValue.Positive)
+                    .wholeUnit(1)
+                    .build()
+                    .divide(result);
         }
 
         return result;

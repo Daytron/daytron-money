@@ -77,8 +77,12 @@ public class CurrencyExchangeTest {
     @Ignore
     public void testConvert() {
         // Given
-        Money fromMoney = new Money("USD", 
-                SignValue.Positive, 2, 50, 0);
+        Money fromMoney = new Money.Builder()
+                .currencyCode("USD") 
+                .sign(SignValue.Positive)
+                .wholeUnit(2)
+                .decimalUnit(50)
+                .build();
         
         String toCurrencyCode = "PHP";
         String expCurrency = "PHP";

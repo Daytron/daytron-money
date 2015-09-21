@@ -33,9 +33,10 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Class that represents a single monetary value. This is an immutable class, its
- * value cannot be changed. All operation output returns a new object of this class.
- * 
+ * Class that represents a single monetary value. This is an immutable class,
+ * its value cannot be changed. All operation output returns a new object of
+ * this class.
+ *
  * @author Ryan Gilera
  */
 public final class Money {
@@ -52,143 +53,143 @@ public final class Money {
     private final SignValue sign;
 
     /**
-     * Creates a new <code>Money</code> object that takes a currency code, a sign 
-     * , a whole unit value, a decimal unit and any leading zeroes as 
-     * its parameters.
+     * A private constructor to delegate object creation to its static nested 
+     * builder class. Accept Builder as an argument and retrieves all 
+ collected information.
      * 
-     * @param currencyCode currency code as <code>String</code>
-     * @param sign A <code>SignValue</code> constant
-     * @param wholeUnit A whole unit value as <code>long</code>
-     * @param decimalUnit A decimal unit as <code>long</code>
-     * @param leadingDecimalZeros Leading zeroes as <code>long</code>
+     * @param moneyBuilder Static nested builder class object
      */
-    public Money(String currencyCode, SignValue sign, long wholeUnit,
-            long decimalUnit, long leadingDecimalZeros) {
+    private Money(Builder moneyBuilder) {
+        this.currencyCode = moneyBuilder.bCurrencyCode;
+        this.decimalUnit = moneyBuilder.bDecimalUnit;
+        this.wholeUnit = moneyBuilder.bWholeUnit;
+        this.leadingDecimalZeros = moneyBuilder.bLeadingDecimalZeros;
+        this.sign = moneyBuilder.bSign;
+    }
 
-        // Check if leadingZeroInput is negative, then throw exception
-        if (leadingDecimalZeros < 0) {
-            throw new IllegalArgumentException("Negative leading zero input.");
+    /***
+     * The builder class for object creation purposes.
+     */
+    public static final class Builder {
+
+        private String bCurrencyCode;
+        private long bWholeUnit;
+        private long bDecimalUnit;
+        private long bLeadingDecimalZeros;
+        private SignValue bSign;
+
+        /**
+         * Apply default values in case the user did not set a custom value.
+         */
+        public Builder() {
+            // Default values
+            this.bCurrencyCode = DEFAULT_CURRENCY_CODE;
+            this.bSign = SignValue.Positive;
+            this.bWholeUnit = 0;
+            this.bDecimalUnit = 0;
+            this.bLeadingDecimalZeros = 0;
+        }
+        
+        /**
+         * Sets the whole unit value.
+         * 
+         * @param aWholeUnit long value
+         * @return this Builder object
+         */
+        public Builder wholeUnit(long aWholeUnit) {
+            this.bWholeUnit = aWholeUnit;
+            return this;
         }
 
-        this.currencyCode = Currency.getInstance(
-                currencyCode.toUpperCase()).getCurrencyCode();
+        /**
+         * Sets the sign value with SignValue as its argument.
+         * 
+         * @param aSignValue SignValue option
+         * @return this Builder object
+         */
+        public Builder sign(SignValue aSignValue) {
+            this.bSign = aSignValue;
+            return this;
+        }
 
-        // Prevent negative zero money
-        // For simplicity zero is considered positive
-        // but when represented in String format,
-        // it is unsign.
-        if (wholeUnit == 0 && decimalUnit == 0) {
-            this.sign = SignValue.Positive;
-        } else {
-            // Check also if user's long type input is negative
-            // ex new Money("USD",SignValue.Positive, -12,7,1);
-            // this should change the sign to negative, regardless of sign input
-            if (wholeUnit < 0 || decimalUnit < 0) {
-                this.sign = SignValue.Negative;
-            } else {
-                this.sign = sign;
+        /**
+         * Sets the decimal value.
+         * 
+         * @param aDecimalUnit long value
+         * @return this Builder object
+         */
+        public Builder decimalUnit(long aDecimalUnit) {
+            if (aDecimalUnit < 0) {
+                this.bSign = SignValue.Negative;
             }
+            
+            this.bDecimalUnit = aDecimalUnit;
+            return this;
         }
 
-        // If decimal input single digit, non-zero and no leading zero
-        // Add a leading zero
-        // Single digit decimal means it has a 1 leading zero
-        // ex. 1 means 0.01 not 0.10
-        if (Long.toString(decimalUnit).length() == 1 && decimalUnit != 0
-                && leadingDecimalZeros == 0) {
-            this.leadingDecimalZeros = 1;
-        } else {
-            // Also check if decimal is zero but leadingzero > 0 
-            // then normalize it. ex. 23.000000 to 23.0
-            // But in toString output is 23.00
-            if (decimalUnit == 0) {
-                this.leadingDecimalZeros = 0;
-            } else {
-                this.leadingDecimalZeros = leadingDecimalZeros;
+        /**
+         * Sets the leading zeros before the decimal value.
+         * 
+         * @param aLeadingZeroes long value
+         * @return this Builder object
+         */
+        public Builder leadingDecimalZeroes(long aLeadingZeroes) {
+            this.bLeadingDecimalZeros = aLeadingZeroes;
+            return this;
+        }
+
+        /**
+         * Sets the currency code.
+         * 
+         * @param aCurrencyCode Accepted String value 
+         * @return this Builder object
+         */
+        public Builder currencyCode(String aCurrencyCode) {
+            this.bCurrencyCode = Currency.getInstance(
+                aCurrencyCode.toUpperCase()).getCurrencyCode();
+            return this;
+        }
+
+        /**
+         * Build the Money object based on new values set. Perform checks before 
+         * returning the Money object.
+         * 
+         * @return Money object
+         */
+        public Money build() {
+            Money bMoney = new Money(this);
+
+            // Check if leadingZeroInput is negative, then throw exception
+            if (bMoney.getLeadingDecimalZeros() < 0) {
+                throw new IllegalStateException("Negative leading zero input.");
             }
+
+            // Prevent negative zero money
+            if (bMoney.getWholeUnit() == 0 && bMoney.getDecimalUnit() == 0 && 
+                    bMoney.isNegative()) {
+                throw new IllegalStateException("Zero money cannot be negative.");
+            } else {
+                // Prevent negative values, force to use SignValue instead
+                if (bMoney.getWholeUnit() < 0 || bMoney.getDecimalUnit() < 0) {
+                    throw new IllegalStateException("Negative unit values. Use "
+                            + "SignValue instead.");
+                } 
+            }
+
+            if (bMoney.getDecimalUnit() == 0 && 
+                    bMoney.getLeadingDecimalZeros() > 0) {
+                    throw new IllegalStateException("Abnormal leading zeros with "
+                            + "zero decimal value.");
+            }
+
+            return bMoney;
         }
-
-        // Check also if user's long type input is negative
-        // ex new Money("USD",SignValue.Positive, -12,7,1);
-        // after the sign is normalized (see above code), remove negative
-        if (wholeUnit < 0 || decimalUnit < 0) {
-            this.wholeUnit = Math.abs(wholeUnit);
-            this.decimalUnit = Math.abs(decimalUnit);
-        } else {
-            this.wholeUnit = wholeUnit;
-            this.decimalUnit = decimalUnit;
-        }
-    }
-
-    /**
-     * Creates a new <code>Money</code> object that takes a sign 
-     * , a whole unit value, a decimal unit and any leading zeroes as 
-     * its parameters. Currency code is set to default local currency code.
-     * 
-     * @param sign A <code>SignValue</code> constant
-     * @param wholeUnit A whole unit value as <code>long</code>
-     * @param decimalUnit A decimal unit as <code>long</code>
-     * @param leadingDecimalZeros Leading zeroes as <code>long</code>
-     */
-    public Money(SignValue sign, long wholeUnit,
-            long decimalUnit, long leadingDecimalZeros) {
-        this(DEFAULT_CURRENCY_CODE, sign, wholeUnit, decimalUnit,
-                leadingDecimalZeros);
-    }
-
-    /**
-     * Creates a new <code>Money</code> object that takes a sign 
-     * , a whole unit value, a decimal unit as its parameters. 
-     * Currency code is set to default local currency code. 
-     * Leading decimal zeroes is set to zero.
-     * 
-     * @param sign A <code>SignValue</code> constant
-     * @param wholeUnit A whole unit value as <code>long</code>
-     * @param decimalUnit A decimal unit as <code>long</code>
-     */
-    public Money(SignValue sign, long wholeUnit, long decimalUnit) {
-        this(DEFAULT_CURRENCY_CODE, sign, wholeUnit, decimalUnit, 0);
-    }
-
-    /**
-     * Creates a new <code>Money</code> object that takes a whole unit value, 
-     * a decimal unit as its parameters. Currency code is set to default 
-     * local currency code. 
-     * Leading decimal zeroes is set to zero. Sign is set to positive.
-     * 
-     * @param wholeUnit A whole unit value as <code>long</code>
-     * @param decimalUnit A decimal unit as <code>long</code>
-     */
-    public Money(long wholeUnit, long decimalUnit) {
-        this(DEFAULT_CURRENCY_CODE, SignValue.Positive, wholeUnit, decimalUnit, 0);
-    }
-
-    /**
-     * Creates a new <code>Money</code> object that takes a whole unit value as
-     * its parameter. Currency code is set to default local currency code. 
-     * Leading decimal zeroes is set to zero. Sign is set to positive.
-     * Decimal unit is set to zero.
-     * 
-     * @param wholeUnit A whole unit value as <code>long</code>
-     */
-    public Money(long wholeUnit) {
-        this(DEFAULT_CURRENCY_CODE, SignValue.Positive, wholeUnit, 0, 0);
-    }
-
-    /**
-     * Creates a new <code>Money</code> object that takes no arguments, value 
-     * represents as zero. Currency code is set to default local currency code. 
-     * Leading decimal zeroes is set to zero. Sign is set to positive.
-     * Whole and decimal unit is set to zero.
-     */
-    public Money() {
-        this(DEFAULT_CURRENCY_CODE, SignValue.Positive, 0, 0, 0);
     }
 
     /**
      * Returns the sign.
-     * 
-     * @return <code>SignValue</code> constant 
+     *
+     * @return <code>SignValue</code> constant
      */
     public SignValue getSign() {
         return sign;
@@ -196,8 +197,8 @@ public final class Money {
 
     /**
      * Returns the whole unit.
-     * 
-     * @return <code>long</code> value 
+     *
+     * @return <code>long</code> value
      */
     public long getWholeUnit() {
         return wholeUnit;
@@ -205,7 +206,7 @@ public final class Money {
 
     /**
      * Returns the decimal unit.
-     * 
+     *
      * @return <code>long</code> value
      */
     public long getDecimalUnit() {
@@ -214,7 +215,7 @@ public final class Money {
 
     /**
      * Returns any leading zeroes.
-     * 
+     *
      * @return <code>long</code> value
      */
     public long getLeadingDecimalZeros() {
@@ -223,8 +224,8 @@ public final class Money {
 
     /**
      * Returns currency code.
-     * 
-     * @return <code>String</code> object 
+     *
+     * @return <code>String</code> object
      */
     public String getCurrencyCode() {
         return currencyCode;
@@ -232,18 +233,27 @@ public final class Money {
 
     /**
      * Negates this value sign.
-     * 
-     * @return <code>Money</code> object 
+     *
+     * @return <code>Money</code> object
      */
-    public Money negate() {        
-        return new Money(currencyCode, sign.oppositeOf(),
-                wholeUnit, decimalUnit, leadingDecimalZeros);
+    public Money negate() {
+        if (wholeUnit == 0 && decimalUnit == 0 && sign == SignValue.Positive) {
+            throw new IllegalStateException("Cannot negate zero.");
+        }
+        
+        return new Money.Builder()
+                .wholeUnit(wholeUnit)
+                .currencyCode(currencyCode)
+                .decimalUnit(decimalUnit)
+                .leadingDecimalZeroes(leadingDecimalZeros)
+                .sign(sign.oppositeOf())
+                .build();
     }
 
     /**
-     * Calculates the sum of two <code>Money</code> objects 
-     * and returns a new <code>Money</code>.
-     * 
+     * Calculates the sum of two <code>Money</code> objects and returns a new
+     * <code>Money</code>.
+     *
      * @param money <code>Money</code> object to be added
      * @return <code>Money</code> object as sum
      */
@@ -255,9 +265,9 @@ public final class Money {
     }
 
     /**
-     * Calculates difference of two <code>Money</code> objects 
-     * and returns a new <code>Money</code>.
-     * 
+     * Calculates difference of two <code>Money</code> objects and returns a new
+     * <code>Money</code>.
+     *
      * @param money <code>Money</code> object to be subtracted to
      * @return <code>Money</code> object as difference
      */
@@ -267,95 +277,110 @@ public final class Money {
         MoneyOperation subtractionOperation = new Subtraction(this, money);
         return subtractionOperation.execute();
     }
-    
+
     /**
-     * Calculates product of two <code>Money</code> objects 
-     * and returns a new <code>Money</code>.
-     * 
+     * Calculates product of two <code>Money</code> objects and returns a new
+     * <code>Money</code>.
+     *
      * @param money exponent to be multiplied by
      * @return <code>Money</code> object as product
      */
     public Money multiply(Money money) {
         verifyInput(money);
-        
+
         MoneyOperation multiplicationOperation = new Multiplication(this, money);
         return multiplicationOperation.execute();
     }
-    
-   /**
-     * Calculates product of two <code>Money</code> objects 
-     * and returns a new <code>Money</code>.
-     * 
+
+    /**
+     * Calculates product of two <code>Money</code> objects and returns a new
+     * <code>Money</code>.
+     *
      * @param value <code>long</code> object to be multiplied to
      * @return <code>Money</code> object as product
      */
     public Money multiply(long value) {
-        Money convertedTypeMoney = new Money(value);
-        return multiply(convertedTypeMoney);    
+        SignValue sign = SignValue.Positive;
+        
+        if (value < 0) {
+            sign = SignValue.Negative;
+            value = Math.abs(value);
+        }
+        
+        Money convertedTypeMoney = new Money.Builder()
+                .sign(sign)
+                .wholeUnit(value)
+                .build();
+        return multiply(convertedTypeMoney);
     }
-    
+
     /**
-     * Calculates product of two <code>Money</code> objects 
-     * and returns a new <code>Money</code>.
-     * 
+     * Calculates product of two <code>Money</code> objects and returns a new
+     * <code>Money</code>.
+     *
      * @param value <code>integer</code> object to be multiplied to
      * @return <code>Money</code> object as product
      */
     public Money multiply(int value) {
-        Money convertedTypeMoney = new Money((long)value);
-        return multiply(convertedTypeMoney);    
+        return multiply((long)value);
     }
-    
+
     /**
-     * Calculates quotient of two <code>Money</code> objects 
-     * and returns a new <code>Money</code>.
-     * 
+     * Calculates quotient of two <code>Money</code> objects and returns a new
+     * <code>Money</code>.
+     *
      * @param money <code>long</code> object as divisor
      * @return <code>Money</code> object as quotient
      */
     public Money divide(Money money) {
         verifyInput(money);
-        
+
         MoneyOperation divisionOperation = new Division(this, money);
         return divisionOperation.execute();
     }
-    
-   /**
-     * Calculates product of a <code>Money</code> object to the specified
-     * power and returns a new <code>Money</code>. Both the exponent and base 
-     * values must whole numbers. But can be positive or negative.
-     * 
+
+    /**
+     * Calculates product of a <code>Money</code> object to the specified power
+     * and returns a new <code>Money</code>. Both the exponent and base values
+     * must whole numbers. But can be positive or negative.
+     *
      * @param value <code>long</code> value used as the exponent
      * @return <code>Money</code> object as product
      */
     public Money power(long value) {
-        Money convertedTypeMoney = new Money(value);
-        verifyInput(convertedTypeMoney);
+        SignValue sign = SignValue.Positive;
         
+        if (value < 0) {
+            sign = SignValue.Negative;
+            value = Math.abs(value);
+        }
+        
+        Money convertedTypeMoney = new Money.Builder()
+                .sign(sign)
+                .wholeUnit(value)
+                .build();
+        verifyInput(convertedTypeMoney);
+
         MoneyOperation powerOperation = new Power(this, convertedTypeMoney);
-        return powerOperation.execute();  
+        return powerOperation.execute();
     }
-    
+
     /**
-     * Calculates product of a <code>Money</code> object to the specified
-     * power and returns a new <code>Money</code>. Both the exponent and base 
-     * values must whole numbers. But can be positive or negative.
-     * 
+     * Calculates product of a <code>Money</code> object to the specified power
+     * and returns a new <code>Money</code>. Both the exponent and base values
+     * must whole numbers. But can be positive or negative.
+     *
      * @param value <code>integer</code> value used as the exponent
      * @return <code>Money</code> object as product
      */
     public Money power(int value) {
-        Money convertedTypeMoney = new Money(value);
-        verifyInput(convertedTypeMoney);
-        
-        MoneyOperation powerOperation = new Power(this, convertedTypeMoney);
-        return powerOperation.execute();   
+        return power((long)value);
     }
-    
+
     /**
      * Checks if this object is positive.
-     * 
-     * @return <code>boolean</code> value 
+     *
+     * @return <code>boolean</code> value
      */
     public boolean isPositive() {
         return getSign() == SignValue.Positive && isNotZero();
@@ -363,8 +388,8 @@ public final class Money {
 
     /**
      * Checks if this object is negative.
-     * 
-     * @return <code>boolean</code> value 
+     *
+     * @return <code>boolean</code> value
      */
     public boolean isNegative() {
         return getSign() == SignValue.Negative;
@@ -372,17 +397,17 @@ public final class Money {
 
     /**
      * Checks if this object is zero.
-     * 
-     * @return <code>boolean</code> value 
+     *
+     * @return <code>boolean</code> value
      */
     public boolean isZero() {
         return getWholeUnit() == 0 && getDecimalUnit() == 0;
     }
-    
+
     /**
-     * Checks if the object is a whole number without fractional parts. 
-     * 
-     * @return <code>boolean</code> value 
+     * Checks if the object is a whole number without fractional parts.
+     *
+     * @return <code>boolean</code> value
      */
     public boolean isWholeNumber() {
         return getDecimalUnit() == 0 && getLeadingDecimalZeros() == 0;
@@ -390,8 +415,8 @@ public final class Money {
 
     /**
      * Checks if this object is not zero.
-     * 
-     * @return <code>boolean</code> value 
+     *
+     * @return <code>boolean</code> value
      */
     public boolean isNotZero() {
         return !isZero();
@@ -400,9 +425,9 @@ public final class Money {
     /**
      * Override equals method to match if two <code>Money</code> have the same
      * value and currency.
-     * 
+     *
      * @param money <code>Money</code> object to compare with
-     * @return <code>boolean</code> value 
+     * @return <code>boolean</code> value
      */
     @Override
     public boolean equals(Object money) {
@@ -427,8 +452,8 @@ public final class Money {
 
     /**
      * Override hash code to match equal <code>Money</code> objects.
-     * 
-     * @return <code>boolean</code> value 
+     *
+     * @return <code>boolean</code> value
      */
     @Override
     public int hashCode() {
@@ -442,10 +467,10 @@ public final class Money {
     }
 
     /**
-     * Compares two <code>Money</code> objects. Returns 1 if this object is greater
-     * than the <code>Money</code> object being compared with. Returns 0 if they are equal 
-     * and -1 if they are equal.
-     * 
+     * Compares two <code>Money</code> objects. Returns 1 if this object is
+     * greater than the <code>Money</code> object being compared with. Returns 0
+     * if they are equal and -1 if they are equal.
+     *
      * @param money <code>Money</code> object being compared with
      * @return <code>integer</code> value
      */
@@ -480,65 +505,72 @@ public final class Money {
 
     }
 
-     /**
-     * Checks if this object is less than the argument <code>Money</code> object.
-     * 
+    /**
+     * Checks if this object is less than the argument <code>Money</code>
+     * object.
+     *
      * @param money <code>Money</code> object
-     * @return <code>boolean</code> value 
+     * @return <code>boolean</code> value
      */
     public boolean isLessThan(Money money) {
         return compareTo(money) == -1;
     }
-    
+
     /**
-     * Checks if this object is less than or equal to the argument 
+     * Checks if this object is less than or equal to the argument
      * <code>Money</code> object.
-     * 
+     *
      * @param money <code>Money</code> object
-     * @return <code>boolean</code> value 
+     * @return <code>boolean</code> value
      */
     public boolean isLessThanOrEqualTo(Money money) {
         return compareTo(money) == -1 || equals(money);
     }
-    
+
     /**
      * Checks if this object is less than zero
-     * 
-     * @return <code>boolean</code> value 
+     *
+     * @return <code>boolean</code> value
      */
     public boolean isLessThanZero() {
-        return compareTo(new Money(currencyCode, sign, 0, 0, 0)) == -1; 
+        Money tempMoney = new Money.Builder()
+                .currencyCode(currencyCode)
+                .sign(sign).build();
+        return compareTo(tempMoney) == -1;
     }
 
     /**
-     * Checks if this object is greater than the argument 
-     * <code>Money</code> object.
-     * 
+     * Checks if this object is greater than the argument <code>Money</code>
+     * object.
+     *
      * @param money <code>Money</code> object
-     * @return <code>boolean</code> value 
+     * @return <code>boolean</code> value
      */
     public boolean isGreaterThan(Money money) {
         return compareTo(money) == 1;
     }
-    
+
     /**
-     * Checks if this object is greater than or equal to the argument 
+     * Checks if this object is greater than or equal to the argument
      * <code>Money</code> object.
-     * 
+     *
      * @param money <code>Money</code> object
-     * @return <code>boolean</code> value 
+     * @return <code>boolean</code> value
      */
     public boolean isGreaterThanOrEqualTo(Money money) {
         return compareTo(money) == 1 || equals(money);
     }
-    
+
     /**
      * Checks if this object is greater than zero
-     * 
-     * @return <code>boolean</code> value 
+     *
+     * @return <code>boolean</code> value
      */
     public boolean isGreaterThanZero() {
-        return compareTo(new Money(currencyCode, sign, 0, 0, 0)) == 1; 
+        Money tempMoney = new Money.Builder()
+                .currencyCode(currencyCode)
+                .sign(sign).build();
+        return compareTo(tempMoney) == 1;
     }
 
     /**
@@ -561,21 +593,23 @@ public final class Money {
     /**
      * Checks if this object has the same currency with the argument
      * <code>Money</code> object.
-     * 
+     *
      * @param money <code>Money</code> object
-     * @return <code>boolean</code> value 
+     * @return <code>boolean</code> value
      */
     public boolean isSameCurrencyCodes(Money money) {
-        if (money == null) return false;
-        
+        if (money == null) {
+            return false;
+        }
+
         return getCurrencyCode().equalsIgnoreCase(money.getCurrencyCode());
     }
-    
+
     /**
      * Returns a <code>String</code> representation of this object without its
      * currency code.
-     * 
-     * @return <code>String</code> object 
+     *
+     * @return <code>String</code> object
      */
     public String toStringDecimal() {
         // Apply sign
@@ -587,34 +621,34 @@ public final class Money {
         } else {
             signText = getSign().getText();
         }
-        
+
         // Add any leading zeros
         String penceStr = "";
         for (int i = 0; i < getLeadingDecimalZeros(); i++) {
             penceStr += ZERO_STRING;
         }
-        
+
         return signText + getWholeUnit() + DECIMAL_POINT + penceStr + getDecimalUnit();
     }
 
     /**
-     * Returns a <code>String</code> representation of this object including 
-     * its sign, currency and value. Shows only
-     * the first two decimal places without rounding the value.
-     * 
-     * @return <code>String</code> object 
+     * Returns a <code>String</code> representation of this object including its
+     * sign, currency and value. Shows only the first two decimal places without
+     * rounding the value.
+     *
+     * @return <code>String</code> object
      */
     @Override
     public String toString() {
         double doubleFormat = Double.valueOf(toStringDecimal());
 
-        NumberFormat numberFormatter = 
-        NumberFormat.getCurrencyInstance(Locale.getDefault());
-        
+        NumberFormat numberFormatter
+                = NumberFormat.getCurrencyInstance(Locale.getDefault());
+
         Currency currency = Currency.getInstance(this.currencyCode);
         numberFormatter.setCurrency(currency);
         numberFormatter.setRoundingMode(RoundingMode.DOWN);
-        
+
         return numberFormatter.format(doubleFormat);
     }
 

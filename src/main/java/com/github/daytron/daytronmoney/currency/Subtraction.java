@@ -53,6 +53,10 @@ class Subtraction extends MoneyOperation{
             throw new NullPointerException("Cannot subtract Null value.");
         }
         
+        if (getThatMoney().isZero()) {
+            return getThisMoney();
+        }
+        
         MoneyOperation subtracttionOperation = new Addition(getThisMoney(), 
                 getThatMoney().negate());
         

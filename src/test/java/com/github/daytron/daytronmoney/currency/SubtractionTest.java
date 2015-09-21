@@ -60,23 +60,52 @@ public class SubtractionTest {
      */
     @Test
     public void testExecute() {
+        SignValue[] valueASign = new SignValue[]
+        {SignValue.Positive,
+         SignValue.Positive,
+         SignValue.Negative,
+         SignValue.Positive,
+         SignValue.Positive};
         long[] valueA = new long[] {
-          12,2698,-96,0,485697854  
+          12,2698,96,0,485697854  
         };
+        
+        SignValue[] valueBSign = new SignValue[]
+        {SignValue.Positive,
+         SignValue.Negative,
+         SignValue.Positive,
+         SignValue.Positive,
+         SignValue.Positive};
         long[] valueB = new long[] {
-          78596,-78,0,78569844,7856983  
+          78596,78,0,78569844,7856983  
         };
+        
+        SignValue[] exptSign = new SignValue[]
+        {SignValue.Negative,
+         SignValue.Positive,
+         SignValue.Negative,
+         SignValue.Negative,
+         SignValue.Positive};
         long[] exptResults = new long[] {
-          -78584,2776,-96,-78569844,477840871  
+          78584,2776,96,78569844,477840871  
         };
         
         for (int i = 0; i< valueA.length; i++) {
             // Given
-            Money aMoney = new Money(valueA[i]);
-            Money bMoney = new Money(valueB[i]);
+            Money aMoney = new Money.Builder()
+                    .sign(valueASign[i])
+                    .wholeUnit(valueA[i])
+                    .build();
+            Money bMoney = new Money.Builder()
+                    .sign(valueBSign[i])
+                    .wholeUnit(valueB[i])
+                    .build();
             
             MoneyOperation additionOperation = new Subtraction(aMoney, bMoney);
-            Money expectedResult = new Money(exptResults[i]);
+            Money expectedResult = new Money.Builder()
+                    .sign(exptSign[i])
+                    .wholeUnit(exptResults[i])
+                    .build();
             
             // When 
             Money sumMoney = additionOperation.execute();

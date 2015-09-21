@@ -154,7 +154,7 @@ public class MoneyHashMap<K,V extends Money> extends AbstractMoneyMap<K, Money>{
      */
     @Override
     public Money sum() {
-        Money sumMoney = new Money();
+        Money sumMoney = new Money.Builder().build();
         for (Money money : this.values()) {
             sumMoney = sumMoney.add(money);
         }

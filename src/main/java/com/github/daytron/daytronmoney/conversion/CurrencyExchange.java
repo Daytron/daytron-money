@@ -114,12 +114,13 @@ public class CurrencyExchange {
         final MoneyFactory mf = new MoneyFactory(toCurrencyCode);
         
         // Change to new currency first to allow same currency operation
-        Money baseMoney = new Money(
-                toCurrencyCode, 
-                fromMoney.getSign(), 
-                fromMoney.getWholeUnit(), 
-                fromMoney.getDecimalUnit(), 
-                fromMoney.getLeadingDecimalZeros());
+        Money baseMoney = new Money.Builder()
+                .currencyCode(toCurrencyCode)
+                .sign(fromMoney.getSign())
+                .wholeUnit(fromMoney.getWholeUnit())
+                .decimalUnit(fromMoney.getDecimalUnit())
+                .leadingDecimalZeroes(fromMoney.getLeadingDecimalZeros())
+                .build();
         
         // If the given money match the base currency (USD)
         // do direct conversion

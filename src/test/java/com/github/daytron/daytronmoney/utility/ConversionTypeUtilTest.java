@@ -63,8 +63,14 @@ public class ConversionTypeUtilTest {
     @Test
     public void testConcatWholeAndDecThenConvertBigInteger() {
         // Given
-        Money moneyA = new Money(10, 2634);
-        Money moneyB = new Money(30, 12);
+        Money moneyA = new Money.Builder()
+                .wholeUnit(10)
+                .decimalUnit(2634)
+                .build();
+        Money moneyB = new Money.Builder()
+                .wholeUnit(30)
+                .decimalUnit(12)
+                .build();
         
         BigInteger[] expectedResult = new BigInteger[] {
             new BigInteger("4"),

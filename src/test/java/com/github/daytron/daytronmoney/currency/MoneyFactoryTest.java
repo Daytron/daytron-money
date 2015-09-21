@@ -155,8 +155,10 @@ public class MoneyFactoryTest {
     @Test
     public void testValueOf_0args() {
         // Given
-        Money expMoney = new Money("USD", SignValue.Positive, 
-                0, 0, 0);
+        Money expMoney = new Money.Builder()
+                .currencyCode("USD")
+                .sign(SignValue.Positive) 
+                .build();
         
         // When
         Money resultMoney = usdMoneyFactory.valueOf();
@@ -176,14 +178,39 @@ public class MoneyFactoryTest {
         long[] listOfDecimalUnits = new long[]
         {0,5,88596,0,-856984478};
         long[] listOfLeadingZeroUnits = new long[]
-        {9,0,7,0,2};
+        {0,1,7,0,2};
         
         Money[] expMoneis = new Money[]
-        {new Money("USD", SignValue.Negative, 25, 0, 9),
-        new Money("USD", SignValue.Positive, 1256, 5, 0),
-        new Money("USD", SignValue.Positive, 1589647859, 88596, 7),
-        new Money("USD", SignValue.Positive, 0, 0, 0),
-        new Money("USD", SignValue.Negative, 0, 856984478, 2)};
+        {new Money.Builder()
+                .currencyCode("USD")
+                .sign(SignValue.Negative)
+                .wholeUnit(25)
+                .leadingDecimalZeroes(0)
+                .build(),
+        new Money.Builder()
+                .currencyCode("USD")
+                .sign(SignValue.Positive)
+                .wholeUnit(1256)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build(),
+        new Money.Builder()
+                .currencyCode("USD")
+                .sign(SignValue.Positive)
+                .wholeUnit(1589647859)
+                .decimalUnit(88596)
+                .leadingDecimalZeroes(7)
+                .build(),
+        new Money.Builder()
+                .currencyCode("USD")
+                .sign(SignValue.Positive)
+                .build(),
+        new Money.Builder()
+                .currencyCode("USD")
+                .sign(SignValue.Negative)
+                .decimalUnit(856984478)
+                .leadingDecimalZeroes(2)
+                .build()};
         
         for (int i = 0; i < listOfWholeUnits.length; i++) {
             // When
@@ -225,43 +252,79 @@ public class MoneyFactoryTest {
                 usdMoneyFactory.valueOf("USD -896,586,785,785,896.0025634589");
         
         Money[] expectedResults = new Money[]
-        {new Money("gbp",SignValue.Positive, 12, 50, 0),
-        new Money("gbp", SignValue.Positive, 12, 50, 0),
-        new Money("USD", SignValue.Negative, 12, 0, 0),
+        {new Money.Builder()
+                .currencyCode("gbp")
+                .sign(SignValue.Positive)
+                .wholeUnit(12)
+                .decimalUnit(50)
+                .build(),
+        new Money.Builder()
+                .currencyCode("gbp")
+                .sign(SignValue.Positive)
+                .wholeUnit(12)
+                .decimalUnit(50)
+                .build(),
+        new Money.Builder()
+                .currencyCode("USD")
+                .sign(SignValue.Negative)
+                .wholeUnit(12)
+                .build(),
         specialCaseMoneyForLongInput,
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(), 
-                SignValue.Positive, 0, 0, 0),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(), 
-                SignValue.Positive, 9, 6212, 0),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(), 
-                SignValue.Negative, 8, 0, 7),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(), 
-                SignValue.Positive, 0, 0, 0),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(), 
-                SignValue.Negative, 0, 0, 0),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(), 
-                SignValue.Positive, 0, -12, 0),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(), 
-                SignValue.Positive, 0, 0, 0),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(), 
-                SignValue.Positive, 286, 0, 0),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(),
-                SignValue.Positive, 0, 5, 6),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(),
-                SignValue.Positive, 0, 60, 0),
-        new Money(
-                Currency.getInstance(Locale.getDefault()).getCurrencyCode(),
-                SignValue.Positive, 12856896, 963, 2)
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Positive)
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Positive)
+                .wholeUnit(9)
+                .decimalUnit(6212)
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Negative)
+                .wholeUnit(8)
+                .leadingDecimalZeroes(0)
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Positive)
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Negative)
+                .decimalUnit(12)
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Positive)
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Positive)
+                .wholeUnit(286)
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Positive)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(6)
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Positive)
+                .decimalUnit(60)
+                .build(),
+        new Money.Builder()
+                .currencyCode(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+                .sign(SignValue.Positive)
+                .wholeUnit(12856896)
+                .decimalUnit(963)
+                .leadingDecimalZeroes(2)
+                .build()
         };
         
         for (int i = 0; i < listOfInputs.length; i++) {
@@ -292,9 +355,20 @@ public class MoneyFactoryTest {
         
         Money[] listOfResults = new Money[]
         {
-            new Money("JPY",SignValue.Positive,8569,0,0),
-            new Money("JPY",SignValue.Positive,0,0,0),
-            new Money("JPY",SignValue.Negative,-896,0,0)
+            new Money.Builder()
+                .currencyCode("JPY")
+                .sign(SignValue.Positive)
+                .wholeUnit(8569)
+                .build(),
+            new Money.Builder()
+                .currencyCode("JPY")
+                .sign(SignValue.Positive)
+                .build(),
+            new Money.Builder()
+                .currencyCode("JPY")
+                .sign(SignValue.Negative)
+                .wholeUnit(896)
+                .build()
         };
         
         for (int i = 0; i < listOfLongInputs.length; i++) {
@@ -321,9 +395,20 @@ public class MoneyFactoryTest {
         
         Money[] listOfResults = new Money[]
         {
-            new Money("EUR",SignValue.Positive,8569,0,0),
-            new Money("EUR",SignValue.Positive,0,0,0),
-            new Money("EUR",SignValue.Negative,-896,0,0)
+            new Money.Builder()
+                .currencyCode("EUR")
+                .sign(SignValue.Positive)
+                .wholeUnit(8569)
+                .build(),
+            new Money.Builder()
+                .currencyCode("EUR")
+                .sign(SignValue.Positive)
+                .build(),
+            new Money.Builder()
+                .currencyCode("EUR")
+                .sign(SignValue.Negative)
+                .wholeUnit(896)
+                .build()
         };
         
         for (int i = 0; i < listOfLongInputs.length; i++) {

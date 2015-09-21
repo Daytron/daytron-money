@@ -35,30 +35,31 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for MoneyArrayList
+ *
  * @author Ryan Gilera
  */
 public class MoneyArrayListTest {
-    
+
     public MoneyArrayListTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
-    
-     /**
+
+    /**
      * Test of different types of object creation for class MoneyArrayList.
      */
     @Test
@@ -67,7 +68,7 @@ public class MoneyArrayListTest {
         List<Money> moneyArrayList1 = new MoneyArrayList(1);
         List<Money> moneyArrayList2 = new MoneyArrayList(moneyArrayList1);
         List<Money> moneyArrayList3 = new MoneyArrayList();
-        
+
         // Then
         assertNotNull(moneyArrayList1);
         assertNotNull(moneyArrayList2);
@@ -81,25 +82,49 @@ public class MoneyArrayListTest {
     public void testHasNegativeValue() {
         // Given
         MoneyArrayList moneyArrayListCase1 = new MoneyArrayList();
-        moneyArrayListCase1.add(new Money(SignValue.Negative, 1, 2));
-        moneyArrayListCase1.add(new Money(SignValue.Positive, 123, 1234));
-        moneyArrayListCase1.add(new Money(SignValue.Positive, 131, 3));
-        
+        moneyArrayListCase1.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .decimalUnit(2)
+                .build());
+        moneyArrayListCase1.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(123)
+                .decimalUnit(1234)
+                .build());
+        moneyArrayListCase1.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(131)
+                .decimalUnit(3)
+                .build());
+
         MoneyArrayList moneyArrayListCase2 = new MoneyArrayList();
-        moneyArrayListCase2.add(new Money(SignValue.Positive, 1, 2));
-        moneyArrayListCase2.add(new Money(SignValue.Positive, 123, 1234));
-        moneyArrayListCase2.add(new Money(SignValue.Positive, 131, 3));
-        
-        MoneyArrayList[] listOfInputs = new MoneyArrayList[] {
+        moneyArrayListCase2.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(2)
+                .build());
+        moneyArrayListCase2.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(123)
+                .decimalUnit(1234)
+                .build());
+        moneyArrayListCase2.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(131)
+                .decimalUnit(3)
+                .build());
+
+        MoneyArrayList[] listOfInputs = new MoneyArrayList[]{
             moneyArrayListCase1, moneyArrayListCase2
         };
-        
-        boolean[] expResults = new boolean[] {true,false};
-        
+
+        boolean[] expResults = new boolean[]{true, false};
+
         for (int i = 0; i < expResults.length; i++) {
             // When
             boolean result = listOfInputs[i].hasNegativeValue();
-        
+
             // Then
             assertEquals(expResults[i], result);
         }
@@ -112,28 +137,53 @@ public class MoneyArrayListTest {
     public void testHasPositiveValue() {
         // Given
         MoneyArrayList moneyArrayListCase1 = new MoneyArrayList();
-        moneyArrayListCase1.add(new Money(SignValue.Negative, 1, 2));
-        moneyArrayListCase1.add(new Money(SignValue.Positive, 123, 1234));
-        moneyArrayListCase1.add(new Money(SignValue.Positive, 131, 3));
-        
+        moneyArrayListCase1.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .decimalUnit(2)
+                .build());
+        moneyArrayListCase1.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(123)
+                .decimalUnit(1234)
+                .build());
+        moneyArrayListCase1.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(131)
+                .decimalUnit(3)
+                .build());
+
         MoneyArrayList moneyArrayListCase2 = new MoneyArrayList();
-        moneyArrayListCase2.add(new Money(SignValue.Negative, 1, 2));
-        moneyArrayListCase2.add(new Money(SignValue.Positive, 0, 0));
-        
+        moneyArrayListCase2.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .decimalUnit(2)
+                .build());
+        moneyArrayListCase2.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .build());
+
         MoneyArrayList moneyArrayListCase3 = new MoneyArrayList();
-        moneyArrayListCase3.add(new Money(SignValue.Negative, 1, 2));
-        moneyArrayListCase3.add(new Money(SignValue.Negative, 1, 0));
-        
-        MoneyArrayList[] listOfInputs = new MoneyArrayList[] {
+        moneyArrayListCase3.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .decimalUnit(2)
+                .build());
+        moneyArrayListCase3.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .build());
+
+        MoneyArrayList[] listOfInputs = new MoneyArrayList[]{
             moneyArrayListCase1, moneyArrayListCase2, moneyArrayListCase3
         };
-        
-        boolean[] expResults = new boolean[] {true,false,false};
-        
+
+        boolean[] expResults = new boolean[]{true, false, false};
+
         for (int i = 0; i < expResults.length; i++) {
             // When
             boolean result = listOfInputs[i].hasPositiveValue();
-        
+
             // Then
             assertEquals(expResults[i], result);
         }
@@ -146,17 +196,35 @@ public class MoneyArrayListTest {
     public void testRetrieveAllPositiveValues() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
-        moneyArrayList.add(new Money(SignValue.Positive, 0, 0));
-        moneyArrayList.add(new Money(SignValue.Negative, 123, 5));
-        moneyArrayList.add(new Money(SignValue.Negative, 13, 5));
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(123)
+                .decimalUnit(5)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .build());
+
         MoneyArrayList expResult = new MoneyArrayList();
-        expResult.add(new Money(SignValue.Positive, 1, 5));
-        
+        expResult.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+
         // When
         MoneyArrayList result = moneyArrayList.retrieveAllPositiveValues();
-        
+
         // Then
         assertEquals(expResult.size(), result.size());
         assertEquals(expResult.get(0), result.get(0));
@@ -169,17 +237,35 @@ public class MoneyArrayListTest {
     public void testRetrieveAllNegativeValues() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
-        moneyArrayList.add(new Money(SignValue.Positive, 0, 0));
-        moneyArrayList.add(new Money(SignValue.Positive, 123, 5));
-        moneyArrayList.add(new Money(SignValue.Negative, 13, 5));
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(123)
+                .decimalUnit(5)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .build());
+
         MoneyArrayList expResult = new MoneyArrayList();
-        expResult.add(new Money(SignValue.Negative, 13, 5));
-        
+        expResult.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .build());
+
         // When
         MoneyArrayList result = moneyArrayList.retrieveAllNegativeValues();
-        
+
         // Then
         assertEquals(expResult.size(), result.size());
         assertEquals(expResult.get(0), result.get(0));
@@ -192,15 +278,24 @@ public class MoneyArrayListTest {
     public void testRemoveAnyZeroValues() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 0, 0));
-        moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
-        
+        moneyArrayList.add(new Money.Builder()
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+
         MoneyArrayList expResult = new MoneyArrayList();
-        expResult.add(new Money(SignValue.Positive, 1, 5));
-        
+        expResult.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+
         // When
         moneyArrayList.removeAnyZeroValues();
-        
+
         // Then
         assertEquals(expResult.size(), moneyArrayList.size());
         assertEquals(expResult.get(0), moneyArrayList.get(0));
@@ -213,15 +308,26 @@ public class MoneyArrayListTest {
     public void testRemoveAnyNegativeValues() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Negative, 12, 0));
-        moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(12)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+
         MoneyArrayList expResult = new MoneyArrayList();
-        expResult.add(new Money(SignValue.Positive, 1, 5));
-        
+        expResult.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+
         // When
         moneyArrayList.removeAnyNegativeValues();
-        
+
         // Then
         assertEquals(expResult.size(), moneyArrayList.size());
         assertEquals(expResult.get(0), moneyArrayList.get(0));
@@ -234,15 +340,26 @@ public class MoneyArrayListTest {
     public void testRemoveAnyPositiveValues() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 12, 0));
-        moneyArrayList.add(new Money(SignValue.Negative, 1, 5));
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(12)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+
         MoneyArrayList expResult = new MoneyArrayList();
-        expResult.add(new Money(SignValue.Negative, 1, 5));
-        
+        expResult.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+
         // When
         moneyArrayList.removeAnyPositiveValues();
-        
+
         // Then
         assertEquals(expResult.size(), moneyArrayList.size());
         assertEquals(expResult.get(0), moneyArrayList.get(0));
@@ -255,16 +372,28 @@ public class MoneyArrayListTest {
     public void testSum() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
-        moneyArrayList.add(new Money(SignValue.Positive, 0, 0));
-        moneyArrayList.add(new Money(SignValue.Negative, 13, 5));
-        
-        Money expResult = new Money(SignValue.Negative, 
-                12, 0, 0);
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .build());
+
+        Money expResult = new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(12)
+                .build();
+
         // When
         Money result = moneyArrayList.sum();
-        
+
         // Then
         assertEquals(expResult, result);
     }
@@ -276,16 +405,31 @@ public class MoneyArrayListTest {
     public void testDifference() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
-        moneyArrayList.add(new Money(SignValue.Positive, 0, 0));
-        moneyArrayList.add(new Money(SignValue.Negative, 13, 5));
-        
-        Money expResult = new Money(SignValue.Positive, 
-                14, 10, 0);
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+
+        Money expResult = new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(14)
+                .decimalUnit(10)
+                .build();
+
         // When
         Money result = moneyArrayList.difference();
-        
+
         // Then
         assertEquals(expResult, result);
     }
@@ -297,15 +441,28 @@ public class MoneyArrayListTest {
     public void testProduct() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
-        moneyArrayList.add(new Money(SignValue.Negative, 13, 5));
-        
-        Money expResult = new Money(SignValue.Negative, 
-                13, 7025, 0);
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+
+        Money expResult = new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(7025)
+                .build();
+
         // When
         Money result = moneyArrayList.product();
-        
+
         // Then
         assertEquals(expResult, result);
     }
@@ -317,15 +474,26 @@ public class MoneyArrayListTest {
     public void testQuotient() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 100, 50));
-        moneyArrayList.add(new Money(SignValue.Negative, 20, 0));
-        
-        Money expResult = new Money(SignValue.Negative, 
-                5, 25, 1);
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(100)
+                .decimalUnit(50)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(20)
+                .build());
+
+        Money expResult = new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(5)
+                .decimalUnit(25)
+                .leadingDecimalZeroes(1)
+                .build();
+
         // When
         Money result = moneyArrayList.quotient();
-        
+
         // Then
         assertEquals(expResult, result);
     }
@@ -337,16 +505,37 @@ public class MoneyArrayListTest {
     public void testAddEachWith() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 1, 5));
-        moneyArrayList.add(new Money(SignValue.Negative, 13, 5));
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+
         MoneyArrayList expResultList = new MoneyArrayList();
-        expResultList.add(new Money(SignValue.Positive, 3, 5));
-        expResultList.add(new Money(SignValue.Negative, 11, 5));
-        
+        expResultList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(3)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        expResultList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(11)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+
         // When
-        moneyArrayList.addEachWith(new Money(2));
-        
+        moneyArrayList.addEachWith(new Money.Builder()
+                .wholeUnit(2).build());
+
         // Then
         assertEquals(moneyArrayList.get(0), expResultList.get(0));
         assertEquals(moneyArrayList.get(1), expResultList.get(1));
@@ -359,16 +548,37 @@ public class MoneyArrayListTest {
     public void testSubtractEachWith() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 10, 5));
-        moneyArrayList.add(new Money(SignValue.Negative, 13, 5));
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(10)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+
         MoneyArrayList expResultList = new MoneyArrayList();
-        expResultList.add(new Money(SignValue.Positive, 8, 5));
-        expResultList.add(new Money(SignValue.Negative, 15, 5));
-        
+        expResultList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(8)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        expResultList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(15)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+
         // When
-        moneyArrayList.subtractEachWith(new Money(2));
-        
+        moneyArrayList.subtractEachWith(new Money.Builder()
+                .wholeUnit(2).build());
+
         // Then
         assertEquals(moneyArrayList.get(0), expResultList.get(0));
         assertEquals(moneyArrayList.get(1), expResultList.get(1));
@@ -381,16 +591,35 @@ public class MoneyArrayListTest {
     public void testMultiplyEachWith() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 10, 5));
-        moneyArrayList.add(new Money(SignValue.Negative, 13, 5));
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(10)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+
         MoneyArrayList expResultList = new MoneyArrayList();
-        expResultList.add(new Money(SignValue.Positive, 20, 10));
-        expResultList.add(new Money(SignValue.Negative, 26, 10));
-        
+        expResultList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(20)
+                .decimalUnit(10)
+                .build());
+        expResultList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(26)
+                .decimalUnit(10)
+                .build());
+
         // When
-        moneyArrayList.multiplyEachWith(new Money(2));
-        
+        moneyArrayList.multiplyEachWith(new Money.Builder()
+                .wholeUnit(2).build());
+
         // Then
         assertEquals(moneyArrayList.get(0), expResultList.get(0));
         assertEquals(moneyArrayList.get(1), expResultList.get(1));
@@ -403,19 +632,39 @@ public class MoneyArrayListTest {
     public void testDivideEachWith() {
         // Given
         MoneyArrayList moneyArrayList = new MoneyArrayList();
-        moneyArrayList.add(new Money(SignValue.Positive, 10, 5));
-        moneyArrayList.add(new Money(SignValue.Negative, 13, 5));
-        
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(10)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyArrayList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+
         MoneyArrayList expResultList = new MoneyArrayList();
-        expResultList.add(new Money(SignValue.Positive, 5, 25, 1));
-        expResultList.add(new Money(SignValue.Negative, 6, 525));
-        
+        expResultList.add(new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(5)
+                .decimalUnit(25)
+                .leadingDecimalZeroes(1)
+                .build());
+        expResultList.add(new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(6)
+                .decimalUnit(525)
+                .build());
+
         // When
-        moneyArrayList.divideEachWith(new Money(2));
-        
+        moneyArrayList.divideEachWith(new Money.Builder()
+                .wholeUnit(2).build());
+
         // Then
         assertEquals(moneyArrayList.get(0), expResultList.get(0));
         assertEquals(moneyArrayList.get(1), expResultList.get(1));
     }
-    
+
 }

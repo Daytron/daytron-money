@@ -87,15 +87,41 @@ public class MoneyHashMapTest {
     public void testHasNegativeValue() {
          // Given
         MoneyHashMap<String, Money> moneyHashMapCase1 = new MoneyHashMap<>();
-        moneyHashMapCase1.put("1", new Money(SignValue.Negative, 1, 2));
-        moneyHashMapCase1.put("2", new Money(SignValue.Positive, 123, 1234));
-        moneyHashMapCase1.put("3", new Money(SignValue.Positive, 131, 3));
-        
+        moneyHashMapCase1.put("1", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .decimalUnit(2)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMapCase1.put("2", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(123)
+                .decimalUnit(1234)
+                .build());
+        moneyHashMapCase1.put("3", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(131)
+                .decimalUnit(3)
+                .leadingDecimalZeroes(1)
+                .build());
         MoneyHashMap<String, Money> moneyHashMapCase2 = new MoneyHashMap<>();
-        moneyHashMapCase2.put("1", new Money(SignValue.Positive, 1, 2));
-        moneyHashMapCase2.put("2", new Money(SignValue.Positive, 123, 1234));
-        moneyHashMapCase2.put("3", new Money(SignValue.Positive, 131, 3));
-        
+        moneyHashMapCase2.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(2)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMapCase2.put("2", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(123)
+                .decimalUnit(1234)
+                .build());
+        moneyHashMapCase2.put("3", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(131)
+                .decimalUnit(3)
+                .leadingDecimalZeroes(1)
+                .build());
         MoneyHashMap[] listOfInputs = new MoneyHashMap[] {
             moneyHashMapCase1, moneyHashMapCase2
         };
@@ -118,14 +144,42 @@ public class MoneyHashMapTest {
     public void testHasPositiveValue() {
          // Given
         MoneyHashMap<String, Money> moneyHashMapCase1 = new MoneyHashMap<>();
-        moneyHashMapCase1.put("1", new Money(SignValue.Negative, 1, 2));
-        moneyHashMapCase1.put("2", new Money(SignValue.Positive, 123, 1234));
-        moneyHashMapCase1.put("3", new Money(SignValue.Positive, 131, 3));
-        
+        moneyHashMapCase1.put("1", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .decimalUnit(2)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMapCase1.put("2", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(131)
+                .decimalUnit(3)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMapCase1.put("3", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(131)
+                .decimalUnit(3)
+                .leadingDecimalZeroes(1)
+                .build());
         MoneyHashMap<String, Money> moneyHashMapCase2 = new MoneyHashMap<>();
-        moneyHashMapCase2.put("1", new Money(SignValue.Negative, 1, 2));
-        moneyHashMapCase2.put("2", new Money(SignValue.Negative, 123, 1234));
-        moneyHashMapCase2.put("3", new Money(SignValue.Negative, 131, 3));
+        moneyHashMapCase2.put("1", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(1)
+                .decimalUnit(2)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMapCase2.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(123)
+                .decimalUnit(1234)
+                .build());
+        moneyHashMapCase2.put("3", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(131)
+                .decimalUnit(3)
+                .leadingDecimalZeroes(1)
+                .build());
         
         MoneyHashMap[] listOfInputs = new MoneyHashMap[] {
             moneyHashMapCase1, moneyHashMapCase2
@@ -149,13 +203,35 @@ public class MoneyHashMapTest {
     public void testRetrieveAllPositiveValues() {
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
-        moneyHashMap.put("2", new Money(SignValue.Positive, 0, 0));
-        moneyHashMap.put("3", new Money(SignValue.Negative, 123, 5));
-        moneyHashMap.put("4", new Money(SignValue.Negative, 13, 5));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Positive)
+                .build());
+        moneyHashMap.put("3", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(123)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("4", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         MoneyHashMap<String, Money> expResult = new MoneyHashMap<>();
-        expResult.put("1", new Money(SignValue.Positive, 1, 5));
+        expResult.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         // When
         MoneyHashMap<String, Money> result = 
@@ -173,14 +249,41 @@ public class MoneyHashMapTest {
     public void testRetrieveAllNegativeValues() {
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
-        moneyHashMap.put("2", new Money(SignValue.Positive, 0, 0));
-        moneyHashMap.put("3", new Money(SignValue.Negative, 123, 5));
-        moneyHashMap.put("4", new Money(SignValue.Negative, 13, 5));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Positive)
+                .build());
+        moneyHashMap.put("3", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(123)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("4", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         MoneyHashMap<String, Money> expResult = new MoneyHashMap<>();
-        expResult.put("1", new Money(SignValue.Negative, 123, 5));
-        expResult.put("2", new Money(SignValue.Negative, 13, 5));
+        expResult.put("1", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(123)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        expResult.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         // When
         MoneyHashMap<String, Money> result = 
@@ -199,12 +302,26 @@ public class MoneyHashMapTest {
     public void testSum() {
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
-        moneyHashMap.put("2", new Money(SignValue.Positive, 0, 0));
-        moneyHashMap.put("3", new Money(SignValue.Negative, 13, 5));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Positive)
+                .build());
+        moneyHashMap.put("3", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
-        Money expResult = new Money(SignValue.Negative, 
-                12, 0, 0);
+        Money expResult = new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(12)
+                .build();
         
         // When
         Money result = moneyHashMap.sum();
@@ -220,12 +337,27 @@ public class MoneyHashMapTest {
     public void testDifference() {
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
-        moneyHashMap.put("2", new Money(SignValue.Positive, 0, 0));
-        moneyHashMap.put("3", new Money(SignValue.Negative, 13, 5));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Positive)
+                .build());
+        moneyHashMap.put("3", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
-        Money expResult = new Money(SignValue.Positive, 
-                14, 10, 0);
+        Money expResult = new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(14)
+                .decimalUnit(10)
+                .build();
         
         // When
         Money result = moneyHashMap.difference();
@@ -241,12 +373,28 @@ public class MoneyHashMapTest {
     public void testProduct() {
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
-        moneyHashMap.put("2", new Money(SignValue.Positive, 2, 0));
-        moneyHashMap.put("3", new Money(SignValue.Negative, 13, 5));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(2)
+                .build());
+        moneyHashMap.put("3", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
-        Money expResult = new Money(SignValue.Negative, 
-                27, 405, 0);
+        Money expResult = new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(27)
+                .decimalUnit(405)
+                .build();
         
         // When
         Money result = moneyHashMap.product();
@@ -264,9 +412,20 @@ public class MoneyHashMapTest {
         
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 142, 5));
-        moneyHashMap.put("2", new Money(SignValue.Positive, 2, 0));
-        moneyHashMap.put("3", new Money(SignValue.Negative, 13, 0));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(142)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(2)
+                .build());
+        moneyHashMap.put("3", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .build());
         
         Money expResult = mf.valueOf("-5.4634615384615385");
         
@@ -284,15 +443,36 @@ public class MoneyHashMapTest {
     public void testAddEachWith() {
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 1, 5));
-        moneyHashMap.put("2", new Money(SignValue.Negative, 13, 5));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(1)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         MoneyHashMap<String, Money> expResultMap = new MoneyHashMap<>();
-        expResultMap.put("1", new Money(SignValue.Positive, 3, 5));
-        expResultMap.put("2", new Money(SignValue.Negative, 11, 5));
+        expResultMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(3)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        expResultMap.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(11)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         // When
-        moneyHashMap.addEachWith(new Money(2));
+        moneyHashMap.addEachWith(new Money.Builder()
+                .wholeUnit(2).build());
         
         // Then
         assertEquals(moneyHashMap.get("1"), expResultMap.get("1"));
@@ -306,15 +486,36 @@ public class MoneyHashMapTest {
     public void testSubtractEachWith() {
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 10, 5));
-        moneyHashMap.put("2", new Money(SignValue.Negative, 13, 5));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(10)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         MoneyHashMap<String, Money> expResultMap = new MoneyHashMap<>();
-        expResultMap.put("1", new Money(SignValue.Positive, 8, 5));
-        expResultMap.put("2", new Money(SignValue.Negative, 15, 5));
+        expResultMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(8)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        expResultMap.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(15)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         // When
-        moneyHashMap.subtractEachWith(new Money(2));
+        moneyHashMap.subtractEachWith(new Money.Builder()
+                .wholeUnit(2).build());
         
         // Then
         assertEquals(moneyHashMap.get("1"), expResultMap.get("1"));
@@ -328,15 +529,34 @@ public class MoneyHashMapTest {
     public void testMultiplyEachWith() {
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 10, 5));
-        moneyHashMap.put("2", new Money(SignValue.Negative, 13, 5));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(10)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         MoneyHashMap<String, Money> expResultMap = new MoneyHashMap<>();
-        expResultMap.put("1", new Money(SignValue.Positive, 20, 10));
-        expResultMap.put("2", new Money(SignValue.Negative, 26, 10));
+        expResultMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(20)
+                .decimalUnit(10)
+                .build());
+        expResultMap.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(26)
+                .decimalUnit(10)
+                .build());
         
         // When
-        moneyHashMap.multiplyEachWith(new Money(2));
+        moneyHashMap.multiplyEachWith(new Money.Builder()
+                .wholeUnit(2).build());
         
         // Then
         assertEquals(moneyHashMap.get("1"), expResultMap.get("1"));
@@ -350,15 +570,35 @@ public class MoneyHashMapTest {
     public void testDivideEachWith() {
         // Given
         MoneyHashMap<String, Money> moneyHashMap = new MoneyHashMap<>();
-        moneyHashMap.put("1", new Money(SignValue.Positive, 10, 5));
-        moneyHashMap.put("2", new Money(SignValue.Negative, 13, 5));
+        moneyHashMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(10)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
+        moneyHashMap.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(13)
+                .decimalUnit(5)
+                .leadingDecimalZeroes(1)
+                .build());
         
         MoneyHashMap<String, Money> expResultMap = new MoneyHashMap<>();
-        expResultMap.put("1", new Money(SignValue.Positive, 5, 25, 1));
-        expResultMap.put("2", new Money(SignValue.Negative, 6, 525));
+        expResultMap.put("1", new Money.Builder()
+                .sign(SignValue.Positive)
+                .wholeUnit(5)
+                .decimalUnit(25)
+                .leadingDecimalZeroes(1)
+                .build());
+        expResultMap.put("2", new Money.Builder()
+                .sign(SignValue.Negative)
+                .wholeUnit(6)
+                .decimalUnit(525)
+                .build());
         
         // When
-        moneyHashMap.divideEachWith(new Money(2));
+        moneyHashMap.divideEachWith(new Money.Builder()
+                .wholeUnit(2).build());
         
         // Then
         assertEquals(moneyHashMap.get("1"), expResultMap.get("1"));

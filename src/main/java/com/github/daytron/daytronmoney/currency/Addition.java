@@ -137,9 +137,14 @@ class Addition extends MoneyOperation {
         newWholeUnit = ((newWholeStr.isEmpty()) ? 0:Long.valueOf(newWholeStr));
         newDecimalUnit = ((newDecimalStr.isEmpty()) ? 0:Long.valueOf(newDecimalStr));
         
-        return new Money(
-                getThisMoney().getCurrencyCode(),newSign, 
-                newWholeUnit, newDecimalUnit, newLeadingZeroes);
+        
+        return new Money.Builder()
+                .currencyCode(getThisMoney().getCurrencyCode())
+                .sign(newSign)
+                .wholeUnit(newWholeUnit)
+                .decimalUnit(newDecimalUnit)
+                .leadingDecimalZeroes(newLeadingZeroes)
+                .build();
     }
 
 

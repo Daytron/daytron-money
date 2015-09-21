@@ -60,23 +60,52 @@ public class AdditionTest {
      */
     @Test
     public void testExecute() {
+        SignValue[] valueASign = new SignValue[]
+        {SignValue.Positive,
+         SignValue.Positive,
+         SignValue.Negative,
+         SignValue.Positive,
+         SignValue.Positive};
         long[] valueA = new long[] {
-          12,2698,-96,0,485697854  
+          12,2698,96,0,485697854  
         };
+        
+        SignValue[] valueBSign = new SignValue[]
+        {SignValue.Positive,
+         SignValue.Negative,
+         SignValue.Positive,
+         SignValue.Positive,
+         SignValue.Positive};
         long[] valueB = new long[] {
-          78596,-78,0,78569844,7856983  
+          78596,78,0,78569844,7856983  
         };
+        
+        SignValue[] exptSign = new SignValue[]
+        {SignValue.Positive,
+         SignValue.Positive,
+         SignValue.Negative,
+         SignValue.Positive,
+         SignValue.Positive};
         long[] exptResults = new long[] {
-          78608,2620,-96,78569844,493554837  
+          78608,2620,96,78569844,493554837  
         };
         
         for (int i = 0; i< valueA.length; i++) {
             // Given
-            Money aMoney = new Money(valueA[i]);
-            Money bMoney = new Money(valueB[i]);
+            Money aMoney = new Money.Builder()
+                    .sign(valueASign[i])
+                    .wholeUnit(valueA[i])
+                    .build();
+            Money bMoney = new Money.Builder()
+                    .sign(valueBSign[i])
+                    .wholeUnit(valueB[i])
+                    .build();
             
             MoneyOperation additionOperation = new Addition(aMoney, bMoney);
-            Money expectedResult = new Money(exptResults[i]);
+            Money expectedResult = new Money.Builder()
+                    .sign(exptSign[i])
+                    .wholeUnit(exptResults[i])
+                    .build();
             
             // When 
             Money sumMoney = additionOperation.execute();
