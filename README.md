@@ -75,24 +75,31 @@ Please refer to [Javadoc] for more information.
         .currencyCode("GBP")
         .sign(SignValue.Positive)
         .wholeUnit(10)
-        .decimalUnit(50)
+        .decimalUnit(5)
         .build();
     
     // Local currency code with value of 10.50
     Money moneyB = new Money.Builder()
         .wholeUnit(10)
-        .decimalUnit(50)
+        .decimalUnit(5)
+        .build();
+    
+    // Local currency code with a value of 10.05
+    Money moneyC = new Money.Builder()
+        .wholeUnit(10)
+        .decimalUnit(5)
+        .leadingDecimalZeroes(1)
         .build();
     
     // Negative value
-    Money moneyC = new Money.Builder()
+    Money moneyD = new Money.Builder()
         .sign(SignValue.Negative)
         .wholeUnit(10)
         .decimalUnit(50)
         .build();
     
     // Default value is zero
-    Money moneyD = new Money.Builder().build();
+    Money moneyE = new Money.Builder().build();
 ```
 
 `MoneyFactory` class allows you to parse other data types into `Money` objects.
@@ -154,3 +161,4 @@ MIT
 
 [fixer.io]:http://fixer.io
 [Javadoc]:https://daytron.github.io/daytron-money/
+
