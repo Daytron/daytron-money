@@ -70,11 +70,29 @@ Please refer to [Javadoc] for more information.
 
 `Money` class represents all monetary values. Choose any from the following when creating a new object. 
 ```java
-Money moneyA = new Money("GBP", SignValue.Positive, 10, 50, 0);
-Money moneyB = new Money(SignValue.Positive, 10, 50, 0);
-Money moneyC = new Money(SignValue.Negative, 10, 50);
-Money moneyD = new Money(10, 50);
-Money moneyE = new Money(); 
+    // GBP 10.50
+    Money moneyA = new Money.Builder()
+        .currencyCode("GBP")
+        .sign(SignValue.Positive)
+        .wholeUnit(10)
+        .decimalUnit(50)
+        .build();
+    
+    // Local currency code with value of 10.50
+    Money moneyB = new Money.Builder()
+        .wholeUnit(10)
+        .decimalUnit(50)
+        .build();
+    
+    // Negative value
+    Money moneyC = new Money.Builder()
+        .sign(SignValue.Negative)
+        .wholeUnit(10)
+        .decimalUnit(50)
+        .build();
+    
+    // Default value is zero
+    Money moneyD = new Money.Builder().build();
 ```
 
 `MoneyFactory` class allows you to parse other data types into `Money` objects.
@@ -103,7 +121,7 @@ Acceptable `String` formats:
 #####<a name='conversion'></a>Conversion
 <sup><a href='#home'>[back to top]</a></sup> 
 
-You can convert currency `Money` to another currency using `CurrencyExchange` class. This class uses `ConversionClient` to connect to an external API (see [getexchangerates]). `CurrencyExchange` is a singleton class to minimize overloading the server with requests. Conversion can be done through the following example.
+You can convert currency `Money` to another currency using `CurrencyExchange` class. This class uses `ConversionClient` to connect to an external API (see [fixer.io]). `CurrencyExchange` is a singleton class to minimize overloading the server with requests. Conversion can be done through the following example.
 ```java
 MoneyFactory moneyFactory = new MoneyFactory("USD");
          
