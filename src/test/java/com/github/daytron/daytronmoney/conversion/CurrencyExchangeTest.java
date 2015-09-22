@@ -24,14 +24,12 @@
 package com.github.daytron.daytronmoney.conversion;
 
 import com.github.daytron.daytronmoney.currency.Money;
-import com.github.daytron.daytronmoney.currency.SignValue;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  * Test class for CurrencyExchange
@@ -53,19 +51,18 @@ public class CurrencyExchangeTest {
     
     @Before
     public void setUp() {
-        //cex = CurrencyExchange.getInstance();
+        cex = CurrencyExchange.getInstance();
     }
     
     @After
     public void tearDown() {
-        //cex = null;
+        cex = null;
     }
 
     /**
      * Test of getInstance method, of class CurrencyExchange.
      */
     @Test
-    @Ignore
     public void testGetInstance() {
         assertNotNull(cex);
     }
@@ -74,14 +71,11 @@ public class CurrencyExchangeTest {
      * Test of convert method, of class CurrencyExchange.
      */
     @Test
-    @Ignore
     public void testConvert() {
         // Given
         Money fromMoney = new Money.Builder()
-                .currencyCode("USD") 
-                .sign(SignValue.Positive)
-                .wholeUnit(2)
-                .decimalUnit(50)
+                .currencyCode("GBP") 
+                .wholeUnit(1)
                 .build();
         
         String toCurrencyCode = "PHP";
@@ -95,20 +89,4 @@ public class CurrencyExchangeTest {
         assertNotNull(result);
     }
 
-    /**
-     * Test of connectAndTryToUpdateCurrencyRates method, of class CurrencyExchange.
-     */
-    @Test
-    @Ignore
-    public void testConnectAndTryToUpdateCurrencyRates() {
-        // Given
-        boolean expResult = false;
-        
-        // When
-        boolean result = cex.connectAndTryToUpdateCurrencyRates();
-        
-        // Then
-        assertEquals(expResult, result);
-    }
-    
 }
