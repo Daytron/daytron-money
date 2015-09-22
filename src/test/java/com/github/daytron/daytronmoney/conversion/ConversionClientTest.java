@@ -23,7 +23,10 @@
  */
 package com.github.daytron.daytronmoney.conversion;
 
+import com.github.daytron.daytronmoney.exception.MoneyConversionException;
 import com.google.gson.JsonObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -60,12 +63,14 @@ public class ConversionClientTest {
      * Test of connectAndExtractJsonObject method, of class ConversionClientTest.
      */
     @Test
-    public void testConnectAndExtractJsonObject() {
+    public void testGetLatestRatesJsonObject() {
         // When
-        JsonObject result = ConversionClient.getLatestRatesJsonObject();
-        
-        // Then
-        assertNotNull(result);
+        JsonObject result;
+        try {
+            result = ConversionClient.getLatestRatesJsonObject();
+        } catch (MoneyConversionException ex) {
+            fail("MoneyConversionException occured. " + ex.getLocalizedMessage());
+        }
     }
     
 }

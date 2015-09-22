@@ -24,6 +24,7 @@
 package com.github.daytron.daytronmoney.conversion;
 
 import com.github.daytron.daytronmoney.currency.Money;
+import com.github.daytron.daytronmoney.exception.MoneyConversionException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -33,34 +34,36 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for CurrencyExchange
+ *
  * @author Ryan Gilera
  */
 public class CurrencyExchangeTest {
+
     private CurrencyExchange cex;
-    
+
     public CurrencyExchangeTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
-        cex = CurrencyExchange.getInstance();
+        cex = CurrencyExchange.get();
     }
-    
+
     @After
     public void tearDown() {
         cex = null;
     }
 
     /**
-     * Test of getInstance method, of class CurrencyExchange.
+     * Test of get method, of class CurrencyExchange.
      */
     @Test
     public void testGetInstance() {
@@ -74,19 +77,25 @@ public class CurrencyExchangeTest {
     public void testConvert() {
         // Given
         Money fromMoney = new Money.Builder()
-                .currencyCode("GBP") 
+                .currencyCode("GBP")
                 .wholeUnit(1)
                 .build();
-        
+
         String toCurrencyCode = "PHP";
         String expCurrency = "PHP";
-        
+
         // When
-        Money result = cex.convert(fromMoney, toCurrencyCode);
-        
-        // Then
-        assertEquals(expCurrency, result.getCurrencyCode());
-        assertNotNull(result);
+        Money result;
+        try {
+            result = cex.convert(fromMoney, toCurrencyCode);
+
+            // Then
+            assertEquals(expCurrency, result.getCurrencyCode());
+            assertNotNull(result);
+        } catch (MoneyConversionException ex) {
+            fail("MoneyConversionException has occurred. " + ex.getLocalizedMessage());
+        }
+
     }
 
 }

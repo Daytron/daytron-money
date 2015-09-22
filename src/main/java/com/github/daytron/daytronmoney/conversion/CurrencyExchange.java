@@ -25,6 +25,7 @@ package com.github.daytron.daytronmoney.conversion;
 
 import com.github.daytron.daytronmoney.currency.Money;
 import com.github.daytron.daytronmoney.currency.MoneyFactory;
+import com.github.daytron.daytronmoney.exception.MoneyConversionException;
 import com.github.daytron.daytronmoney.exception.NegativeMoneyException;
 import com.github.daytron.daytronmoney.exception.ZeroMoneyException;
 import com.google.gson.JsonElement;
@@ -32,6 +33,8 @@ import com.google.gson.JsonObject;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class to handle all currency conversions. Can only request a single instance
@@ -50,11 +53,13 @@ public class CurrencyExchange {
      * verification in conversion process.
      */
     private CurrencyExchange() {
-        JsonObject tempObject = ConversionClient.getLatestRatesJsonObject();
-
-        if (tempObject == null) {
-            throw new InstantiationError("Cannot connect to API right now. Try "
-                    + "again later.");
+        JsonObject tempObject;
+        try {
+            tempObject = ConversionClient.getLatestRatesJsonObject();
+        } catch (MoneyConversionException ex) {
+            Logger.getLogger(CurrencyExchange.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            throw new InstantiationError("Cannot connect to the API.");
         }
 
         Set<Map.Entry<String, JsonElement>> rateList = tempObject.entrySet();
@@ -72,7 +77,7 @@ public class CurrencyExchange {
      *
      * @return <code>CurrencyExchange</code> object
      */
-    public static CurrencyExchange getInstance() {
+    public static CurrencyExchange get() {
         return MySingletonContainer.INSTANCE;
     }
 
@@ -89,8 +94,10 @@ public class CurrencyExchange {
      * @param fromMoney <code>Money</code> object to be converted
      * @param toCurrencyCode <code>String</code> currency code to convert to
      * @return <code>Money</code> object
+     * @throws com.github.daytron.daytronmoney.exception.MoneyConversionException
      */
-    public Money convert(Money fromMoney, String toCurrencyCode) {
+    public Money convert(Money fromMoney, String toCurrencyCode) 
+    throws MoneyConversionException {
         validateInput(fromMoney, toCurrencyCode);
         
         toCurrencyCode = toCurrencyCode.trim();
@@ -124,7 +131,7 @@ public class CurrencyExchange {
      */
     private void validateInput(Money fromMoney, String toCurrencyCode) {
         if (fromMoney == null || toCurrencyCode == null) {
-            throw new NullPointerException("Null input detected.");
+            throw new NullPointerException("Null argument detected.");
         }
 
         // Makes sure that currency code argument is valid 
