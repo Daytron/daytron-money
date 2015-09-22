@@ -98,6 +98,34 @@ public class CurrencyExchangeTest {
 
     }
     
+    public void testConvertWithSameCurrency() {
+        // Given
+        Money fromMoney = new Money.Builder()
+                .currencyCode("GBP")
+                .wholeUnit(1)
+                .build();
+        String toCurrencyCode = "GBP";
+        String expCurrency = "GBP";
+        
+        Money expMoney = new Money.Builder()
+                .currencyCode("GBP")
+                .wholeUnit(1)
+                .build();
+     
+        // When
+        Money result;
+        try {
+            result = cex.convert(fromMoney, toCurrencyCode);
+
+            // Then
+            assertEquals(expCurrency, result.getCurrencyCode());
+            assertNotNull(result);
+            assertEquals(expMoney, result);
+        } catch (MoneyConversionException ex) {
+            fail("MoneyConversionException has occurred. " + ex.getLocalizedMessage());
+        }
+    }
+    
     @Test
     public void testGetCurrencyRate() {
         // Given

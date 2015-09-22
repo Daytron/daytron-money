@@ -109,6 +109,13 @@ class ConversionClient {
      */
     static String getCurrencyRate(String baseCurrency, String toCurrency) 
     throws MoneyConversionException {
+            baseCurrency = baseCurrency.trim();
+            toCurrency = toCurrency.trim();
+            
+            if (baseCurrency.equalsIgnoreCase(toCurrency)) {
+                return "1";
+            }
+        
             JsonObject rootObj = extractJsonElement(API_LATEST_URL + API_BASED_PARAM
                     + baseCurrency + "&"
                     + API_CURRENCY_PARAM + toCurrency);
