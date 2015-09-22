@@ -107,10 +107,10 @@ class ConversionClient {
      * @param toCurrency The outcome currency code
      * @return String value of the rate extracted
      */
-    static String getCurrencyRate(Money moneyToConvert, String toCurrency) 
+    static String getCurrencyRate(String baseCurrency, String toCurrency) 
     throws MoneyConversionException {
             JsonObject rootObj = extractJsonElement(API_LATEST_URL + API_BASED_PARAM
-                    + moneyToConvert.getCurrencyCode() + "&"
+                    + baseCurrency + "&"
                     + API_CURRENCY_PARAM + toCurrency);
             validateJsonObject(rootObj, RATES_JSON_MEMBER);
 

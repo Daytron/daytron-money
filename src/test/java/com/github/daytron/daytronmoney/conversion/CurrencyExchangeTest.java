@@ -97,5 +97,33 @@ public class CurrencyExchangeTest {
         }
 
     }
+    
+    @Test
+    public void testGetCurrencyRate() {
+        // Given
+        String baseCurrency = "CAD";
+        String toCurrency = "GBP";
+        
+        // When
+        String result = cex.getCurrencyRate(baseCurrency, toCurrency);
+        
+        // Then
+        assertNotNull(result);
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void testNullCurrencyCode() {
+        String result = cex.getCurrencyRate(null, null);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyCurrencyCode() {
+        String result = cex.getCurrencyRate("", "");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidCurrencyCode() {
+        String result = cex.getCurrencyRate("QWERTY", "ASDF");
+    }
 
 }

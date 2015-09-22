@@ -49,7 +49,7 @@ public class CurrencyExchange {
     /**
      * Creates an instance private. Connects to API and extract latest currency
      * rates from its JSOn file. Saves the currency rates into a
-     * <code>Map</code> object. Purpose of list is for currency code 
+     * <code>Map</code> object. Purpose of list is for currency code
      * verification in conversion process.
      */
     private CurrencyExchange() {
@@ -66,7 +66,7 @@ public class CurrencyExchange {
 
         // Creates a copy
         this.listOfRates = new ConcurrentHashMap<>();
-        
+
         for (Map.Entry<String, JsonElement> rateItem : rateList) {
             listOfRates.put(rateItem.getKey(), rateItem.getValue().getAsString());
         }
@@ -94,16 +94,19 @@ public class CurrencyExchange {
      * @param fromMoney <code>Money</code> object to be converted
      * @param toCurrencyCode <code>String</code> currency code to convert to
      * @return <code>Money</code> object
-     * @throws com.github.daytron.daytronmoney.exception.MoneyConversionException
+     * @throws
+     * com.github.daytron.daytronmoney.exception.MoneyConversionException
      */
-    public Money convert(Money fromMoney, String toCurrencyCode) 
-    throws MoneyConversionException {
-        validateInput(fromMoney, toCurrencyCode);
-        
+    public Money convert(Money fromMoney, String toCurrencyCode)
+            throws MoneyConversionException {
+        validateMoney(fromMoney);
+        validateCurrencyCode(toCurrencyCode);
+
         toCurrencyCode = toCurrencyCode.trim();
         toCurrencyCode = toCurrencyCode.toUpperCase();
-        
-        String rate = ConversionClient.getCurrencyRate(fromMoney, toCurrencyCode);
+
+        String rate = ConversionClient
+                .getCurrencyRate(fromMoney.getCurrencyCode(), toCurrencyCode);
 
         if (fromMoney.getCurrencyCode().equalsIgnoreCase(toCurrencyCode)) {
             return fromMoney;
@@ -124,21 +127,36 @@ public class CurrencyExchange {
     }
 
     /**
+     * Get currency rate for a particular currency with a base currency. Returns 
+     * null if MoneyConversionException occurred. Cause runtime exceptions if 
+     * invalid arguments are presented.
+     * 
+     * @param baseCurrency Base currency
+     * @param toCurrency currency of the rate return
+     * @return Currency rate in String value
+     */
+    public String getCurrencyRate(String baseCurrency, String toCurrency) {
+        validateCurrencyCode(baseCurrency);
+        validateCurrencyCode(toCurrency);
+        
+        try {
+            String rate = ConversionClient.getCurrencyRate(baseCurrency, toCurrency);
+            return rate;
+        } catch (MoneyConversionException ex) {
+            return null;
+        }
+
+    }
+
+    /**
      * A helper method that validates the arguments for convert() method.
      *
      * @param fromMoney <code>Money</code> to validate
      * @param toCurrencyCode <code>Money</code> object
      */
-    private void validateInput(Money fromMoney, String toCurrencyCode) {
-        if (fromMoney == null || toCurrencyCode == null) {
-            throw new NullPointerException("Null argument detected.");
-        }
-
-        // Makes sure that currency code argument is valid 
-        toCurrencyCode = toCurrencyCode.trim();
-        toCurrencyCode = toCurrencyCode.toUpperCase();
-        if (!listOfRates.containsKey(toCurrencyCode)) {
-            throw new IllegalArgumentException("Invalid currency code input!");
+    private void validateMoney(Money fromMoney) {
+        if (fromMoney == null) {
+            throw new NullPointerException("Null argument Money detected.");
         }
 
         // Filter negative money
@@ -149,6 +167,22 @@ public class CurrencyExchange {
         // Filter zero money
         if (fromMoney.isZero()) {
             throw new ZeroMoneyException("Cannot convert zero value.");
+        }
+    }
+
+    private void validateCurrencyCode(String currencyCode) {
+        if (currencyCode == null) {
+            throw new NullPointerException("Currency null value.");
+        }
+
+        currencyCode = currencyCode.trim();
+        if (currencyCode.isEmpty()) {
+            throw new IllegalArgumentException("Empty currency value.");
+        }
+
+        currencyCode = currencyCode.toUpperCase();
+        if (!listOfRates.containsKey(currencyCode)) {
+            throw new IllegalArgumentException("Currency code not recognized.");
         }
     }
 }
