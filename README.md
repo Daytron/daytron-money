@@ -32,8 +32,9 @@ Users are reminded that this software, like all other open source software, is p
 <sup><a href='#home'>[back to top]</a></sup> 
 
 This library requires the following to work properly:
+
 - JDK 8
-- A fantastic free currency api ([getexchangerates]) courtesy of James Hammond.
+- A fantastic free currency api ([fixer.io]) courtesy of [Hakan Ensari](https://github.com/hakanensari).
 
 #### Dependencies:
 - Google's Gson for handling json objects
@@ -133,5 +134,5 @@ Want to contribute? Please do open up an issue for any bug reports, recommendati
 MIT
 
 
-[getexchangerates]:http://www.getexchangerates.com
+[fixer.io]:http://fixer.io
 [Javadoc]:https://daytron.github.io/daytron-money/
