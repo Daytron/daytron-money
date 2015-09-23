@@ -47,21 +47,12 @@ class Power extends MoneyOperation {
     public Money execute() {
         Money thatMoney = getThatMoney();
         Money thisMoney = getThisMoney();
-        
-        if (thatMoney == null) {
-            throw new NullPointerException("Exponent cannot be null");
-        }
-        
+
         //Check base is a whole number
         if (!thisMoney.isWholeNumber()) {
             throw new BaseNotAWholeNumber("Power operation can only be applied to whole numbers.");
         }
         
-        
-        //Check exponent is a whole number
-        if(!thatMoney.isWholeNumber()) {
-            throw new IllegalArgumentException("Exponent must be a whole number");
-        }
         //Ensure any number to the power of zero is 1
         if(thatMoney.isZero()) {
             return new Money.Builder()
@@ -69,6 +60,7 @@ class Power extends MoneyOperation {
                     .wholeUnit(1)
                     .build();
         }
+        
         //Calculation not possible
         if(thisMoney.isZero() && thatMoney.isLessThanZero()) {
             throw new ArithmeticException("Zero to a negative exponent is an undefined operation");

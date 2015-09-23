@@ -533,10 +533,10 @@ public final class Money {
      * @return <code>boolean</code> value
      */
     public boolean isLessThanZero() {
-        Money tempMoney = new Money.Builder()
+        Money zeroMoney = new Money.Builder()
                 .currencyCode(currencyCode)
-                .sign(sign).build();
-        return compareTo(tempMoney) == -1;
+                .build();
+        return compareTo(zeroMoney) == -1;
     }
 
     /**

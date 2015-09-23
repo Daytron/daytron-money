@@ -605,4 +605,70 @@ public class MoneyHashMapTest {
         assertEquals(moneyHashMap.get("2"), expResultMap.get("2"));
     }
     
+    @Test
+    public void testCurrencySetThroughMoneyFactory() {
+        // Given
+        String currency = "CAD";
+        MoneyHashMap<String, Money> map = new MoneyHashMap<>();
+        map.setMoneyFactory(new MoneyFactory(currency));
+        
+        // When
+        MoneyFactory mf = map.getMoneyFactory();
+        
+        // Then
+        assertNotNull(mf);
+        assertEquals(currency, mf.getCurrencyCode());
+    }
+    
+    @Test
+    public void testPutString() {
+        // Given
+        MoneyHashMap<String, Money> map = new MoneyHashMap<>();
+        String key = "1";
+        
+        Money expMoney = new Money.Builder()
+                .wholeUnit(1)
+                .decimalUnit(23)
+                .build();
+        
+        // When
+        map.put(key, "1.23");
+        
+        // Then
+        assertEquals(map.get(key), expMoney);
+    }
+    
+    @Test
+    public void testIsAllNegative() {
+        // Given
+        MoneyHashMap<String, Money> map = new MoneyHashMap<>();
+        String key1 = "1", key2 = "2";
+        
+        map.put(key1, "-1.35");
+        map.put(key2, "-23.45");
+        
+        // When
+        boolean result = map.isAllNegativeValues();
+        
+        // Then
+        assertTrue(result);
+    }
+    
+    @Test
+    public void testIsAllPositive() {
+        // Given
+        MoneyHashMap<String, Money> map = new MoneyHashMap<>();
+        String key1 = "1", key2 = "2";
+        
+        map.put(key1, "1.35");
+        map.put(key2, "23.45");
+        
+        // When
+        boolean result = map.isAllPositiveValues();
+        
+        // Then
+        assertTrue(result);
+    }
+    
+    
 }

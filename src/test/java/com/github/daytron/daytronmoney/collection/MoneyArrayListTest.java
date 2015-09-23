@@ -24,6 +24,7 @@
 package com.github.daytron.daytronmoney.collection;
 
 import com.github.daytron.daytronmoney.currency.Money;
+import com.github.daytron.daytronmoney.currency.MoneyFactory;
 import com.github.daytron.daytronmoney.currency.SignValue;
 import java.util.List;
 import org.junit.After;
@@ -92,11 +93,7 @@ public class MoneyArrayListTest {
                 .wholeUnit(123)
                 .decimalUnit(1234)
                 .build());
-        moneyArrayListCase1.add(new Money.Builder()
-                .sign(SignValue.Positive)
-                .wholeUnit(131)
-                .decimalUnit(3)
-                .build());
+        moneyArrayListCase1.add("131.3");
 
         MoneyArrayList moneyArrayListCase2 = new MoneyArrayList();
         moneyArrayListCase2.add(new Money.Builder()
@@ -666,5 +663,80 @@ public class MoneyArrayListTest {
         assertEquals(moneyArrayList.get(0), expResultList.get(0));
         assertEquals(moneyArrayList.get(1), expResultList.get(1));
     }
+    
+    @Test
+    public void testCurrencySetThroughMoneyFactory() {
+        // Given
+        String currency = "CAD";
+        MoneyArrayList moneyArrayList = new MoneyArrayList();
+        moneyArrayList.setMoneyFactory(new MoneyFactory(currency));
+        
+        // When
+        MoneyFactory mf = moneyArrayList.getMoneyFactory();
+        
+        // Then
+        assertNotNull(mf);
+        assertEquals(currency, mf.getCurrencyCode());
+    }
+    
+    @Test
+    public void testIsAllPositiveValues() {
+        // Given
+        MoneyArrayList mal = new MoneyArrayList();
+        mal.add("1.32");
+        mal.add("123");
+        mal.add("978.12");
+        
+        boolean expResult = true;
+        
+        // When
+        boolean result = mal.isAllPositiveValues();
+        
+        // Then
+        assertEquals(expResult, result);
+    }
 
+    @Test
+    public void testIsAllNegativeValues() {
+        // Given
+        MoneyArrayList mal = new MoneyArrayList();
+        mal.add("-1.32");
+        mal.add("-123");
+        mal.add("-978.12");
+        
+        boolean expResult = true;
+        
+        // When
+        boolean result = mal.isAllNegativeValues();
+        
+        // Then
+        assertEquals(expResult, result);
+    }
+    
+    @Test(expected = ArithmeticException.class)
+    public void testEmptyDifference() {
+        // Given
+        MoneyArrayList mal = new MoneyArrayList();
+        
+        // When
+        mal.difference();
+    }
+    
+    @Test(expected = ArithmeticException.class)
+    public void testEmptyProduct() {
+        // Given
+        MoneyArrayList mal = new MoneyArrayList();
+        
+        // When
+        mal.product();
+    }
+    
+    @Test(expected = ArithmeticException.class)
+    public void testEmptyQuotient() {
+        // Given
+        MoneyArrayList mal = new MoneyArrayList();
+        
+        // When
+        mal.quotient();
+    }
 }

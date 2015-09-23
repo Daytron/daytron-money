@@ -23,6 +23,7 @@
  */
 package com.github.daytron.daytronmoney.currency;
 
+import com.github.daytron.daytronmoney.exception.BaseNotAWholeNumber;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -87,5 +88,66 @@ public class PowerTest {
             // Then
             assertEquals(expectedResult, productMoney);
         }
+    }
+    
+    /**
+     * Test of execute method with null money.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testExecuteNullMoney() {
+        // Given
+        Money nullMoney = null;
+        
+        // When
+        Money result = nullMoney.power(2);
+    }
+    
+    /**
+     * Test of execute method with decimal money.
+     */
+    @Test(expected = BaseNotAWholeNumber.class)
+    public void testExecuteNotWholeNumber() {
+        // Given
+        Money notWholeMoney = new Money.Builder()
+                .wholeUnit(2)
+                .decimalUnit(12)
+                .build();
+        
+        // When
+        Money result = notWholeMoney.power(2);
+    }
+    
+    /**
+     * Test of execute method with zero power.
+     */
+    @Test
+    public void testExecuteZeroPower() {
+        // Given
+        Money notWholeMoney = new Money.Builder()
+                .wholeUnit(2)
+                .build();
+        Money expMoney = new Money.Builder()
+                    .sign(SignValue.Positive)
+                    .wholeUnit(1)
+                    .build();
+        
+        // When
+        Money result = notWholeMoney.power(0);
+        
+        // Then
+        assertEquals(expMoney, result);
+    }
+    
+    /**
+     * Test of execute method with zero money and negative power.
+     */
+    @Test(expected = ArithmeticException.class)
+    public void testExecuteZeroMoneyWithNegativePower() {
+        // Given
+        Money zeroMoney = new Money.Builder()
+                .build();
+        
+        // When
+        Money result = zeroMoney.power(-2);
     }
 }
