@@ -1,4 +1,5 @@
 *.class
+*.properties
 
 ## All backup text files from Linux
 *~

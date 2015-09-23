@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2015 Ryan Gilera.
+ * Copyright 2015 Ryan Gilera, Shaun Plummer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,45 +23,27 @@
  */
 package com.github.daytron.daytronmoney.exception;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 /**
- * Test class for NegativeMoneyException
+ * Exception class used when the base used in a power operation is not a whole number
  * 
- * @author Ryan Gilera
+ * @author Shaun Plummer
  */
-public class NegativeMoneyExceptionTest {
+public class BaseNotAWholeNumber extends RuntimeException {
     
-    public NegativeMoneyExceptionTest() {
+    /**
+     * Default Exception constructor.
+     */
+    public BaseNotAWholeNumber() {
+        super();
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
     
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
-    @Test(expected=NegativeMoneyException.class)
-    public void testExceptionWithoutMessage() {
-        throw new NegativeMoneyException();
-    }
-    
-    @Test(expected=NegativeMoneyException.class)
-    public void testExceptionWithMessage() {
-        throw new NegativeMoneyException("Invalid");
+    /**
+     * Exception constructor with message as its parameter.
+     * 
+     * @param message A <code>String</code> message
+     */
+    public BaseNotAWholeNumber(String message) {
+        super(message);
     }
 }

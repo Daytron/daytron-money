@@ -96,7 +96,10 @@ public class MoneyFactory {
      * @return Resulting <code>Money</code> object 
      */
     public Money valueOf() {
-        return new Money(currencyCode, SignValue.Positive, 0, 0, 0);
+        return new Money.Builder()
+                .currencyCode(currencyCode)
+                .sign(SignValue.Positive)
+                .build();
     }
     
     /**
@@ -108,8 +111,18 @@ public class MoneyFactory {
      * @return Resulting <code>Money</code> object 
      */
     public Money valueOf(long value) {
-        return new Money(currencyCode, 
-                SignValue.Positive, value, 0, 0);
+        SignValue sign = SignValue.Positive;
+        
+        if (value < 0) {
+            sign = SignValue.Negative;
+            value = Math.abs(value);
+        }
+        
+        return new Money.Builder()
+                .currencyCode(currencyCode)
+                .sign(sign)
+                .wholeUnit(value)
+                .build();
     }
     
     /**
@@ -121,8 +134,7 @@ public class MoneyFactory {
      * @return Resulting <code>Money</code> object 
      */
     public Money valueOf(int value) {
-        return new Money(currencyCode, 
-                SignValue.Positive, (long)value, 0, 0);
+        return valueOf((long)value);
     }
 
     /**
@@ -139,8 +151,21 @@ public class MoneyFactory {
      */
     public Money valueOf(long wholeUnit, long decimalUnit, 
             long leadingDecimalZeros) {
-        return new Money(this.currencyCode, SignValue.Positive, 
-                wholeUnit, decimalUnit, leadingDecimalZeros);
+        SignValue sign = SignValue.Positive;
+        
+        if (wholeUnit < 0 || decimalUnit < 0) {
+            sign = SignValue.Negative;
+            wholeUnit = Math.abs(wholeUnit);
+            decimalUnit = Math.abs(decimalUnit);
+        }
+        
+        return new Money.Builder()
+                .currencyCode(this.currencyCode)
+                .sign(sign)
+                .wholeUnit(wholeUnit)
+                .decimalUnit(decimalUnit)
+                .leadingDecimalZeroes(leadingDecimalZeros)
+                .build();
     }
 
     /**
@@ -174,7 +199,10 @@ public class MoneyFactory {
         }
         
         if (valueString.isEmpty()) {
-            return new Money(currencyCode, SignValue.Positive, 0, 0, 0);
+            return new Money.Builder()
+                    .currencyCode(currencyCode)
+                    .sign(SignValue.Positive)
+                    .build();
         }
 
         String[] resultParsedValue = StringUtil.parseAndRemoveCurrencyCode(valueString);
@@ -194,13 +222,25 @@ public class MoneyFactory {
 
         // Parse sign
         sign = ((parsedData[0] == 1)?SignValue.Positive:SignValue.Negative);
-
+        
         wholeUnit = parsedData[1];
         decimalUnit = parsedData[2];
         leadingDecimalZeros = parsedData[3];
+        
+        // Normalise sign and leading zero
+        if (wholeUnit == 0 && decimalUnit == 0) {
+            leadingDecimalZeros = 0;
+            sign = SignValue.Positive;
+        }
 
-        return new Money(newCurrencyCode, sign, wholeUnit, decimalUnit, 
-        leadingDecimalZeros);
+
+        return new Money.Builder()
+                .currencyCode(newCurrencyCode)
+                .sign(sign)
+                .wholeUnit(wholeUnit)
+                .decimalUnit(decimalUnit)
+                .leadingDecimalZeroes(leadingDecimalZeros)
+                .build();
     }
 
     /**

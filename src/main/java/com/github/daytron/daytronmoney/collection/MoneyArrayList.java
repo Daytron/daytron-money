@@ -176,7 +176,7 @@ public class MoneyArrayList extends AbstractMoneyList {
      */
     @Override
     public Money sum() {
-        Money sumMoney = new Money();
+        Money sumMoney = new Money.Builder().build();
         for (Money money : this) {
             sumMoney = sumMoney.add(money);
         }

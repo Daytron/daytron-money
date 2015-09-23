@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2015 Ryan Gilera.
+ * Copyright 2015 Ryan Gilera, Shaun Plummer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,18 +25,18 @@ package com.github.daytron.daytronmoney.exception;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Test;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
- * Test class for NegativeMoneyException
+ * Test class for BaseNotAWholeNumber Exception
  * 
- * @author Ryan Gilera
+ * @author Shaun Plummer
  */
-public class NegativeMoneyExceptionTest {
+public class BaseNotAWholeNumberTest {
     
-    public NegativeMoneyExceptionTest() {
+    public BaseNotAWholeNumberTest() {
     }
     
     @BeforeClass
@@ -55,13 +55,13 @@ public class NegativeMoneyExceptionTest {
     public void tearDown() {
     }
 
-    @Test(expected=NegativeMoneyException.class)
+    @Test(expected=BaseNotAWholeNumber.class)
     public void testExceptionWithoutMessage() {
-        throw new NegativeMoneyException();
+        throw new BaseNotAWholeNumber();
     }
     
-    @Test(expected=NegativeMoneyException.class)
+    @Test(expected=BaseNotAWholeNumber.class)
     public void testExceptionWithMessage() {
-        throw new NegativeMoneyException("Invalid");
+        throw new BaseNotAWholeNumber("Invalid");
     }
 }

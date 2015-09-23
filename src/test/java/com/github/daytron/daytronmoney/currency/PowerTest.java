@@ -23,21 +23,22 @@
  */
 package com.github.daytron.daytronmoney.currency;
 
+import com.github.daytron.daytronmoney.exception.BaseNotAWholeNumber;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
- * Test class for Multiplication
+ * Test class for Powers
  * 
- * @author Ryan Gilera
+ * @author Shaun Plummer
  */
-public class MultiplicationTest {
+public class PowerTest {
     
-    public MultiplicationTest() {
+    public PowerTest() {
     }
     
     @BeforeClass
@@ -56,21 +57,22 @@ public class MultiplicationTest {
     public void tearDown() {
     }
 
+
     /**
-     * Test of execute method, of class Multiplication.
+     * Test of execute method, of class Power.
      */
     @Test
     public void testExecute() {
         MoneyFactory mf = new MoneyFactory();
         
         String[] valueA = new String[] {
-          "6935.7","0","-1.058","-12.006","0.002"  
+            "0","1","1","-1","-1","90",
         };
         String[] valueB = new String[] {
-          "1.005","256","-12.5","96","0.003"  
+            "3","-5","7","3","-4","3"
         };
         String[] exptResults = new String[] {
-          "6970.3785","0","13.225","-1152.576","0.000006"  
+            "0","1","1","-1","1","729000",
         };
         
         for (int i = 0; i< valueA.length; i++) {
@@ -78,15 +80,75 @@ public class MultiplicationTest {
             Money aMoney = mf.valueOf(valueA[i]);
             Money bMoney = mf.valueOf(valueB[i]);
             
-            MoneyOperation multiplyOperation = new Multiplication(aMoney, bMoney);
+            MoneyOperation powerOperation = new Power(aMoney, bMoney);
             Money expectedResult = mf.valueOf(exptResults[i]);
             
             // When 
-            Money productMoney = multiplyOperation.execute();
-            
+            Money productMoney = powerOperation.execute();
+                        
             // Then
             assertEquals(expectedResult, productMoney);
         }
     }
     
+    /**
+     * Test of execute method with null money.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testExecuteNullMoney() {
+        // Given
+        Money nullMoney = null;
+        
+        // When
+        Money result = nullMoney.power(2);
+    }
+    
+    /**
+     * Test of execute method with decimal money.
+     */
+    @Test(expected = BaseNotAWholeNumber.class)
+    public void testExecuteNotWholeNumber() {
+        // Given
+        Money notWholeMoney = new Money.Builder()
+                .wholeUnit(2)
+                .decimalUnit(12)
+                .build();
+        
+        // When
+        Money result = notWholeMoney.power(2);
+    }
+    
+    /**
+     * Test of execute method with zero power.
+     */
+    @Test
+    public void testExecuteZeroPower() {
+        // Given
+        Money notWholeMoney = new Money.Builder()
+                .wholeUnit(2)
+                .build();
+        Money expMoney = new Money.Builder()
+                    .sign(SignValue.Positive)
+                    .wholeUnit(1)
+                    .build();
+        
+        // When
+        Money result = notWholeMoney.power(0);
+        
+        // Then
+        assertEquals(expMoney, result);
+    }
+    
+    /**
+     * Test of execute method with zero money and negative power.
+     */
+    @Test(expected = ArithmeticException.class)
+    public void testExecuteZeroMoneyWithNegativePower() {
+        // Given
+        Money zeroMoney = new Money.Builder()
+                .build();
+        
+        // When
+        Money result = zeroMoney.power(-2);
+    }
 }

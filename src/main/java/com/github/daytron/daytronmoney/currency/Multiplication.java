@@ -58,8 +58,10 @@ class Multiplication extends MoneyOperation {
         }
         
         if (getThisMoney().isZero() || getThatMoney().isZero()) {
-            return new Money(getThisMoney().getCurrencyCode(), 
-                    SignValue.Positive, 0, 0, 0);
+            return new Money.Builder()
+                    .currencyCode(getThisMoney().getCurrencyCode())
+                    .sign(SignValue.Positive)
+                    .build();
         }
         
         long newWholeUnit, newDecimalUnit, newLeadingZeroes;
@@ -132,9 +134,13 @@ class Multiplication extends MoneyOperation {
         newWholeUnit = ((newWholeStr.isEmpty())?0:Long.valueOf(newWholeStr));
         newDecimalUnit = ((newDecimalStr.isEmpty())?0:Long.valueOf(newDecimalStr));
         
-        return new Money(
-                getThisMoney().getCurrencyCode(),newSign, 
-                newWholeUnit, newDecimalUnit, newLeadingZeroes);
+        return new Money.Builder()
+                .currencyCode(getThisMoney().getCurrencyCode())
+                .sign(newSign)
+                .wholeUnit(newWholeUnit)
+                .decimalUnit(newDecimalUnit)
+                .leadingDecimalZeroes(newLeadingZeroes)
+                .build();
     }
     
 }

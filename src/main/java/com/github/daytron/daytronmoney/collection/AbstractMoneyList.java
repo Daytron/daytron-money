@@ -33,7 +33,7 @@ import java.util.Collection;
  * 
  * @author Ryan Gilera
  */
-public abstract class AbstractMoneyList 
+public abstract class AbstractMoneyList
         extends ArrayList<Money> implements MoneyCollection{
     private MoneyFactory moneyFactory;
 

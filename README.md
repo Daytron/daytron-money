@@ -1,4 +1,4 @@
-# <a name='home'></a>daytron-money  [![Coverage Status](https://coveralls.io/repos/Daytron/daytron-money/badge.svg?branch=master)](https://coveralls.io/r/Daytron/daytron-money?branch=master) [![Build Status](https://travis-ci.org/Daytron/daytron-money.svg?branch=master)](https://travis-ci.org/Daytron/daytron-money) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.daytron/DaytronMoney/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.daytron/DaytronMoney) 
+# <a name='home'></a>daytron-money  [![Coverage Status](https://coveralls.io/repos/Daytron/daytron-money/badge.svg?branch=master)](https://coveralls.io/r/Daytron/daytron-money?branch=master) [![Build Status](https://travis-ci.org/Daytron/daytron-money.svg?branch=master)](https://travis-ci.org/Daytron/daytron-money) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.daytron/DaytronMoney/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.daytron/DaytronMoney) [![Stories in Ready](https://badge.waffle.io/Daytron/daytron-money.svg?label=ready&title=Ready)](http://waffle.io/Daytron/daytron-money)
 
 A Java library for dealing simple monetary operations and conversions. 
 
@@ -22,7 +22,7 @@ Users are reminded that this software, like all other open source software, is p
 <sup><a href='#home'>[back to top]</a></sup>
 
 - Precise monetary calculations up to 2e63-1 for each whole units and decimals values. (+-9,223,372,036,854,775,807.9223372036854775807)
-- Currency conversions.
+- Latest and historical currency conversions.
 - Custom data structures for storing and handling Money objects.
 - Parse String, integer and long values into Money objects.
 - Allows signed values
@@ -32,8 +32,9 @@ Users are reminded that this software, like all other open source software, is p
 <sup><a href='#home'>[back to top]</a></sup> 
 
 This library requires the following to work properly:
+
 - JDK 8
-- A fantastic free currency api ([getexchangerates]) courtesy of James Hammond.
+- A fantastic free currency api ([fixer.io]) courtesy of [Hakan Ensari](https://github.com/hakanensari).
 
 #### Dependencies:
 - Google's Gson for handling json objects
@@ -49,7 +50,7 @@ Maven Artifact
 <dependency>
   <groupId>com.github.daytron</groupId>
   <artifactId>DaytronMoney</artifactId>
-  <version>1.0.0</version>
+  <version>1.2.0</version>
 </dependency>
 ``` 
 
@@ -69,11 +70,36 @@ Please refer to [Javadoc] for more information.
 
 `Money` class represents all monetary values. Choose any from the following when creating a new object. 
 ```java
-Money moneyA = new Money("GBP", SignValue.Positive, 10, 50, 0);
-Money moneyB = new Money(SignValue.Positive, 10, 50, 0);
-Money moneyC = new Money(SignValue.Negative, 10, 50);
-Money moneyD = new Money(10, 50);
-Money moneyE = new Money(); 
+    // GBP 10.50
+    Money moneyA = new Money.Builder()
+        .currencyCode("GBP")
+        .sign(SignValue.Positive)
+        .wholeUnit(10)
+        .decimalUnit(5)
+        .build();
+    
+    // Local currency code with value of 10.50
+    Money moneyB = new Money.Builder()
+        .wholeUnit(10)
+        .decimalUnit(5)
+        .build();
+    
+    // Local currency code with a value of 10.05
+    Money moneyC = new Money.Builder()
+        .wholeUnit(10)
+        .decimalUnit(5)
+        .leadingDecimalZeroes(1)
+        .build();
+    
+    // Negative value
+    Money moneyD = new Money.Builder()
+        .sign(SignValue.Negative)
+        .wholeUnit(10)
+        .decimalUnit(50)
+        .build();
+    
+    // Default value is zero
+    Money moneyE = new Money.Builder().build();
 ```
 
 `MoneyFactory` class allows you to parse other data types into `Money` objects.
@@ -102,14 +128,20 @@ Acceptable `String` formats:
 #####<a name='conversion'></a>Conversion
 <sup><a href='#home'>[back to top]</a></sup> 
 
-You can convert currency `Money` to another currency using `CurrencyExchange` class. This class uses `ConversionClient` to connect to an external API (see [getexchangerates]). `CurrencyExchange` is a singleton class to minimize overloading the server with requests. Conversion can be done through the following example.
+You can convert currency `Money` to another currency using `CurrencyExchange` class. This class uses `ConversionClient` to connect to an external API (see [fixer.io]). Conversion can be done through the following example.
 ```java
+
 MoneyFactory moneyFactory = new MoneyFactory("USD");
          
 CurrencyExchange cex = CurrencyExchange.getInstance();
 Money moneyA = moneyFactory.valueOf("10.50");
 
+// Latest conversion
 Money moneyB = cex.convert(moneyA, "GBP");
+
+// Historical conversion
+LocalDateTime dateTime = LocalDateTime.of(2001, Month.MARCH, 2, 3, 31);
+Money moneyC = cex.convert(moneyA, "GBP", dateTime);
 ```
 
 #####<a name='collection'></a>Collection
@@ -133,5 +165,6 @@ Want to contribute? Please do open up an issue for any bug reports, recommendati
 MIT
 
 
-[getexchangerates]:http://www.getexchangerates.com
+[fixer.io]:http://fixer.io
 [Javadoc]:https://daytron.github.io/daytron-money/
+

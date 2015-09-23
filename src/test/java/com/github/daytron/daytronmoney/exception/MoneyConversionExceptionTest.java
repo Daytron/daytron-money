@@ -30,13 +30,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Test class for NegativeMoneyException
+ * Test class fpr MoneyConversionException
  * 
  * @author Ryan Gilera
  */
-public class NegativeMoneyExceptionTest {
+public class MoneyConversionExceptionTest {
     
-    public NegativeMoneyExceptionTest() {
+    public MoneyConversionExceptionTest() {
     }
     
     @BeforeClass
@@ -55,13 +55,19 @@ public class NegativeMoneyExceptionTest {
     public void tearDown() {
     }
 
-    @Test(expected=NegativeMoneyException.class)
-    public void testExceptionWithoutMessage() {
-        throw new NegativeMoneyException();
+    @Test(expected=MoneyConversionException.class)
+    public void testExceptionWithoutMessage() throws MoneyConversionException {
+        throw new MoneyConversionException();
     }
     
-    @Test(expected=NegativeMoneyException.class)
-    public void testExceptionWithMessage() {
-        throw new NegativeMoneyException("Invalid");
+    @Test(expected=MoneyConversionException.class)
+    public void testExceptionWithMessage() throws MoneyConversionException {
+        throw new MoneyConversionException("Message thrown");
+    }
+    
+    @Test(expected=MoneyConversionException.class)
+    public void testExceptionWithMessageAndThrowable() throws MoneyConversionException {
+        Throwable t = new Throwable();
+        throw new MoneyConversionException("Message", t);
     }
 }

@@ -31,6 +31,7 @@ import org.junit.Test;
 
 /**
  * Test class for CurrencyDidNotMatchException
+ * 
  * @author Ryan Gilera
  */
 public class CurrencyDidNotMatchExceptionTest {
