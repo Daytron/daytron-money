@@ -25,8 +25,6 @@ package com.github.daytron.daytronmoney.conversion;
 
 import com.github.daytron.daytronmoney.exception.MoneyConversionException;
 import com.google.gson.JsonObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -36,6 +34,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for ConversionClient
+ * 
  * @author Ryan Gilera
  */
 public class ConversionClientTest {

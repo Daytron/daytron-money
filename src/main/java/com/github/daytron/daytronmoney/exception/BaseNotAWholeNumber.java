@@ -30,6 +30,9 @@ package com.github.daytron.daytronmoney.exception;
  */
 public class BaseNotAWholeNumber extends RuntimeException {
     
+    /**
+     * Default Exception constructor.
+     */
     public BaseNotAWholeNumber() {
         super();
     }

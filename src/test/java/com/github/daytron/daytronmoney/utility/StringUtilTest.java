@@ -23,7 +23,6 @@
  */
 package com.github.daytron.daytronmoney.utility;
 
-import com.github.daytron.daytronmoney.currency.MoneyFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -33,6 +32,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for StringUtil
+ * 
  * @author Ryan Gilera
  */
 public class StringUtilTest {

@@ -53,8 +53,8 @@ class ConversionClient {
     /**
      * Extracts the JSON element based on the passed URL parameter.
      *
-     * @param urlString
-     * @return
+     * @param urlString Custom API URL String as its parameter
+     * @return JsonObject of the JSON data extracted
      */
     private static JsonObject extractJsonElement(String urlString) throws
             MoneyConversionException {

@@ -431,18 +431,11 @@ public final class Money {
      */
     @Override
     public boolean equals(Object money) {
-        if (money == null) {
-            return false;
-        }
-        if (this == money) {
-            return true;
-        }
-        if (!(money instanceof Money)) {
-            return false;
-        }
+        if (money == null) return false;
+        if (this == money) return true;
+        if (!(money instanceof Money)) return false;
 
         Money thatMoney = (Money) money;
-
         return getCurrencyCode().equals(thatMoney.getCurrencyCode())
                 && getSign() == thatMoney.getSign()
                 && getWholeUnit() == thatMoney.getWholeUnit()
@@ -461,7 +454,8 @@ public final class Money {
         hash = 41 * hash + Objects.hashCode(this.currencyCode);
         hash = 41 * hash + (int) (this.wholeUnit ^ (this.wholeUnit >>> 32));
         hash = 41 * hash + (int) (this.decimalUnit ^ (this.decimalUnit >>> 32));
-        hash = 41 * hash + (int) (this.leadingDecimalZeros ^ (this.leadingDecimalZeros >>> 32));
+        hash = 41 * hash + (int) (this.leadingDecimalZeros ^ (
+                this.leadingDecimalZeros >>> 32));
         hash = 41 * hash + Objects.hashCode(this.sign);
         return hash;
     }
@@ -528,7 +522,7 @@ public final class Money {
     }
 
     /**
-     * Checks if this object is less than zero
+     * Checks if this object is less than zero.
      *
      * @return <code>boolean</code> value
      */
@@ -614,13 +608,9 @@ public final class Money {
     public String toStringDecimal() {
         // Apply sign
         String signText;
-        if (getWholeUnit() == 0 && getDecimalUnit() == 0) {
-            signText = "";
-        } else if (getSign() == SignValue.Positive) {
-            signText = "";
-        } else {
-            signText = getSign().getText();
-        }
+        if (getWholeUnit() == 0 && getDecimalUnit() == 0) { signText = "";
+        } else if (getSign() == SignValue.Positive) { signText = "";
+        } else { signText = getSign().getText(); }
 
         // Add any leading zeros
         String penceStr = "";

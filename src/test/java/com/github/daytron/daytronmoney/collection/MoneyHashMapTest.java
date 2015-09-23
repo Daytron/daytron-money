@@ -36,6 +36,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for MoneyHashMap
+ * 
  * @author Ryan Gilera
  */
 public class MoneyHashMapTest {

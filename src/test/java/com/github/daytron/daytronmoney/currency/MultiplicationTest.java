@@ -32,6 +32,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for Multiplication
+ * 
  * @author Ryan Gilera
  */
 public class MultiplicationTest {

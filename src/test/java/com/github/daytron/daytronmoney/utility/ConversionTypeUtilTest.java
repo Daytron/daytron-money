@@ -34,6 +34,7 @@ import org.junit.Test;
 
 /**
  * Test class for ConversionTypeUtil
+ * 
  * @author Ryan Gilera
  */
 public class ConversionTypeUtilTest {

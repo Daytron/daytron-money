@@ -33,6 +33,7 @@ import org.junit.BeforeClass;
 
 /**
  * Test class for Powers
+ * 
  * @author Shaun Plummer
  */
 public class PowerTest {

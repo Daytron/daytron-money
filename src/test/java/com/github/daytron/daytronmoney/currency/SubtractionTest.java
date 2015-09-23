@@ -32,6 +32,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for Subtraction
+ * 
  * @author Ryan Gilera
  */
 public class SubtractionTest {

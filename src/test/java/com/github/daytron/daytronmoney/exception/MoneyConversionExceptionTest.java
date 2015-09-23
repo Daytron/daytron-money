@@ -28,10 +28,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
- *
+ * Test class fpr MoneyConversionException
+ * 
  * @author Ryan Gilera
  */
 public class MoneyConversionExceptionTest {
@@ -70,5 +70,4 @@ public class MoneyConversionExceptionTest {
         Throwable t = new Throwable();
         throw new MoneyConversionException("Message", t);
     }
-    
 }

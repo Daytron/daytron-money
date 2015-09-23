@@ -198,7 +198,6 @@ public class CurrencyExchange {
         } catch (MoneyConversionException ex) {
             return null;
         }
-
     }
 
     /**
@@ -212,12 +211,10 @@ public class CurrencyExchange {
             throw new NullPointerException("Null argument Money detected.");
         }
 
-        // Filter negative money
         if (fromMoney.isLessThanZero()) {
             throw new NegativeMoneyException("Cannot convert negative money value.");
         }
 
-        // Filter zero money
         if (fromMoney.isZero()) {
             throw new ZeroMoneyException("Cannot convert zero value.");
         }

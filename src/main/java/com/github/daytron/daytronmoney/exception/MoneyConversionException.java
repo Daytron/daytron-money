@@ -30,6 +30,9 @@ package com.github.daytron.daytronmoney.exception;
  */
 public class MoneyConversionException extends Exception {
     
+    /**
+     * Default Exception constructor.
+     */
     public MoneyConversionException() {
         super();
     }

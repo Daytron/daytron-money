@@ -34,6 +34,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for MoneyFactory
+ * 
  * @author Ryan Gilera
  */
 public class MoneyFactoryTest {
