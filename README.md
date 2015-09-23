@@ -22,7 +22,7 @@ Users are reminded that this software, like all other open source software, is p
 <sup><a href='#home'>[back to top]</a></sup>
 
 - Precise monetary calculations up to 2e63-1 for each whole units and decimals values. (+-9,223,372,036,854,775,807.9223372036854775807)
-- Currency conversions.
+- Latest and historical currency conversions.
 - Custom data structures for storing and handling Money objects.
 - Parse String, integer and long values into Money objects.
 - Allows signed values
@@ -50,7 +50,7 @@ Maven Artifact
 <dependency>
   <groupId>com.github.daytron</groupId>
   <artifactId>DaytronMoney</artifactId>
-  <version>1.0.0</version>
+  <version>1.2.0</version>
 </dependency>
 ``` 
 
@@ -128,14 +128,20 @@ Acceptable `String` formats:
 #####<a name='conversion'></a>Conversion
 <sup><a href='#home'>[back to top]</a></sup> 
 
-You can convert currency `Money` to another currency using `CurrencyExchange` class. This class uses `ConversionClient` to connect to an external API (see [fixer.io]). `CurrencyExchange` is a singleton class to minimize overloading the server with requests. Conversion can be done through the following example.
+You can convert currency `Money` to another currency using `CurrencyExchange` class. This class uses `ConversionClient` to connect to an external API (see [fixer.io]). Conversion can be done through the following example.
 ```java
+
 MoneyFactory moneyFactory = new MoneyFactory("USD");
          
 CurrencyExchange cex = CurrencyExchange.getInstance();
 Money moneyA = moneyFactory.valueOf("10.50");
 
+// Latest conversion
 Money moneyB = cex.convert(moneyA, "GBP");
+
+// Historical conversion
+LocalDateTime dateTime = LocalDateTime.of(2001, Month.MARCH, 2, 3, 31);
+Money moneyC = cex.convert(moneyA, "GBP", dateTime);
 ```
 
 #####<a name='collection'></a>Collection
