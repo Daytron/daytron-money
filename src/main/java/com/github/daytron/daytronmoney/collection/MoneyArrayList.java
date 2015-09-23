@@ -200,7 +200,6 @@ public class MoneyArrayList extends AbstractMoneyList {
         if (size() > 1) {
             for (int i = 1; i <= (size()-1);i++) {
                 differenceMoney = differenceMoney.subtract(get(i));
-                System.out.println(differenceMoney);
             }   
         }
         

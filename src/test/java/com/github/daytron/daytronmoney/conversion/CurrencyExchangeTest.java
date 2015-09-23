@@ -25,6 +25,8 @@ package com.github.daytron.daytronmoney.conversion;
 
 import com.github.daytron.daytronmoney.currency.Money;
 import com.github.daytron.daytronmoney.exception.MoneyConversionException;
+import java.time.LocalDateTime;
+import java.time.Month;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -97,7 +99,10 @@ public class CurrencyExchangeTest {
         }
 
     }
-    
+
+    /**
+     * Test of convert method with the same currency, of class CurrencyExchange.
+     */
     public void testConvertWithSameCurrency() {
         // Given
         Money fromMoney = new Money.Builder()
@@ -106,12 +111,12 @@ public class CurrencyExchangeTest {
                 .build();
         String toCurrencyCode = "GBP";
         String expCurrency = "GBP";
-        
+
         Money expMoney = new Money.Builder()
                 .currencyCode("GBP")
                 .wholeUnit(1)
                 .build();
-     
+
         // When
         Money result;
         try {
@@ -125,33 +130,174 @@ public class CurrencyExchangeTest {
             fail("MoneyConversionException has occurred. " + ex.getLocalizedMessage());
         }
     }
-    
+
+    /**
+     * Test of getCurrencyRate method, of class CurrencyExchange.
+     */
     @Test
     public void testGetCurrencyRate() {
         // Given
         String baseCurrency = "CAD";
         String toCurrency = "GBP";
-        
+
         // When
         String result = cex.getCurrencyRate(baseCurrency, toCurrency);
-        
+
         // Then
         assertNotNull(result);
     }
-    
+
+    /**
+     * Test of getCurrencyRate method with null arguments, of class CurrencyExchange.
+     */
     @Test(expected = NullPointerException.class)
     public void testNullCurrencyCode() {
         String result = cex.getCurrencyRate(null, null);
     }
-    
+
+    /**
+     * Test of getCurrencyRate method with empty String arguments, 
+     * of class CurrencyExchange.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testEmptyCurrencyCode() {
         String result = cex.getCurrencyRate("", "");
     }
-    
+
+    /**
+     * Test of getCurrencyRate method with invalid code arguments, 
+     * of class CurrencyExchange.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidCurrencyCode() {
         String result = cex.getCurrencyRate("QWERTY", "ASDF");
+    }
+
+    /**
+     * Test of convert method historical, of class CurrencyExchange.
+     */
+    @Test
+    public void testConvertHistorical() {
+        // Given
+        LocalDateTime dateTime = LocalDateTime.of(2001, Month.MARCH, 2, 3, 31);
+
+        Money fromMoney = new Money.Builder()
+                .currencyCode("GBP")
+                .wholeUnit(1)
+                .build();
+
+        String toCurrencyCode = "CAD";
+        String expCurrency = "CAD";
+
+        // When
+        Money result;
+        try {
+            result = cex.convert(fromMoney, toCurrencyCode, dateTime);
+
+            // Then
+            assertEquals(expCurrency, result.getCurrencyCode());
+            assertNotNull(result);
+        } catch (MoneyConversionException ex) {
+            fail("MoneyConversionException has occurred. " + ex.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Test of convert method historical date before 2000, of class CurrencyExchange.
+     */
+    @Test(expected = MoneyConversionException.class)
+    public void testConvertHistoricalBefore2000() throws MoneyConversionException {
+        // Given
+        LocalDateTime dateTime = LocalDateTime.of(1999, Month.MARCH, 2, 3, 31);
+
+        Money fromMoney = new Money.Builder()
+                .currencyCode("GBP")
+                .wholeUnit(1)
+                .build();
+
+        String toCurrencyCode = "CAD";
+        String expCurrency = "CAD";
+
+        // When
+        Money result = cex.convert(fromMoney, toCurrencyCode, dateTime);
+    }
+    
+    /**
+     * Test of convert method historical with future date, of class CurrencyExchange.
+     */
+    @Test(expected = MoneyConversionException.class)
+    public void testConvertHistoricalFuture() throws MoneyConversionException {
+        // Given
+        LocalDateTime dateTime = LocalDateTime.of(2031, Month.MARCH, 2, 3, 31);
+
+        Money fromMoney = new Money.Builder()
+                .currencyCode("GBP")
+                .wholeUnit(1)
+                .build();
+
+        String toCurrencyCode = "CAD";
+        String expCurrency = "CAD";
+
+        // When
+        Money result = cex.convert(fromMoney, toCurrencyCode, dateTime);
+    }
+    
+    /**
+     * Test of convert method historical with null date, of class CurrencyExchange.
+     */
+    @Test
+    public void testConvertHistoricalNull() {
+        // Given
+        LocalDateTime dateTime = null;
+
+        Money fromMoney = new Money.Builder()
+                .currencyCode("GBP")
+                .wholeUnit(1)
+                .build();
+
+        String toCurrencyCode = "CAD";
+        String expCurrency = "CAD";
+
+        // When
+        Money result;
+        try {
+            result = cex.convert(fromMoney, toCurrencyCode);
+
+            // Then
+            assertEquals(expCurrency, result.getCurrencyCode());
+            assertNotNull(result);
+        } catch (MoneyConversionException ex) {
+            fail("MoneyConversionException has occurred. " + ex.getLocalizedMessage());
+        }
+    }
+    
+    /**
+     * Test of convert method historical with today's date, of class CurrencyExchange.
+     */
+    @Test
+    public void testConvertHistoricalToday() {
+        // Given
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        Money fromMoney = new Money.Builder()
+                .currencyCode("GBP")
+                .wholeUnit(1)
+                .build();
+
+        String toCurrencyCode = "CAD";
+        String expCurrency = "CAD";
+
+        // When
+        Money result;
+        try {
+            result = cex.convert(fromMoney, toCurrencyCode);
+
+            // Then
+            assertEquals(expCurrency, result.getCurrencyCode());
+            assertNotNull(result);
+        } catch (MoneyConversionException ex) {
+            fail("MoneyConversionException has occurred. " + ex.getLocalizedMessage());
+        }
     }
 
 }

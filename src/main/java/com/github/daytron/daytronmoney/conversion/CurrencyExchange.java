@@ -30,6 +30,8 @@ import com.github.daytron.daytronmoney.exception.NegativeMoneyException;
 import com.github.daytron.daytronmoney.exception.ZeroMoneyException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,6 +47,8 @@ import java.util.logging.Logger;
 public class CurrencyExchange {
 
     private Map<String, String> listOfRates;
+    private static final LocalDateTime MIN_DATE_ALLOWED = LocalDateTime.of(2000,
+            Month.JANUARY, 1, 0, 0);
 
     /**
      * Creates an instance private. Connects to API and extract latest currency
@@ -85,6 +89,7 @@ public class CurrencyExchange {
      * A static inner class that holds the instance of CurrencyExchange class
      */
     private static final class MySingletonContainer {
+
         private static final CurrencyExchange INSTANCE = new CurrencyExchange();
     }
 
@@ -99,14 +104,49 @@ public class CurrencyExchange {
      */
     public Money convert(Money fromMoney, String toCurrencyCode)
             throws MoneyConversionException {
+        return convert(fromMoney, toCurrencyCode, null);
+    }
+
+    /**
+     * Convert a <code>Money</code> object to another currency on a specific 
+     * point in time. Allowed historical currency conversion all the way back 
+     * to year 2000. Some currency rates are not available on some dates, throws 
+     * a MoneyConversionException if the rate or base is not available.
+     * 
+     * @param fromMoney <code>Money</code> object to be converted
+     * @param toCurrencyCode <code>String</code> currency code to convert to
+     * @param date date at which point the rate is retrieved
+     * @return <code>Money</code> object
+     * @throws MoneyConversionException For any error encountered
+     */
+    public Money convert(Money fromMoney, String toCurrencyCode,
+            LocalDateTime date) throws MoneyConversionException {
+        boolean isHistoricalConversion = true;
+        if (date == null) {
+            isHistoricalConversion = false;
+        } else if (date.isBefore(MIN_DATE_ALLOWED)) {
+            throw new MoneyConversionException("Cannot retrieve "
+                    + "historical rate before year 2000.");
+        } else if (date.isAfter(LocalDateTime.now())) {
+            throw new MoneyConversionException("Cannot process future date.");
+        } else if (isDateGivenToday(date)) {
+            isHistoricalConversion = false;
+        }
+
         validateMoney(fromMoney);
         validateCurrencyCode(toCurrencyCode);
 
         toCurrencyCode = toCurrencyCode.trim();
         toCurrencyCode = toCurrencyCode.toUpperCase();
 
-        String rate = ConversionClient
-                .getCurrencyRate(fromMoney.getCurrencyCode(), toCurrencyCode);
+        String rate;
+        if (isHistoricalConversion) {
+            rate = ConversionClient.getCurrencyRate(fromMoney.getCurrencyCode(),
+                    toCurrencyCode, date);
+        } else {
+            rate = ConversionClient.getCurrencyRate(fromMoney.getCurrencyCode(),
+                    toCurrencyCode);
+        }
 
         if (fromMoney.getCurrencyCode().equalsIgnoreCase(toCurrencyCode)) {
             return fromMoney;
@@ -127,10 +167,23 @@ public class CurrencyExchange {
     }
 
     /**
-     * Get currency rate for a particular currency with a base currency. Returns 
-     * null if MoneyConversionException occurred. Cause runtime exceptions if 
-     * invalid arguments are presented.
+     * Verifies if given date is today.
      * 
+     * @param date To compare with today's date
+     * @return true if date is today, otherwise false
+     */
+    private boolean isDateGivenToday(LocalDateTime date) {
+        LocalDateTime now = LocalDateTime.now();
+        return date.getYear() == now.getYear()
+                && date.getMonthValue() == now.getMonthValue()
+                && date.getDayOfMonth() == now.getDayOfMonth();
+    }
+
+    /**
+     * Get currency rate for a particular currency with a base currency. Returns
+     * null if MoneyConversionException occurred. Cause runtime exceptions if
+     * invalid arguments are presented.
+     *
      * @param baseCurrency Base currency
      * @param toCurrency currency of the rate return
      * @return Currency rate in String value
@@ -138,7 +191,7 @@ public class CurrencyExchange {
     public String getCurrencyRate(String baseCurrency, String toCurrency) {
         validateCurrencyCode(baseCurrency);
         validateCurrencyCode(toCurrency);
-        
+
         try {
             String rate = ConversionClient.getCurrencyRate(baseCurrency, toCurrency);
             return rate;
